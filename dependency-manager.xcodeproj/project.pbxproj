@@ -23,7 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		DBD6E7A31F6B54D700C6C2FD /* dependency-manager */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "dependency-manager"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBD6E7A31F6B54D700C6C2FD /* dm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dm; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD6E7A61F6B54D700C6C2FD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -49,7 +49,7 @@
 		DBD6E7A41F6B54D700C6C2FD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DBD6E7A31F6B54D700C6C2FD /* dependency-manager */,
+				DBD6E7A31F6B54D700C6C2FD /* dm */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -79,7 +79,7 @@
 			);
 			name = "dependency-manager";
 			productName = "dependency-manager";
-			productReference = DBD6E7A31F6B54D700C6C2FD /* dependency-manager */;
+			productReference = DBD6E7A31F6B54D700C6C2FD /* dm */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -238,7 +238,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5886TSL9MF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = dm;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -248,7 +248,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5886TSL9MF;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = dm;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
