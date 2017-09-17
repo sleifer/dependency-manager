@@ -158,7 +158,7 @@ class SemVerParser {
                         if separatorStr == "-" {
                             state = .parsingPreRelease
                         } else if separatorStr == "+" {
-                            state = .parsingVersion
+                            state = .parsingBuild
                         }
                     case .parsingPreRelease:
                         if vers.preReleaseMajor == nil {
@@ -171,7 +171,7 @@ class SemVerParser {
                             throw SemVerParserError.noValidVersion
                         }
                         if separatorStr == "+" {
-                            state = .parsingVersion
+                            state = .parsingBuild
                         }
                     case .parsingBuild:
                         if vers.buildMajor == nil {
@@ -189,6 +189,7 @@ class SemVerParser {
                     if atEnd == true {
                         state = .done
                     }
+                    return
                 }
             }
         }
