@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		DBD6E7A71F6B54D700C6C2FD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6E7A61F6B54D700C6C2FD /* main.swift */; };
+		DBDCDC0F1F6DC2DA0081D528 /* SemVerParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */; };
+		DBDCDC171F6DC4110081D528 /* dependency_managerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC161F6DC4110081D528 /* dependency_managerTests.swift */; };
+		DBDCDC1C1F6DC6910081D528 /* SemVerParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */; };
+		DBDCDC1E1F6E10640081D528 /* ScannerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC1D1F6E10640081D528 /* ScannerExtension.swift */; };
+		DBDCDC1F1F6E10640081D528 /* ScannerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC1D1F6E10640081D528 /* ScannerExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,10 +30,22 @@
 /* Begin PBXFileReference section */
 		DBD6E7A31F6B54D700C6C2FD /* dm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dm; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD6E7A61F6B54D700C6C2FD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemVerParser.swift; sourceTree = "<group>"; };
+		DBDCDC141F6DC4110081D528 /* dependency-managerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dependency-managerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBDCDC161F6DC4110081D528 /* dependency_managerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dependency_managerTests.swift; sourceTree = "<group>"; };
+		DBDCDC181F6DC4110081D528 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DBDCDC1D1F6E10640081D528 /* ScannerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		DBD6E7A01F6B54D600C6C2FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBDCDC111F6DC4110081D528 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -42,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				DBD6E7A51F6B54D700C6C2FD /* dependency-manager */,
+				DBDCDC151F6DC4110081D528 /* dependency-managerTests */,
 				DBD6E7A41F6B54D700C6C2FD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				DBD6E7A31F6B54D700C6C2FD /* dm */,
+				DBDCDC141F6DC4110081D528 /* dependency-managerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -58,8 +77,19 @@
 			isa = PBXGroup;
 			children = (
 				DBD6E7A61F6B54D700C6C2FD /* main.swift */,
+				DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */,
+				DBDCDC1D1F6E10640081D528 /* ScannerExtension.swift */,
 			);
 			path = "dependency-manager";
+			sourceTree = "<group>";
+		};
+		DBDCDC151F6DC4110081D528 /* dependency-managerTests */ = {
+			isa = PBXGroup;
+			children = (
+				DBDCDC161F6DC4110081D528 /* dependency_managerTests.swift */,
+				DBDCDC181F6DC4110081D528 /* Info.plist */,
+			);
+			path = "dependency-managerTests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -82,6 +112,23 @@
 			productReference = DBD6E7A31F6B54D700C6C2FD /* dm */;
 			productType = "com.apple.product-type.tool";
 		};
+		DBDCDC131F6DC4110081D528 /* dependency-managerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DBDCDC191F6DC4110081D528 /* Build configuration list for PBXNativeTarget "dependency-managerTests" */;
+			buildPhases = (
+				DBDCDC101F6DC4110081D528 /* Sources */,
+				DBDCDC111F6DC4110081D528 /* Frameworks */,
+				DBDCDC121F6DC4110081D528 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "dependency-managerTests";
+			productName = "dependency-managerTests";
+			productReference = DBDCDC141F6DC4110081D528 /* dependency-managerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -93,6 +140,10 @@
 				ORGANIZATIONNAME = droolingcat.com;
 				TargetAttributes = {
 					DBD6E7A21F6B54D600C6C2FD = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+					};
+					DBDCDC131F6DC4110081D528 = {
 						CreatedOnToolsVersion = 9.0;
 						ProvisioningStyle = Automatic;
 					};
@@ -111,16 +162,39 @@
 			projectRoot = "";
 			targets = (
 				DBD6E7A21F6B54D600C6C2FD /* dependency-manager */,
+				DBDCDC131F6DC4110081D528 /* dependency-managerTests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DBDCDC121F6DC4110081D528 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DBD6E79F1F6B54D600C6C2FD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBDCDC0F1F6DC2DA0081D528 /* SemVerParser.swift in Sources */,
 				DBD6E7A71F6B54D700C6C2FD /* main.swift in Sources */,
+				DBDCDC1E1F6E10640081D528 /* ScannerExtension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBDCDC101F6DC4110081D528 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBDCDC1C1F6DC6910081D528 /* SemVerParser.swift in Sources */,
+				DBDCDC171F6DC4110081D528 /* dependency_managerTests.swift in Sources */,
+				DBDCDC1F1F6E10640081D528 /* ScannerExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +327,34 @@
 			};
 			name = Release;
 		};
+		DBDCDC1A1F6DC4110081D528 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 5886TSL9MF;
+				INFOPLIST_FILE = "dependency-managerTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.droolingcat.dependency-managerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		DBDCDC1B1F6DC4110081D528 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 5886TSL9MF;
+				INFOPLIST_FILE = "dependency-managerTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.droolingcat.dependency-managerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -270,6 +372,15 @@
 			buildConfigurations = (
 				DBD6E7AB1F6B54D700C6C2FD /* Debug */,
 				DBD6E7AC1F6B54D700C6C2FD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DBDCDC191F6DC4110081D528 /* Build configuration list for PBXNativeTarget "dependency-managerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DBDCDC1A1F6DC4110081D528 /* Debug */,
+				DBDCDC1B1F6DC4110081D528 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
