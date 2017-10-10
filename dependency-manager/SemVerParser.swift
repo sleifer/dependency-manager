@@ -8,14 +8,16 @@
 
 import Foundation
 
-let groupOneSeparators: CharacterSet = CharacterSet(charactersIn: ".-+")
-let groupTwoSeparators: CharacterSet = CharacterSet(charactersIn: ".+")
-let groupThreeSeparators: CharacterSet = CharacterSet(charactersIn: ".")
-let groupOneMembers: CharacterSet = CharacterSet(charactersIn: "0123456789")
-let groupTwoMembers: CharacterSet = CharacterSet(charactersIn: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-")
-let groupThreeMembers: CharacterSet = CharacterSet(charactersIn: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-")
+let versionGroupSeparators: CharacterSet = CharacterSet(charactersIn: ".-+")
+let prereleaseGroupSeparators: CharacterSet = CharacterSet(charactersIn: ".+")
+let buildGroupSeparators: CharacterSet = CharacterSet(charactersIn: ".")
+let prefixGroupMembers: CharacterSet = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-")
+let versionGroupMembers: CharacterSet = CharacterSet(charactersIn: "0123456789")
+let prereleaseGroupMembers: CharacterSet = CharacterSet(charactersIn: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-")
+let buildGroupMembers: CharacterSet = CharacterSet(charactersIn: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-")
 
 struct SemVer {
+    let prefix: String?
     let major: Int
     let minor: Int?
     let patch: Int?
@@ -31,6 +33,7 @@ struct SemVer {
 }
 
 struct MutableSemVer {
+    var prefix: String?
     var major: Int?
     var minor: Int?
     var patch: Int?
@@ -54,6 +57,7 @@ enum SemVerParserError: Error {
 }
 
 enum SemVerScannerState: Int {
+    case parsingPrefix
     case parsingVersion
     case parsingPreRelease
     case parsingBuild
@@ -61,29 +65,34 @@ enum SemVerScannerState: Int {
 }
 
 enum SemVerGroup {
+    case prefix
     case version
     case prerelease
     case build
 
     func valueCharacterSet() -> CharacterSet {
         switch self {
+        case .prefix:
+            return prefixGroupMembers
         case .version:
-            return groupOneMembers
+            return versionGroupMembers
         case .prerelease:
-            return groupTwoMembers
+            return prereleaseGroupMembers
         case .build:
-            return groupThreeMembers
+            return buildGroupMembers
         }
     }
 
-    func separatorCharacterSet() -> CharacterSet {
+    func separatorCharacterSet() -> CharacterSet? {
         switch self {
+        case .prefix:
+            return nil
         case .version:
-            return groupOneSeparators
+            return versionGroupSeparators
         case .prerelease:
-            return groupTwoSeparators
+            return prereleaseGroupSeparators
         case .build:
-            return groupThreeSeparators
+            return buildGroupSeparators
         }
     }
 
@@ -99,12 +108,14 @@ class SemVerParser {
         vers = MutableSemVer(full: verStr)
         scanner = Scanner(string: verStr)
         scanner.charactersToBeSkipped = nil
-        state = .parsingVersion
+        state = .parsingPrefix
     }
 
     func parse() throws -> SemVer {
         while state != .done {
             switch state {
+            case .parsingPrefix:
+                try parse(group: .prefix)
             case .parsingVersion:
                 try parse(group: .version)
             case .parsingPreRelease:
@@ -116,7 +127,7 @@ class SemVerParser {
             }
         }
         if let major = vers.major {
-            let outVers = SemVer(major: major, minor: vers.minor, patch: vers.patch, preReleaseMajor: vers.preReleaseMajor, preReleaseMajorInt: vers.preReleaseMajorInt, preReleaseMinor: vers.preReleaseMinor, preReleaseMinorInt: vers.preReleaseMinorInt, buildMajor: vers.buildMajor, buildMajorInt: vers.buildMajorInt, buildMinor: vers.buildMinor, buildMinorInt: vers.buildMinorInt, fullString: vers.fullString)
+            let outVers = SemVer(prefix: vers.prefix, major: major, minor: vers.minor, patch: vers.patch, preReleaseMajor: vers.preReleaseMajor, preReleaseMajorInt: vers.preReleaseMajorInt, preReleaseMinor: vers.preReleaseMinor, preReleaseMinorInt: vers.preReleaseMinorInt, buildMajor: vers.buildMajor, buildMajorInt: vers.buildMajorInt, buildMinor: vers.buildMinor, buildMinorInt: vers.buildMinorInt, fullString: vers.fullString)
             return outVers
         } else {
             throw SemVerParserError.noValidVersion
@@ -126,21 +137,33 @@ class SemVerParser {
     private func parse(group: SemVerGroup) throws {
         var atEnd: Bool = false
         var separatorStr: String = ""
+        var member: String?
 
-        if let member = scanner.scanUpToCharacters(from: group.separatorCharacterSet()) {
-            atEnd = scanner.isAtEnd
-            if let separator = scanner.scanCharacters(from: group.separatorCharacterSet()) {
-                if separator.count > 1 {
-                    throw SemVerParserError.noValidVersion
+        if let separatorSet = group.separatorCharacterSet() {
+            if let value = scanner.scanUpToCharacters(from: separatorSet) {
+                member = value
+                atEnd = scanner.isAtEnd
+                if let separator = scanner.scanCharacters(from: separatorSet) {
+                    if separator.count > 1 {
+                        throw SemVerParserError.noValidVersion
+                    }
+                    separatorStr = separator
                 }
-                separatorStr = separator
             }
+        } else {
+            member = scanner.scanCharacters(from: group.valueCharacterSet())
+            atEnd = scanner.isAtEnd
+        }
 
+        if let member = member {
             let validationScanner = Scanner(string: member)
             validationScanner.charactersToBeSkipped = nil
             if let verifyMember = validationScanner.scanCharacters(from: group.valueCharacterSet()) {
                 if member == verifyMember {
                     switch state {
+                    case .parsingPrefix:
+                        vers.prefix = member
+                        state = .parsingVersion
                     case .parsingVersion:
                         let value = Int(member)
                         if value == nil {
@@ -191,6 +214,22 @@ class SemVerParser {
                     }
                     return
                 }
+            } else {
+                switch state {
+                case .parsingPrefix:
+                    state = .parsingVersion
+                    return
+                case .parsingVersion, .parsingPreRelease, .parsingBuild, .done:
+                    throw SemVerParserError.noValidVersion
+                }
+            }
+        } else {
+            switch state {
+            case .parsingPrefix:
+                state = .parsingVersion
+                return
+            case .parsingVersion, .parsingPreRelease, .parsingBuild, .done:
+                throw SemVerParserError.noValidVersion
             }
         }
         throw SemVerParserError.noValidVersion

@@ -184,15 +184,25 @@ class dependency_managerTests: XCTestCase {
         XCTAssertEqual(ver.buildMinorInt, 4)
     }
 
-    func testBad() {
+    func testBad() throws {
         let parser = SemVerParser("sync-hackathon-2015-11-09")
-        XCTAssertThrowsError(try parser.parse())
+        let ver = try parser.parse()
+        XCTAssertEqual(ver.fullString, "sync-hackathon-2015-11-09")
+        XCTAssertEqual(ver.prefix, "sync-hackathon-")
+        XCTAssertEqual(ver.major, 2015)
+        XCTAssertEqual(ver.minor, nil)
+        XCTAssertEqual(ver.patch, nil)
+        XCTAssertEqual(ver.preReleaseMajor, "11-09")
+        XCTAssertEqual(ver.preReleaseMinor, nil)
+        XCTAssertEqual(ver.buildMajor, nil)
+        XCTAssertEqual(ver.buildMinor, nil)
     }
 
     func testPrefix() throws {
         let parser = SemVerParser("v1.0.2")
         let ver = try parser.parse()
         XCTAssertEqual(ver.fullString, "v1.0.2")
+        XCTAssertEqual(ver.prefix, "v")
         XCTAssertEqual(ver.major, 1)
         XCTAssertEqual(ver.minor, 0)
         XCTAssertEqual(ver.patch, 2)
