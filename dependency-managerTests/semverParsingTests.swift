@@ -1,5 +1,5 @@
 //
-//  dependency_managerTests.swift
+//  semverParsingTests.swift
 //  dependency-managerTests
 //
 //  Created by Simeon Leifer on 9/16/17.
@@ -8,7 +8,7 @@
 
 import XCTest
 
-class dependency_managerTests: XCTestCase {
+class semverParsingTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

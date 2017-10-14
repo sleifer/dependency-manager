@@ -1,0 +1,165 @@
+//
+//  Git.swift
+//  dependency-manager
+//
+//  Created by Simeon Leifer on 10/11/17.
+//  Copyright © 2017 droolingcat.com. All rights reserved.
+//
+
+import Foundation
+
+enum SubmoduleParseRegex: Int {
+    case whole = 0
+    case pathRoot
+    case name
+    case version
+    case count
+
+    static func pattern() -> String {
+        return "[ +][0-9a-f]+ ((?:[^ /]+/)*)?([^ /]+)+ \\((.*)\\)"
+    }
+}
+
+extension ProcessRunner {
+    func scmResult() -> SCMResult {
+        if self.status == 0 {
+            return SCMResult.success(text: self.stdOut)
+        } else {
+            return SCMResult.error(code: self.status, text: self.stdErr)
+        }
+    }
+}
+
+class Git: SCM {
+
+    var gitPath: String?
+
+    var verbose: Bool = false
+    
+    var isInstalled: Bool {
+        get {
+            let proc = runCommand("/usr/bin/which", args: ["git"])
+            if proc.status == 0 {
+                gitPath = proc.stdOut.trimmingCharacters(in: .whitespacesAndNewlines)
+                return true
+            } else {
+                gitPath = nil
+                return false
+            }
+        }
+    }
+
+    var isInitialized: Bool {
+        get {
+            let fileManager = FileManager.default
+            let result = fileManager.fileExists(atPath: ".git")
+            return result
+        }
+    }
+
+    func submodules() -> [SubmoduleInfo] {
+        do {
+            let proc = try runGit(["submodule"])
+            if proc.status == 0 {
+                let subs = parseSubmodule(proc.stdOut)
+                return subs
+            } else {
+                print(proc.stdErr)
+            }
+        } catch {
+            print("\(error)")
+        }
+        return []
+    }
+
+    @discardableResult
+    func fetch(_ path: String) -> SCMResult {
+        setCurrentDir(path)
+        defer {
+            resetCurrentDir()
+        }
+        do {
+            let proc = try runGit(["fetch", "--all", "--prune", "--recurse-submodules"])
+            return proc.scmResult()
+        } catch {
+            return SCMResult.error(code: -1, text: error as! String)
+        }
+    }
+
+    @discardableResult
+    func checkout(_ path: String, object: String) -> SCMResult {
+        setCurrentDir(path)
+        defer {
+            resetCurrentDir()
+        }
+        do {
+            let proc = try runGit(["checkout", object])
+            return proc.scmResult()
+        } catch {
+            return SCMResult.error(code: -1, text: error as! String)
+        }
+    }
+
+    func tags(_ path: String) -> [SemVer] {
+        setCurrentDir(path)
+        defer {
+            resetCurrentDir()
+        }
+        do {
+            let proc = try runGit(["tag"])
+            if proc.status == 0 {
+                let tags = parseTags(proc.stdOut)
+                return tags.sorted()
+            } else {
+                print(proc.stdErr)
+            }
+        } catch {
+            print("\(error)")
+        }
+        return []
+    }
+
+    fileprivate func runGit(_ args: [String]) throws -> ProcessRunner {
+        if let path = gitPath {
+            return runCommand(path, args: args)
+        }
+        throw SCMError.scmCommandMissing
+    }
+
+    fileprivate func parseSubmodule(_ text: String) -> [SubmoduleInfo] {
+        var modules: [SubmoduleInfo] = []
+        let matches = text.regex(SubmoduleParseRegex.pattern())
+        for match in matches {
+            if match.count == SubmoduleParseRegex.count.rawValue {
+                let path = match[SubmoduleParseRegex.pathRoot.rawValue] + match[SubmoduleParseRegex.name.rawValue]
+                var semver: SemVer?
+                let parser = SemVerParser(match[SubmoduleParseRegex.version.rawValue])
+                do {
+                    semver = try parser.parse()
+                } catch {
+                }
+                let oneModule = SubmoduleInfo(path: path, name: match[SubmoduleParseRegex.name.rawValue], version: match[SubmoduleParseRegex.version.rawValue], semver: semver)
+                modules.append(oneModule)
+            }
+        }
+        return modules.sorted()
+    }
+
+    fileprivate func parseTags(_ text: String) -> [SemVer] {
+        var tags: [SemVer] = []
+        let lines = text.split(separator: "\n")
+        for line in lines {
+            let text = String(line)
+            let parser = SemVerParser(text)
+            do {
+                let semver = try parser.parse()
+                tags.append(semver)
+            } catch {
+                if verbose == true {
+                    print("Issue: unparsable tag: \(text)")
+                }
+            }
+        }
+        return tags
+    }
+}

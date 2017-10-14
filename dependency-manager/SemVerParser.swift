@@ -30,6 +30,124 @@ struct SemVer {
     let buildMinor: String?
     let buildMinorInt: Int?
     let fullString: String
+
+    func matching(fromList: [SemVer], withTest: SemVerComparison) -> [SemVer] {
+        let items = fromList.filter { (item: SemVer) -> Bool in
+            switch withTest {
+            case .equal:
+                if item == self {
+                    return true
+                }
+            case .greaterThanOrEqual, .compatible:
+                if item >= self {
+                    if withTest == .compatible {
+                        if self.major != item.major {
+                            return false
+                        }
+                        if let lh = self.minor, lh != item.minor ?? 99 {
+                            return false
+                        }
+                    }
+                    return true
+                }
+            }
+            return false
+        }
+        return items
+    }
+
+}
+
+extension SemVer {
+    init?(_ verStr: String) {
+        let parser = SemVerParser(verStr)
+        do {
+            let semver = try parser.parse()
+
+            self.prefix = semver.prefix
+            self.major = semver.major
+            self.minor = semver.minor
+            self.patch = semver.patch
+            self.preReleaseMajor = semver.preReleaseMajor
+            self.preReleaseMajorInt = semver.preReleaseMajorInt
+            self.preReleaseMinor = semver.preReleaseMinor
+            self.preReleaseMinorInt = semver.preReleaseMinorInt
+            self.buildMajor = semver.buildMajor
+            self.buildMajorInt = semver.buildMajorInt
+            self.buildMinor = semver.buildMinor
+            self.buildMinorInt = semver.buildMinorInt
+            self.fullString = semver.fullString
+        } catch {
+            return nil
+        }
+    }
+}
+
+enum SemVerComparison: String {
+    case equal = "=="
+    case greaterThanOrEqual = ">="
+    case compatible = "~>"
+}
+
+extension SemVer: Comparable {
+    static func < (lhs: SemVer, rhs: SemVer) -> Bool {
+        if lhs.prefix ?? "" != rhs.prefix ?? "" {
+            return lhs.prefix ?? "" < rhs.prefix ?? ""
+        } else if lhs.major != rhs.major {
+            return lhs.major < rhs.major
+        } else if lhs.minor ?? 0 != rhs.minor ?? 0 {
+            return lhs.minor ?? 0 < rhs.minor ?? 0
+        } else if lhs.patch ?? 0 != rhs.patch ?? 0 {
+            return lhs.patch ?? 0 < rhs.patch ?? 0
+        } else if lhs.preReleaseMajorInt ?? 0 != rhs.preReleaseMajorInt ?? 0 {
+            return lhs.preReleaseMajorInt ?? 0 < rhs.preReleaseMajorInt ?? 0
+        } else if lhs.preReleaseMajor ?? "~" != rhs.preReleaseMajor ?? "~" {
+            return lhs.preReleaseMajor ?? "~" < rhs.preReleaseMajor ?? "~"
+        } else if lhs.preReleaseMinorInt ?? 0 != rhs.preReleaseMinorInt ?? 0 {
+            return lhs.preReleaseMinorInt ?? 0 < rhs.preReleaseMinorInt ?? 0
+        } else if lhs.preReleaseMinor ?? "~" != rhs.preReleaseMinor ?? "~" {
+            return lhs.preReleaseMinor ?? "~" < rhs.preReleaseMinor ?? "~"
+        } else if lhs.buildMajorInt ?? 0 != rhs.buildMajorInt ?? 0 {
+            return lhs.buildMajorInt ?? 0 < rhs.buildMajorInt ?? 0
+        } else if lhs.buildMajor ?? "~" != rhs.buildMajor ?? "~" {
+            return lhs.buildMajor ?? "~" < rhs.buildMajor ?? "~"
+        } else if lhs.buildMinorInt ?? 0 != rhs.buildMinorInt ?? 0 {
+            return lhs.buildMinorInt ?? 0 < rhs.buildMinorInt ?? 0
+        } else if lhs.buildMinor ?? "~" != rhs.buildMinor ?? "~" {
+            return lhs.buildMinor ?? "~" < rhs.buildMinor ?? "~"
+        } else {
+            return lhs.fullString < rhs.fullString
+        }
+    }
+
+    static func == (lhs: SemVer, rhs: SemVer) -> Bool {
+        if lhs.prefix ?? "" != rhs.prefix ?? "" {
+            return false
+        } else if lhs.major != rhs.major {
+            return false
+        } else if lhs.minor ?? 0 != rhs.minor ?? 0 {
+            return false
+        } else if lhs.patch ?? 0 != rhs.patch ?? 0 {
+            return false
+        } else if lhs.preReleaseMajorInt ?? 0 != rhs.preReleaseMajorInt ?? 0 {
+            return false
+        } else if lhs.preReleaseMajor ?? "~" != rhs.preReleaseMajor ?? "~" {
+            return false
+        } else if lhs.preReleaseMinorInt ?? 0 != rhs.preReleaseMinorInt ?? 0 {
+            return false
+        } else if lhs.preReleaseMinor ?? "~" != rhs.preReleaseMinor ?? "~" {
+            return false
+        } else if lhs.buildMajorInt ?? 0 != rhs.buildMajorInt ?? 0 {
+            return false
+        } else if lhs.buildMajor ?? "~" != rhs.buildMajor ?? "~" {
+            return false
+        } else if lhs.buildMinorInt ?? 0 != rhs.buildMinorInt ?? 0 {
+            return false
+        } else if lhs.buildMinor ?? "~" != rhs.buildMinor ?? "~" {
+            return false
+        }
+        return true
+    }
 }
 
 struct MutableSemVer {

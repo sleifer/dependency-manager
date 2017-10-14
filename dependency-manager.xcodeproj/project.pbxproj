@@ -7,12 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB8E25021F8E5231002F59F2 /* SCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25011F8E5231002F59F2 /* SCM.swift */; };
+		DB8E25041F8E5238002F59F2 /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25031F8E5238002F59F2 /* Git.swift */; };
+		DB8E25061F8E6BD8002F59F2 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25051F8E6BD8002F59F2 /* Command.swift */; };
+		DB8E250A1F8E6C80002F59F2 /* SpecCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25091F8E6C80002F59F2 /* SpecCommand.swift */; };
+		DB8E250C1F8E6C86002F59F2 /* UpdateCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E250B1F8E6C86002F59F2 /* UpdateCommand.swift */; };
+		DB8E250E1F8E6C8C002F59F2 /* OutdatedCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */; };
+		DB8E251F1F92B65F002F59F2 /* VersionSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E251E1F92B65F002F59F2 /* VersionSpecification.swift */; };
+		DBD359921F98E72D006F17C3 /* semverMatchingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD359911F98E72D006F17C3 /* semverMatchingTests.swift */; };
 		DBD6E7A71F6B54D700C6C2FD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6E7A61F6B54D700C6C2FD /* main.swift */; };
+		DBD72AF21F8DBCBC007FDD8F /* CommandDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD72AF11F8DBCBC007FDD8F /* CommandDefinition.swift */; };
+		DBD72AF41F8DBD9B007FDD8F /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD72AF31F8DBD9B007FDD8F /* ProcessRunner.swift */; };
 		DBDCDC0F1F6DC2DA0081D528 /* SemVerParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */; };
-		DBDCDC171F6DC4110081D528 /* dependency_managerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC161F6DC4110081D528 /* dependency_managerTests.swift */; };
+		DBDCDC171F6DC4110081D528 /* semverParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC161F6DC4110081D528 /* semverParsingTests.swift */; };
 		DBDCDC1C1F6DC6910081D528 /* SemVerParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */; };
 		DBDCDC1E1F6E10640081D528 /* ScannerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC1D1F6E10640081D528 /* ScannerExtension.swift */; };
 		DBDCDC1F1F6E10640081D528 /* ScannerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC1D1F6E10640081D528 /* ScannerExtension.swift */; };
+		DBE67EF11F8D1388007BE8E7 /* ArgParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE67EF01F8D1388007BE8E7 /* ArgParser.swift */; };
+		DBE67EF31F8D8B75007BE8E7 /* String-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE67EF21F8D8B75007BE8E7 /* String-Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,13 +40,25 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DB8E25011F8E5231002F59F2 /* SCM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCM.swift; sourceTree = "<group>"; };
+		DB8E25031F8E5238002F59F2 /* Git.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Git.swift; sourceTree = "<group>"; };
+		DB8E25051F8E6BD8002F59F2 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		DB8E25091F8E6C80002F59F2 /* SpecCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecCommand.swift; sourceTree = "<group>"; };
+		DB8E250B1F8E6C86002F59F2 /* UpdateCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCommand.swift; sourceTree = "<group>"; };
+		DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutdatedCommand.swift; sourceTree = "<group>"; };
+		DB8E251E1F92B65F002F59F2 /* VersionSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionSpecification.swift; sourceTree = "<group>"; };
+		DBD359911F98E72D006F17C3 /* semverMatchingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = semverMatchingTests.swift; sourceTree = "<group>"; };
 		DBD6E7A31F6B54D700C6C2FD /* dm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dm; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD6E7A61F6B54D700C6C2FD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		DBD72AF11F8DBCBC007FDD8F /* CommandDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandDefinition.swift; sourceTree = "<group>"; };
+		DBD72AF31F8DBD9B007FDD8F /* ProcessRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
 		DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemVerParser.swift; sourceTree = "<group>"; };
 		DBDCDC141F6DC4110081D528 /* dependency-managerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dependency-managerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DBDCDC161F6DC4110081D528 /* dependency_managerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dependency_managerTests.swift; sourceTree = "<group>"; };
+		DBDCDC161F6DC4110081D528 /* semverParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = semverParsingTests.swift; sourceTree = "<group>"; };
 		DBDCDC181F6DC4110081D528 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBDCDC1D1F6E10640081D528 /* ScannerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerExtension.swift; sourceTree = "<group>"; };
+		DBE67EF01F8D1388007BE8E7 /* ArgParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgParser.swift; sourceTree = "<group>"; };
+		DBE67EF21F8D8B75007BE8E7 /* String-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String-Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,9 +100,20 @@
 		DBD6E7A51F6B54D700C6C2FD /* dependency-manager */ = {
 			isa = PBXGroup;
 			children = (
+				DBE67EF01F8D1388007BE8E7 /* ArgParser.swift */,
+				DB8E25051F8E6BD8002F59F2 /* Command.swift */,
+				DBD72AF11F8DBCBC007FDD8F /* CommandDefinition.swift */,
+				DB8E25031F8E5238002F59F2 /* Git.swift */,
 				DBD6E7A61F6B54D700C6C2FD /* main.swift */,
-				DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */,
+				DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */,
+				DBD72AF31F8DBD9B007FDD8F /* ProcessRunner.swift */,
 				DBDCDC1D1F6E10640081D528 /* ScannerExtension.swift */,
+				DB8E25011F8E5231002F59F2 /* SCM.swift */,
+				DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */,
+				DB8E25091F8E6C80002F59F2 /* SpecCommand.swift */,
+				DBE67EF21F8D8B75007BE8E7 /* String-Extension.swift */,
+				DB8E250B1F8E6C86002F59F2 /* UpdateCommand.swift */,
+				DB8E251E1F92B65F002F59F2 /* VersionSpecification.swift */,
 			);
 			path = "dependency-manager";
 			sourceTree = "<group>";
@@ -86,7 +121,8 @@
 		DBDCDC151F6DC4110081D528 /* dependency-managerTests */ = {
 			isa = PBXGroup;
 			children = (
-				DBDCDC161F6DC4110081D528 /* dependency_managerTests.swift */,
+				DBDCDC161F6DC4110081D528 /* semverParsingTests.swift */,
+				DBD359911F98E72D006F17C3 /* semverMatchingTests.swift */,
 				DBDCDC181F6DC4110081D528 /* Info.plist */,
 			);
 			path = "dependency-managerTests";
@@ -182,9 +218,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBD72AF21F8DBCBC007FDD8F /* CommandDefinition.swift in Sources */,
 				DBDCDC0F1F6DC2DA0081D528 /* SemVerParser.swift in Sources */,
+				DB8E250E1F8E6C8C002F59F2 /* OutdatedCommand.swift in Sources */,
+				DB8E251F1F92B65F002F59F2 /* VersionSpecification.swift in Sources */,
+				DBE67EF11F8D1388007BE8E7 /* ArgParser.swift in Sources */,
+				DB8E25061F8E6BD8002F59F2 /* Command.swift in Sources */,
 				DBD6E7A71F6B54D700C6C2FD /* main.swift in Sources */,
+				DB8E250A1F8E6C80002F59F2 /* SpecCommand.swift in Sources */,
+				DB8E250C1F8E6C86002F59F2 /* UpdateCommand.swift in Sources */,
+				DBD72AF41F8DBD9B007FDD8F /* ProcessRunner.swift in Sources */,
 				DBDCDC1E1F6E10640081D528 /* ScannerExtension.swift in Sources */,
+				DBE67EF31F8D8B75007BE8E7 /* String-Extension.swift in Sources */,
+				DB8E25021F8E5231002F59F2 /* SCM.swift in Sources */,
+				DB8E25041F8E5238002F59F2 /* Git.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,8 +239,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBD359921F98E72D006F17C3 /* semverMatchingTests.swift in Sources */,
 				DBDCDC1C1F6DC6910081D528 /* SemVerParser.swift in Sources */,
-				DBDCDC171F6DC4110081D528 /* dependency_managerTests.swift in Sources */,
+				DBDCDC171F6DC4110081D528 /* semverParsingTests.swift in Sources */,
 				DBDCDC1F1F6E10640081D528 /* ScannerExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
