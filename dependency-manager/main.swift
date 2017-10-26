@@ -19,14 +19,14 @@ func main() {
     autoreleasepool {
         let parser = ArgParser(definition: makeCommandDefinition())
 
-        #if true
+        #if DEBUG
             let args = ["dm", "update"]
             let parsed = parser.parse(args)
         #else
             let parsed = parser.parse(CommandLine.arguments)
         #endif
 
-        #if true
+        #if DEBUG
             // for testing in Xcode
             FileManager.default.changeCurrentDirectoryPath("/Users/simeon/NotBackedUp/homoidentus-dm-test")
         #endif
