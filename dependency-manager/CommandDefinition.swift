@@ -12,6 +12,11 @@ func makeCommandDefinition() -> CommandDefinition {
     var definition = CommandDefinition()
     definition.help = "Tool to keep submodule dependencies up to date"
 
+    var version = CommandOption()
+    version.longOption = "--version"
+    version.help = "Show tool version information"
+    definition.options.append(version)
+
     var help = CommandOption()
     help.shortOption = "-h"
     help.longOption = "--help"

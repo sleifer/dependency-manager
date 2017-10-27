@@ -8,6 +8,7 @@
 
 import Foundation
 
+let toolVersion = "0.9.0"
 let versionSpecsFileName = ".module-versions"
 let runLoop = RunLoop.current
 var backgroundCount: Int = 0
@@ -20,7 +21,7 @@ func main() {
         let parser = ArgParser(definition: makeCommandDefinition())
 
         #if DEBUG
-            let args = ["dm", "update"]
+            let args = ["dm", "--version"]
             let parsed = parser.parse(args)
         #else
             let parsed = parser.parse(CommandLine.arguments)
@@ -41,6 +42,15 @@ func main() {
         if scm.isInitialized == false {
             print("git is not initialized in this directory.")
             return
+        }
+
+        if parsed.globalOptions.contains(where: { (option: ParsedOption) -> Bool in
+            if option.longOption == "--version" {
+                return true
+            }
+            return false
+        }) {
+            print("Version \(toolVersion)")
         }
 
         switch parsed.subcommand ?? "root" {

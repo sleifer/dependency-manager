@@ -116,7 +116,11 @@ class ArgParser {
                 var option = ParsedOption()
                 option.longOption = value.longOption
                 // TODO: (SKL) need to handle options with args
-                parsed.options.append(option)
+                if subcommand == nil {
+                    parsed.globalOptions.append(option)
+                } else {
+                    parsed.options.append(option)
+                }
             } else if let value = availableSubcommands[arg], subcommand == nil {
                 parsed.subcommand = value.name
                 subcommand = value
