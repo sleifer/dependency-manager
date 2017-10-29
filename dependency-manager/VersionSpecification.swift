@@ -14,6 +14,22 @@ struct VersionSpec {
     var version: String
     var semver: SemVer?
 
+    static func parse(name: String, comparison: String, version: String) -> VersionSpec? {
+        if let comp = SemVerComparison(rawValue: comparison) {
+            var semver: SemVer?
+            let parser = SemVerParser(version)
+            do {
+                semver = try parser.parse()
+            } catch {
+            }
+            if let semver = semver {
+                let spec = VersionSpec(name: name, comparison: comp, version: version, semver: semver)
+                return spec
+            }
+        }
+        return nil
+    }
+
     func toStr() -> String {
         return "\(name), \(comparison.rawValue) \(version)"
     }
@@ -85,7 +101,7 @@ class VersionSpecification {
         let items = specs.values.map { (spec) -> String in
             return spec.toStr()
         }
-        let text = items.joined(separator: "\n")
+        let text = items.joined(separator: "\n").appending("\n")
         do {
             try text.write(toFile: toFile, atomically: true, encoding: .utf8)
         } catch {
@@ -103,5 +119,9 @@ class VersionSpecification {
         } else {
             specs.removeValue(forKey: name)
         }
+    }
+
+    func allSpecs() -> [VersionSpec] {
+        return specs.values.sorted()
     }
 }

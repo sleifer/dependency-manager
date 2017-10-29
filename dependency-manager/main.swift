@@ -22,7 +22,7 @@ func main() {
 
         do {
             #if DEBUG
-                let args = ["dm", "--help"]
+                let args = ["dm", "spec", "CwlSignal", "~>", "2.0-beta-35"]
                 let parsed = try parser.parse(args)
             #else
                 let parsed = try parser.parse(CommandLine.arguments)
@@ -61,13 +61,13 @@ func main() {
                 switch parsed.subcommand ?? "root" {
                 case "outdated":
                     let cmd = OutdatedCommand()
-                    cmd.run()
+                    cmd.run(cmd: parsed)
                 case "spec":
                     let cmd = SpecCommand()
-                    cmd.run()
+                    cmd.run(cmd: parsed)
                 case "update":
                     let cmd = UpdateCommand()
-                    cmd.run()
+                    cmd.run(cmd: parsed)
                     break
                 case "root":
                     break

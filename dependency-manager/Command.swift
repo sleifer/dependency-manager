@@ -9,6 +9,6 @@
 import Foundation
 
 class Command {
-    func run() {
+    func run(cmd: ParsedCommand) {
     }
 }

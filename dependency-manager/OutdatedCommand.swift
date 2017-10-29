@@ -9,7 +9,7 @@
 import Foundation
 
 class OutdatedCommand: Command {
-    override func run() {
+    override func run(cmd: ParsedCommand) {
         let submodules = scm.submodules()
         for submodule in submodules {
             print("submodule: \(submodule.name)")
