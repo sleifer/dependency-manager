@@ -75,6 +75,12 @@ struct SubcommandDefinition {
     }
 }
 
+enum ParsedOptionScope {
+    case global
+    case subcommand
+    case either
+}
+
 struct ParsedCommand {
     var globalOptions: [ParsedOption]
     var subcommand: String?
@@ -86,6 +92,33 @@ struct ParsedCommand {
         options = []
         parameters = []
     }
+
+    func option(_ name: String, type: ParsedOptionScope = .either) -> ParsedOption? {
+        var option: ParsedOption?
+
+        if type == .global || type == .either {
+            option = self.globalOptions.first(where: { (option: ParsedOption) -> Bool in
+                if option.longOption == name {
+                    return true
+                }
+                return false
+            })
+        }
+        if type == .subcommand || type == .either {
+            option = self.options.first(where: { (option: ParsedOption) -> Bool in
+                if option.longOption == name {
+                    return true
+                }
+                return false
+            })
+        }
+
+        return option
+    }
+}
+
+enum ArgParserError: Error {
+    case invalidArguments
 }
 
 class ArgParser {
@@ -99,7 +132,7 @@ class ArgParser {
         definition = inDefinition
     }
 
-    func parse(_ inArgs: [String]) -> ParsedCommand {
+    func parse(_ inArgs: [String]) throws -> ParsedCommand {
         args = inArgs
 
         if args.count == 1 {
@@ -110,12 +143,25 @@ class ArgParser {
         let availableSubcommands = subcommandMap(definition.subcommands)
         var subcommand: SubcommandDefinition?
 
-        let sargs = args.dropFirst()
-        for arg in sargs {
+        let sargs = Array(args.dropFirst())
+        let cnt = sargs.count
+        var idx = 0
+        while idx < cnt {
+            let arg = sargs[idx]
             if let value = availableOptions[arg] {
                 var option = ParsedOption()
                 option.longOption = value.longOption
-                // TODO: (SKL) need to handle options with args
+                idx += 1
+                if value.argumentCount > 0 {
+                    if cnt - idx <= value.argumentCount {
+                        for _ in 0..<value.argumentCount {
+                            option.arguments.append(sargs[idx])
+                            idx += 1
+                        }
+                    } else {
+                        throw ArgParserError.invalidArguments
+                    }
+                }
                 if subcommand == nil {
                     parsed.globalOptions.append(option)
                 } else {
@@ -125,8 +171,10 @@ class ArgParser {
                 parsed.subcommand = value.name
                 subcommand = value
                 availableOptions = optionMap(value.options)
+                idx += 1
             } else {
                 parsed.parameters.append(arg)
+                idx += 1
             }
         }
 

@@ -20,56 +20,66 @@ func main() {
     autoreleasepool {
         let parser = ArgParser(definition: makeCommandDefinition())
 
-        #if DEBUG
-            let args = ["dm", "--version"]
-            let parsed = parser.parse(args)
-        #else
-            let parsed = parser.parse(CommandLine.arguments)
-        #endif
+        do {
+            #if DEBUG
+                let args = ["dm", "--help"]
+                let parsed = try parser.parse(args)
+            #else
+                let parsed = try parser.parse(CommandLine.arguments)
+            #endif
 
-        #if DEBUG
-            // for testing in Xcode
-            FileManager.default.changeCurrentDirectoryPath("/Users/simeon/NotBackedUp/homoidentus-dm-test")
-        #endif
+            #if DEBUG
+                // for testing in Xcode
+                let path = "~/NotBackedUp/homoidentus-dm-test".expandingTildeInPath
+                FileManager.default.changeCurrentDirectoryPath(path)
+            #endif
 
-        baseDirectory = FileManager.default.currentDirectoryPath
-        versionSpecs = VersionSpecification(fromFile: baseSubPath(versionSpecsFileName))
+            baseDirectory = FileManager.default.currentDirectoryPath
+            versionSpecs = VersionSpecification(fromFile: baseSubPath(versionSpecsFileName))
 
-        if scm.isInstalled == false {
-            print("Can't locate git tool.")
-            return
-        }
-        if scm.isInitialized == false {
-            print("git is not initialized in this directory.")
-            return
-        }
-
-        if parsed.globalOptions.contains(where: { (option: ParsedOption) -> Bool in
-            if option.longOption == "--version" {
-                return true
+            if scm.isInstalled == false {
+                print("Can't locate git tool.")
+                return
             }
-            return false
-        }) {
-            print("Version \(toolVersion)")
+            if scm.isInitialized == false {
+                print("git is not initialized in this directory.")
+                return
+            }
+
+            var skipSubcommand = false
+
+            if parsed.option("--version", type: .global) != nil {
+                print("Version \(toolVersion)")
+                skipSubcommand = true
+            }
+            if parsed.option("--help", type: .global) != nil {
+                parser.printHelp()
+                skipSubcommand = true
+            }
+
+            if skipSubcommand == false {
+                switch parsed.subcommand ?? "root" {
+                case "outdated":
+                    let cmd = OutdatedCommand()
+                    cmd.run()
+                case "spec":
+                    let cmd = SpecCommand()
+                    cmd.run()
+                case "update":
+                    let cmd = UpdateCommand()
+                    cmd.run()
+                    break
+                case "root":
+                    break
+                default:
+                    print("Unknown command.")
+                }
+            }
+        } catch {
+            print("Invalid arguments.")
+            parser.printHelp()
         }
 
-        switch parsed.subcommand ?? "root" {
-        case "outdated":
-            let cmd = OutdatedCommand()
-            cmd.run()
-        case "spec":
-            let cmd = SpecCommand()
-            cmd.run()
-        case "update":
-            let cmd = UpdateCommand()
-            cmd.run()
-            break
-        case "root":
-            break
-        default:
-            print("Unknown command.")
-        }
-        
         while (backgroundCount > 0 && (spinRunLoop())) {
             // do nothing
         }
