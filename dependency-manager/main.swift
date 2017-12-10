@@ -8,7 +8,7 @@
 
 import Foundation
 
-let toolVersion = "0.9.0"
+let toolVersion = "0.9.1"
 let versionSpecsFileName = ".module-versions"
 let runLoop = RunLoop.current
 var backgroundCount: Int = 0
@@ -70,6 +70,9 @@ func main() {
                     cmd.run(cmd: parsed)
                     break
                 case "root":
+                    if parsed.parameters.count > 0 {
+                        print("Unknown command: \(parsed.parameters[0])")
+                    }
                     break
                 default:
                     print("Unknown command.")
