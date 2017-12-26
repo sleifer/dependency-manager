@@ -54,7 +54,7 @@ func main() {
                 print("Version \(toolVersion)")
                 skipSubcommand = true
             }
-            if parsed.option("--help", type: .global) != nil {
+            if parsed.option("--help", type: .either) != nil {
                 parser.printHelp()
                 skipSubcommand = true
             }
