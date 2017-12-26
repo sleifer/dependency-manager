@@ -93,7 +93,7 @@ class VersionSpecification {
                 }
             }
         } catch {
-            print(error)
+            print("\(versionSpecsFileName) missing, use '\(commandName) init' to create it")
         }
     }
 

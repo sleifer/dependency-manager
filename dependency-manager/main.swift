@@ -15,6 +15,7 @@ var backgroundCount: Int = 0
 let scm: SCM = Git()
 var baseDirectory: String = ""
 var versionSpecs = VersionSpecification()
+var commandName: String = ""
 
 func main() {
     autoreleasepool {
@@ -23,9 +24,11 @@ func main() {
         do {
             #if DEBUG
                 let args = ["dm", "spec", "CwlSignal", "~>", "2.0-beta-35"]
+                commandName = args[0]
                 let parsed = try parser.parse(args)
             #else
                 let parsed = try parser.parse(CommandLine.arguments)
+                commandName = CommandLine.arguments[0].lastPathComponent
             #endif
 
             #if DEBUG
@@ -35,7 +38,6 @@ func main() {
             #endif
 
             baseDirectory = FileManager.default.currentDirectoryPath
-            versionSpecs = VersionSpecification(fromFile: baseSubPath(versionSpecsFileName))
 
             if scm.isInstalled == false {
                 print("Can't locate git tool.")
@@ -56,6 +58,8 @@ func main() {
                 parser.printHelp()
                 skipSubcommand = true
             }
+
+            versionSpecs = VersionSpecification(fromFile: baseSubPath(versionSpecsFileName))
 
             if skipSubcommand == false {
                 switch parsed.subcommand ?? "root" {
