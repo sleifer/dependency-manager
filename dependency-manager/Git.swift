@@ -10,13 +10,14 @@ import Foundation
 
 enum SubmoduleParseRegex: Int {
     case whole = 0
+    case sha
     case pathRoot
     case name
     case version
     case count
 
     static func pattern() -> String {
-        return "[ +][0-9a-f]+ ((?:[^ /]+/)*)?([^ /]+)+ \\((.*)\\)"
+        return "[ +]([0-9a-f]+) ((?:[^ /]+/)*)?([^ /]+)+ \\((.*)\\)"
     }
 }
 
@@ -57,11 +58,39 @@ class Git: SCM {
         }
     }
 
+    fileprivate func fixupSubmodules(_ submodules: [SubmoduleInfo]) -> [SubmoduleInfo] {
+        defer {
+            resetCurrentDir()
+        }
+        var fixed: [SubmoduleInfo] = []
+        for module in submodules {
+            var newModule = module
+            setCurrentDir(module.path)
+            do {
+                let proc = try runGit(["describe", "--tag", module.sha, "--exact-match"])
+                if proc.status == 0 {
+                    let newVersion = proc.stdOut.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                    var semver: SemVer?
+                    let parser = SemVerParser(newVersion)
+                    do {
+                        semver = try parser.parse()
+                    } catch {
+                    }
+                    newModule = SubmoduleInfo(sha: module.sha, path: module.path, name: module.name, version: newVersion, semver: semver)
+                }
+            } catch {
+            }
+            fixed.append(newModule)
+        }
+        return fixed
+    }
+
     func submodules() -> [SubmoduleInfo] {
         do {
             let proc = try runGit(["submodule"])
             if proc.status == 0 {
-                let subs = parseSubmodule(proc.stdOut)
+                var subs = parseSubmodule(proc.stdOut)
+                subs = fixupSubmodules(subs)
                 return subs
             } else {
                 print(proc.stdErr)
@@ -131,6 +160,7 @@ class Git: SCM {
         let matches = text.regex(SubmoduleParseRegex.pattern())
         for match in matches {
             if match.count == SubmoduleParseRegex.count.rawValue {
+                let sha = match[SubmoduleParseRegex.sha.rawValue]
                 let path = match[SubmoduleParseRegex.pathRoot.rawValue] + match[SubmoduleParseRegex.name.rawValue]
                 var semver: SemVer?
                 let parser = SemVerParser(match[SubmoduleParseRegex.version.rawValue])
@@ -138,7 +168,7 @@ class Git: SCM {
                     semver = try parser.parse()
                 } catch {
                 }
-                let oneModule = SubmoduleInfo(path: path, name: match[SubmoduleParseRegex.name.rawValue], version: match[SubmoduleParseRegex.version.rawValue], semver: semver)
+                let oneModule = SubmoduleInfo(sha: sha, path: path, name: match[SubmoduleParseRegex.name.rawValue], version: match[SubmoduleParseRegex.version.rawValue], semver: semver)
                 modules.append(oneModule)
             }
         }

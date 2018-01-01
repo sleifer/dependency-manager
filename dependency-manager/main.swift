@@ -8,7 +8,7 @@
 
 import Foundation
 
-let toolVersion = "0.9.1"
+let toolVersion = "0.9.2"
 let versionSpecsFileName = ".module-versions"
 let runLoop = RunLoop.current
 var backgroundCount: Int = 0
@@ -23,7 +23,7 @@ func main() {
 
         do {
             #if DEBUG
-                let args = ["dm", "spec", "CwlSignal", "~>", "2.0-beta-35"]
+                let args = ["dm", "outdated"]
                 commandName = args[0]
                 let parsed = try parser.parse(args)
             #else
@@ -33,7 +33,7 @@ func main() {
 
             #if DEBUG
                 // for testing in Xcode
-                let path = "~/NotBackedUp/homoidentus-dm-test".expandingTildeInPath
+                let path = "~/Documents/Code/SVG-Generator".expandingTildeInPath
                 FileManager.default.changeCurrentDirectoryPath(path)
             #endif
 
