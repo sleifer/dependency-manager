@@ -70,6 +70,7 @@ extension Array where Element:StringProtocol {
 class VersionSpecification {
 
     var specs: [String: VersionSpec] = [:]
+    var missing: Bool = false
 
     init() {
     }
@@ -93,7 +94,7 @@ class VersionSpecification {
                 }
             }
         } catch {
-            print("\(versionSpecsFileName) missing, use '\(commandName) init' to create it")
+            missing = true
         }
     }
 
@@ -101,7 +102,10 @@ class VersionSpecification {
         let items = specs.values.map { (spec) -> String in
             return spec.toStr()
         }
-        let text = items.joined(separator: "\n").appending("\n")
+        var text = items.joined(separator: "\n").appending("\n")
+        text.append("\n")
+        text.append("// Submodule name (comma) <test> (space) version\n")
+        text.append("// Tests: == >= ~>\n")
         do {
             try text.write(toFile: toFile, atomically: true, encoding: .utf8)
         } catch {

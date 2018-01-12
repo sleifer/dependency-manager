@@ -127,6 +127,7 @@ class ArgParser {
 
     var args: [String] = []
     var parsed: ParsedCommand = ParsedCommand()
+    var helpPrinted = false
 
     init(definition inDefinition: CommandDefinition) {
         definition = inDefinition
@@ -137,6 +138,7 @@ class ArgParser {
 
         if args.count == 1 {
             printHelp()
+            helpPrinted = true
         }
 
         var availableOptions = optionMap(definition.options)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-let toolVersion = "0.9.2"
+let toolVersion = "0.9.3"
 let versionSpecsFileName = ".module-versions"
 let runLoop = RunLoop.current
 var backgroundCount: Int = 0
@@ -23,7 +23,7 @@ func main() {
 
         do {
             #if DEBUG
-                let args = ["dm", "outdated"]
+                let args = ["dm", "init"]
                 commandName = args[0]
                 let parsed = try parser.parse(args)
             #else
@@ -33,7 +33,7 @@ func main() {
 
             #if DEBUG
                 // for testing in Xcode
-                let path = "~/Documents/Code/SVG-Generator".expandingTildeInPath
+                let path = "~/Documents/Code/homoidentus".expandingTildeInPath
                 FileManager.default.changeCurrentDirectoryPath(path)
             #endif
 
@@ -49,14 +49,22 @@ func main() {
             }
 
             var skipSubcommand = false
+            var warnOnMissingSpec = true
+            var cmd: Command?
+
+            if parser.helpPrinted == true {
+                warnOnMissingSpec = false
+            }
 
             if parsed.option("--version", type: .global) != nil {
                 print("Version \(toolVersion)")
                 skipSubcommand = true
+                warnOnMissingSpec = false
             }
             if parsed.option("--help", type: .either) != nil {
                 parser.printHelp()
                 skipSubcommand = true
+                warnOnMissingSpec = false
             }
 
             versionSpecs = VersionSpecification(fromFile: baseSubPath(versionSpecsFileName))
@@ -64,23 +72,32 @@ func main() {
             if skipSubcommand == false {
                 switch parsed.subcommand ?? "root" {
                 case "outdated":
-                    let cmd = OutdatedCommand()
-                    cmd.run(cmd: parsed)
+                    cmd = OutdatedCommand()
                 case "spec":
-                    let cmd = SpecCommand()
-                    cmd.run(cmd: parsed)
+                    cmd = SpecCommand()
                 case "update":
-                    let cmd = UpdateCommand()
-                    cmd.run(cmd: parsed)
+                    cmd = UpdateCommand()
+                    break
+                case "init":
+                    cmd = InitCommand()
+                    warnOnMissingSpec = false
                     break
                 case "root":
                     if parsed.parameters.count > 0 {
                         print("Unknown command: \(parsed.parameters[0])")
+                        warnOnMissingSpec = false
                     }
                     break
                 default:
                     print("Unknown command.")
+                    warnOnMissingSpec = false
                 }
+            }
+
+            if warnOnMissingSpec == true && versionSpecs.missing == true {
+                print("\(versionSpecsFileName) missing, use '\(commandName) init' to create it.")
+            } else if let cmd = cmd {
+                cmd.run(cmd: parsed)
             }
         } catch {
             print("Invalid arguments.")

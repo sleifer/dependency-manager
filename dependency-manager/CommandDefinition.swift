@@ -23,49 +23,72 @@ func makeCommandDefinition() -> CommandDefinition {
     help.help = "Show this help"
     definition.options.append(help)
 
-    var spec = SubcommandDefinition()
-    spec.name = "spec"
-    spec.synopsis = "List or update version range for one or all submodules"
-    spec.help = ""
+    // spec command
+    var specCommand = SubcommandDefinition()
+    specCommand.name = "spec"
+    specCommand.synopsis = "List or update version range for one or all submodules"
+    specCommand.help = ""
 
-    var spec_help = CommandOption()
-    spec_help.shortOption = "-h"
-    spec_help.longOption = "--help"
-    spec_help.help = "Show this help"
-    spec.options.append(spec_help)
+    var specCommand_help = CommandOption()
+    specCommand_help.shortOption = "-h"
+    specCommand_help.longOption = "--help"
+    specCommand_help.help = "Show this help"
+    specCommand.options.append(specCommand_help)
 
-    definition.subcommands.append(spec)
+    definition.subcommands.append(specCommand)
 
-    var update = SubcommandDefinition()
-    update.name = "update"
-    update.synopsis = "Update one or all submodules to latest valid version"
-    update.help = ""
+    // update command
+    var updateCommand = SubcommandDefinition()
+    updateCommand.name = "update"
+    updateCommand.synopsis = "Update one or all submodules to latest valid version"
+    updateCommand.help = ""
 
-    var update_parameter = ParameterInfo()
-    update_parameter.hint = "module-name"
-    update_parameter.help = "Name of module to update"
-    update.optionalParameters.append(update_parameter)
+    var updateCommand_parameter = ParameterInfo()
+    updateCommand_parameter.hint = "module-name"
+    updateCommand_parameter.help = "Name of module to update"
+    updateCommand.optionalParameters.append(updateCommand_parameter)
 
-    var update_help = CommandOption()
-    update_help.shortOption = "-h"
-    update_help.longOption = "--help"
-    update_help.help = "Show this help"
-    update.options.append(update_help)
+    var updateCommand_help = CommandOption()
+    updateCommand_help.shortOption = "-h"
+    updateCommand_help.longOption = "--help"
+    updateCommand_help.help = "Show this help"
+    updateCommand.options.append(updateCommand_help)
 
-    definition.subcommands.append(update)
+    definition.subcommands.append(updateCommand)
 
-    var outdated = SubcommandDefinition()
-    outdated.name = "outdated"
-    outdated.synopsis = "Check all submodules for newer valid version"
-    outdated.help = ""
+    // outdated command
+    var outdatedCommand = SubcommandDefinition()
+    outdatedCommand.name = "outdated"
+    outdatedCommand.synopsis = "Check all submodules for newer valid version"
+    outdatedCommand.help = ""
 
-    var outdated_help = CommandOption()
-    outdated_help.shortOption = "-h"
-    outdated_help.longOption = "--help"
-    outdated_help.help = "Show this help"
-    outdated.options.append(outdated_help)
+    var outdatedCommand_help = CommandOption()
+    outdatedCommand_help.shortOption = "-h"
+    outdatedCommand_help.longOption = "--help"
+    outdatedCommand_help.help = "Show this help"
+    outdatedCommand.options.append(outdatedCommand_help)
 
-    definition.subcommands.append(outdated)
+    definition.subcommands.append(outdatedCommand)
+
+    // init command
+    var initCommand = SubcommandDefinition()
+    initCommand.name = "init"
+    initCommand.synopsis = "Create .module-versions file"
+    initCommand.help = ""
+
+    var initCommand_force = CommandOption()
+    initCommand_force.shortOption = "-f"
+    initCommand_force.longOption = "--force"
+    initCommand_force.help = "Recreate existing .module-versions"
+    initCommand.options.append(initCommand_force)
+
+    var initCommand_help = CommandOption()
+    initCommand_help.shortOption = "-h"
+    initCommand_help.longOption = "--help"
+    initCommand_help.help = "Show this help"
+    initCommand.options.append(initCommand_help)
+
+    definition.subcommands.append(initCommand)
 
     return definition
 }
