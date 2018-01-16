@@ -96,21 +96,25 @@ struct ParsedCommand {
     func option(_ name: String, type: ParsedOptionScope = .either) -> ParsedOption? {
         var option: ParsedOption?
 
-        if type == .global || type == .either {
-            option = self.globalOptions.first(where: { (option: ParsedOption) -> Bool in
-                if option.longOption == name {
-                    return true
-                }
-                return false
-            })
+        if option == nil {
+            if type == .global || type == .either {
+                option = self.globalOptions.first(where: { (option: ParsedOption) -> Bool in
+                    if option.longOption == name {
+                        return true
+                    }
+                    return false
+                })
+            }
         }
-        if type == .subcommand || type == .either {
-            option = self.options.first(where: { (option: ParsedOption) -> Bool in
-                if option.longOption == name {
-                    return true
-                }
-                return false
-            })
+        if option == nil {
+            if type == .subcommand || type == .either {
+                option = self.options.first(where: { (option: ParsedOption) -> Bool in
+                    if option.longOption == name {
+                        return true
+                    }
+                    return false
+                })
+            }
         }
 
         return option
