@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB742702200EB54500B734E6 /* Array-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB742701200EB54500B734E6 /* Array-Extension.swift */; };
 		DB8E25021F8E5231002F59F2 /* SCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25011F8E5231002F59F2 /* SCM.swift */; };
 		DB8E25041F8E5238002F59F2 /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25031F8E5238002F59F2 /* Git.swift */; };
 		DB8E25061F8E6BD8002F59F2 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25051F8E6BD8002F59F2 /* Command.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		DB742701200EB54500B734E6 /* Array-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array-Extension.swift"; sourceTree = "<group>"; };
 		DB8E25011F8E5231002F59F2 /* SCM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCM.swift; sourceTree = "<group>"; };
 		DB8E25031F8E5238002F59F2 /* Git.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Git.swift; sourceTree = "<group>"; };
 		DB8E25051F8E6BD8002F59F2 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				DBE67EF01F8D1388007BE8E7 /* ArgParser.swift */,
+				DB742701200EB54500B734E6 /* Array-Extension.swift */,
 				DB8E25051F8E6BD8002F59F2 /* Command.swift */,
 				DBD72AF11F8DBCBC007FDD8F /* CommandDefinition.swift */,
 				DB8E25031F8E5238002F59F2 /* Git.swift */,
@@ -230,6 +233,7 @@
 				DB8E25061F8E6BD8002F59F2 /* Command.swift in Sources */,
 				DBD6E7A71F6B54D700C6C2FD /* main.swift in Sources */,
 				DB8E250A1F8E6C80002F59F2 /* SpecCommand.swift in Sources */,
+				DB742702200EB54500B734E6 /* Array-Extension.swift in Sources */,
 				DB8E250C1F8E6C86002F59F2 /* UpdateCommand.swift in Sources */,
 				DBD72AF41F8DBD9B007FDD8F /* ProcessRunner.swift in Sources */,
 				DBDCDC1E1F6E10640081D528 /* ScannerExtension.swift in Sources */,
