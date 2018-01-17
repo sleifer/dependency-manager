@@ -131,6 +131,7 @@ class ArgParser {
 
     var args: [String] = []
     var parsed: ParsedCommand = ParsedCommand()
+    var subcommand: SubcommandDefinition?
     var helpPrinted = false
 
     init(definition inDefinition: CommandDefinition) {
@@ -147,7 +148,7 @@ class ArgParser {
 
         var availableOptions = optionMap(definition.options)
         let availableSubcommands = subcommandMap(definition.subcommands)
-        var subcommand: SubcommandDefinition?
+        subcommand = nil
 
         let sargs = Array(args.dropFirst())
         let cnt = sargs.count
@@ -176,7 +177,11 @@ class ArgParser {
             } else if let value = availableSubcommands[arg], subcommand == nil {
                 parsed.subcommand = value.name
                 subcommand = value
-                availableOptions = optionMap(value.options)
+
+                let subOptions = optionMap(value.options)
+                availableOptions = availableOptions.merging(subOptions, uniquingKeysWith: { (first, second) -> CommandOption in
+                    return first
+                })
                 idx += 1
             } else {
                 parsed.parameters.append(arg)
@@ -212,9 +217,19 @@ class ArgParser {
 
     func printHelp() {
         let toolname = args[0].lastPathComponent
-        print("Usage: \(toolname) [OPTIONS] COMMAND [ARGS]...")
-        print()
-        print("\(definition.help)")
+        if let sub = subcommand {
+            print("Usage: \(toolname) [OPTIONS] \(sub.name) [ARGS]...")
+            print()
+            print("\(sub.synopsis)")
+            if sub.help.count > 0 {
+                print()
+                print("\(sub.help)")
+            }
+        } else {
+            print("Usage: \(toolname) [OPTIONS] COMMAND [ARGS]...")
+            print()
+            print("\(definition.help)")
+        }
         if definition.options.count > 0 {
             print()
             print("Options:")
@@ -259,11 +274,60 @@ class ArgParser {
                 return item.hint
             }).maxCount()
             let pad = String(repeating: " ", count: maxHintLength)
-            for param in definition.requiredParameters {
+            for param in definition.optionalParameters {
                 print("\(param.hint.padding(toLength: maxHintLength, withPad: pad, startingAt: 0))    \(param.help)")
             }
         }
-        if definition.subcommands.count > 0 {
+        if let sub = subcommand {
+            if sub.options.count > 0 {
+                print()
+                print("Options:")
+                var optionStrings: [[String]] = []
+                for option in sub.options {
+                    var argCount = ""
+                    if option.argumentCount > 0 {
+                        argCount = "<\(option.argumentCount) args>"
+                    }
+                    if let shortOption = option.shortOption {
+                        optionStrings.append(["\(shortOption), \(option.longOption)", argCount, option.help])
+                    } else {
+                        optionStrings.append(["\(option.longOption)", argCount, option.help])
+                    }
+                }
+                let maxOptionLength = optionStrings.map({ (item: [String]) -> String in
+                    return item[0]
+                }).maxCount()
+                let maxArgCountLength = optionStrings.map({ (item: [String]) -> String in
+                    return item[1]
+                }).maxCount()
+                let pad = String(repeating: " ", count: max(maxOptionLength, maxArgCountLength))
+                for optionInfo in optionStrings {
+                    print("\(optionInfo[0].padding(toLength: maxOptionLength, withPad: pad, startingAt: 0)) \(optionInfo[1].padding(toLength: maxArgCountLength, withPad: pad, startingAt: 0)) \(optionInfo[2])")
+                }
+            }
+            if sub.requiredParameters.count > 0 {
+                print()
+                print("Required Parameters:")
+                let maxHintLength = sub.requiredParameters.map({ (item) -> String in
+                    return item.hint
+                }).maxCount()
+                let pad = String(repeating: " ", count: maxHintLength)
+                for param in sub.requiredParameters {
+                    print("\(param.hint.padding(toLength: maxHintLength, withPad: pad, startingAt: 0))    \(param.help)")
+                }
+            }
+            if sub.optionalParameters.count > 0 {
+                print()
+                print("Optional Parameters:")
+                let maxHintLength = sub.optionalParameters.map({ (item) -> String in
+                    return item.hint
+                }).maxCount()
+                let pad = String(repeating: " ", count: maxHintLength)
+                for param in sub.optionalParameters {
+                    print("\(param.hint.padding(toLength: maxHintLength, withPad: pad, startingAt: 0))    \(param.help)")
+                }
+            }
+        } else if definition.subcommands.count > 0 {
             print()
             print("Commands:")
             let maxNameLength = definition.subcommands.map({ (item: SubcommandDefinition) -> String in

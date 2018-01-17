@@ -29,12 +29,6 @@ func makeCommandDefinition() -> CommandDefinition {
     specCommand.synopsis = "List or update version range for one or all submodules"
     specCommand.help = ""
 
-    var specCommand_help = CommandOption()
-    specCommand_help.shortOption = "-h"
-    specCommand_help.longOption = "--help"
-    specCommand_help.help = "Show this help"
-    specCommand.options.append(specCommand_help)
-
     definition.subcommands.append(specCommand)
 
     // update command
@@ -48,12 +42,6 @@ func makeCommandDefinition() -> CommandDefinition {
     updateCommand_parameter.help = "Name of module to update"
     updateCommand.optionalParameters.append(updateCommand_parameter)
 
-    var updateCommand_help = CommandOption()
-    updateCommand_help.shortOption = "-h"
-    updateCommand_help.longOption = "--help"
-    updateCommand_help.help = "Show this help"
-    updateCommand.options.append(updateCommand_help)
-
     definition.subcommands.append(updateCommand)
 
     // outdated command
@@ -61,12 +49,6 @@ func makeCommandDefinition() -> CommandDefinition {
     outdatedCommand.name = "outdated"
     outdatedCommand.synopsis = "Check all submodules for newer valid version"
     outdatedCommand.help = ""
-
-    var outdatedCommand_help = CommandOption()
-    outdatedCommand_help.shortOption = "-h"
-    outdatedCommand_help.longOption = "--help"
-    outdatedCommand_help.help = "Show this help"
-    outdatedCommand.options.append(outdatedCommand_help)
 
     definition.subcommands.append(outdatedCommand)
 
@@ -81,12 +63,6 @@ func makeCommandDefinition() -> CommandDefinition {
     initCommand_force.longOption = "--force"
     initCommand_force.help = "Recreate existing .module-versions"
     initCommand.options.append(initCommand_force)
-
-    var initCommand_help = CommandOption()
-    initCommand_help.shortOption = "-h"
-    initCommand_help.longOption = "--help"
-    initCommand_help.help = "Show this help"
-    initCommand.options.append(initCommand_help)
 
     definition.subcommands.append(initCommand)
 
