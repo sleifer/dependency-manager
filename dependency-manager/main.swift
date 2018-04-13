@@ -8,7 +8,7 @@
 
 import Foundation
 
-let toolVersion = "0.9.5"
+let toolVersion = "0.9.6"
 let versionSpecsFileName = ".module-versions"
 let runLoop = RunLoop.current
 var backgroundCount: Int = 0
@@ -39,15 +39,6 @@ func main() {
 
             baseDirectory = FileManager.default.currentDirectoryPath
 
-            if scm.isInstalled == false {
-                print("Can't locate git tool.")
-                return
-            }
-            if scm.isInitialized == false {
-                print("git is not initialized in this directory.")
-                return
-            }
-
             var skipSubcommand = false
             var warnOnMissingSpec = true
             var cmd: Command?
@@ -65,6 +56,15 @@ func main() {
                 parser.printHelp()
                 skipSubcommand = true
                 warnOnMissingSpec = false
+            }
+
+            if scm.isInstalled == false {
+                print("Can't locate git tool.")
+                return
+            }
+            if scm.isInitialized == false {
+                print("git is not initialized in this directory.")
+                return
             }
 
             versionSpecs = VersionSpecification(fromFile: baseSubPath(versionSpecsFileName))
