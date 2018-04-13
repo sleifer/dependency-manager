@@ -25,7 +25,7 @@ class SpecCommand: Command {
         } else {
             print("Wrong number of parameters.")
             print("  Zero to list.")
-            print("  Two (name, version spec) to set.")
+            print("  Three (name, comparison, version spec) to set.")
         }
     }
 }

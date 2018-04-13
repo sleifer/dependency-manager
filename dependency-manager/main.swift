@@ -8,7 +8,7 @@
 
 import Foundation
 
-let toolVersion = "0.9.4"
+let toolVersion = "0.9.5"
 let versionSpecsFileName = ".module-versions"
 let runLoop = RunLoop.current
 var backgroundCount: Int = 0
