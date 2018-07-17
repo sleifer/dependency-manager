@@ -73,6 +73,8 @@ func main() {
                 switch parsed.subcommand ?? "root" {
                 case "bashcomp":
                     cmd = BashcompCommand()
+                case "bashcompfile":
+                    cmd = BashcompfileCommand()
                 case "outdated":
                     cmd = OutdatedCommand()
                 case "spec":

@@ -74,6 +74,14 @@ func makeCommandDefinition() -> CommandDefinition {
     bashcompCommand.warnOnMissingSpec = false
 
     definition.subcommands.append(bashcompCommand)
-    
+
+    // bashcompfile
+    var bashcompfileCommand = SubcommandDefinition()
+    bashcompfileCommand.name = "bashcompfile"
+    bashcompfileCommand.hidden = true
+    bashcompfileCommand.warnOnMissingSpec = false
+
+    definition.subcommands.append(bashcompfileCommand)
+
     return definition
 }
