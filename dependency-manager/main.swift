@@ -58,6 +58,10 @@ func main() {
                 warnOnMissingSpec = false
             }
 
+            if warnOnMissingSpec == false {
+                return
+            }
+
             if scm.isInstalled == false {
                 print("Can't locate git tool.")
                 return
