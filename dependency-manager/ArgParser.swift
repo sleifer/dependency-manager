@@ -64,6 +64,9 @@ struct SubcommandDefinition {
     var name: String
     var synopsis: String
     var help: String
+    var hidden: Bool
+    var suppressesOptions: Bool
+    var warnOnMissingSpec: Bool
 
     init() {
         options = []
@@ -72,6 +75,9 @@ struct SubcommandDefinition {
         name = ""
         synopsis = ""
         help = ""
+        hidden = false
+        suppressesOptions = false
+        warnOnMissingSpec = true
     }
 }
 
@@ -86,11 +92,13 @@ struct ParsedCommand {
     var subcommand: String?
     var options: [ParsedOption]
     var parameters: [String]
+    var warnOnMissingSpec: Bool
 
     init() {
         globalOptions = []
         options = []
         parameters = []
+        warnOnMissingSpec = true
     }
 
     func option(_ name: String, type: ParsedOptionScope = .either) -> ParsedOption? {
@@ -155,7 +163,7 @@ class ArgParser {
         var idx = 0
         while idx < cnt {
             let arg = sargs[idx]
-            if let value = availableOptions[arg] {
+            if let value = availableOptions[arg], subcommand == nil || (subcommand != nil && subcommand?.suppressesOptions == false) {
                 var option = ParsedOption()
                 option.longOption = value.longOption
                 idx += 1
@@ -177,6 +185,10 @@ class ArgParser {
             } else if let value = availableSubcommands[arg], subcommand == nil {
                 parsed.subcommand = value.name
                 subcommand = value
+
+                if value.warnOnMissingSpec == false {
+                    parsed.warnOnMissingSpec = false
+                }
 
                 let subOptions = optionMap(value.options)
                 availableOptions = availableOptions.merging(subOptions, uniquingKeysWith: { (first, second) -> CommandOption in
@@ -327,15 +339,20 @@ class ArgParser {
                     print("\(param.hint.padding(toLength: maxHintLength, withPad: pad, startingAt: 0))    \(param.help)")
                 }
             }
-        } else if definition.subcommands.count > 0 {
-            print()
-            print("Commands:")
-            let maxNameLength = definition.subcommands.map({ (item: SubcommandDefinition) -> String in
-                return item.name
-            }).maxCount()
-            let pad = String(repeating: " ", count: maxNameLength)
-            for sub in definition.subcommands {
-                print("\(sub.name.padding(toLength: maxNameLength, withPad: pad, startingAt: 0))    \(sub.synopsis)")
+        } else {
+            let subs = definition.subcommands.filter { (item) -> Bool in
+                return item.hidden == false
+            }
+            if subs.count > 0 {
+                print()
+                print("Commands:")
+                let maxNameLength = subs.map({ (item: SubcommandDefinition) -> String in
+                    return item.name
+                }).maxCount()
+                let pad = String(repeating: " ", count: maxNameLength)
+                for sub in subs {
+                    print("\(sub.name.padding(toLength: maxNameLength, withPad: pad, startingAt: 0))    \(sub.synopsis)")
+                }
             }
         }
     }

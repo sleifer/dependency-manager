@@ -43,7 +43,7 @@ func main() {
             var warnOnMissingSpec = true
             var cmd: Command?
 
-            if parser.helpPrinted == true {
+            if parser.helpPrinted == true || parsed.warnOnMissingSpec == false {
                 warnOnMissingSpec = false
             }
 
@@ -58,15 +58,11 @@ func main() {
                 warnOnMissingSpec = false
             }
 
-            if warnOnMissingSpec == false {
-                return
-            }
-
-            if scm.isInstalled == false {
+            if scm.isInstalled == false && warnOnMissingSpec == true {
                 print("Can't locate git tool.")
                 return
             }
-            if scm.isInitialized == false {
+            if scm.isInitialized == false && warnOnMissingSpec == true {
                 print("git is not initialized in this directory.")
                 return
             }
@@ -75,6 +71,8 @@ func main() {
 
             if skipSubcommand == false {
                 switch parsed.subcommand ?? "root" {
+                case "bashcomp":
+                    cmd = BashcompCommand()
                 case "outdated":
                     cmd = OutdatedCommand()
                 case "spec":

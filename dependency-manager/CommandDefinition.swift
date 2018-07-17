@@ -66,5 +66,14 @@ func makeCommandDefinition() -> CommandDefinition {
 
     definition.subcommands.append(initCommand)
 
+    // bashcomp
+    var bashcompCommand = SubcommandDefinition()
+    bashcompCommand.name = "bashcomp"
+    bashcompCommand.hidden = true
+    bashcompCommand.suppressesOptions = true
+    bashcompCommand.warnOnMissingSpec = false
+
+    definition.subcommands.append(bashcompCommand)
+    
     return definition
 }
