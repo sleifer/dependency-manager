@@ -8,7 +8,7 @@
 
 import Foundation
 
-let toolVersion = "0.9.6"
+let toolVersion = "0.9.7"
 let versionSpecsFileName = ".module-versions"
 let runLoop = RunLoop.current
 var backgroundCount: Int = 0
@@ -47,7 +47,7 @@ func main() {
                 warnOnMissingSpec = false
             }
 
-            if parsed.option("--version", type: .global) != nil {
+            if parsed.option("--version", type: .either) != nil {
                 print("Version \(toolVersion)")
                 skipSubcommand = true
                 warnOnMissingSpec = false
@@ -72,7 +72,7 @@ func main() {
             if skipSubcommand == false {
                 switch parsed.subcommand ?? "root" {
                 case "bashcomp":
-                    cmd = BashcompCommand()
+                    cmd = BashcompCommand(parser: parser)
                 case "bashcompfile":
                     cmd = BashcompfileCommand()
                 case "outdated":

@@ -16,12 +16,17 @@ _dm()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="$(${COMP_WORDS[0]} bashcomp ${COMP_WORDS[@]:1:$COMP_CWORD})"
+    opts="$(${COMP_WORDS[0]} bashcomp ${COMP_WORDS[@]:1:$COMP_CWORD} "${cur}")"
 
-    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    if [[ $opts = *"!files!"* ]]; then
+        COMPREPLY=( $(compgen -df -- ${cur}) )
+    else
+        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+    fi
+
     return 0
 }
-complete -F _dm dm
+complete -o filenames -F _dm dm
 """
 
     override func run(cmd: ParsedCommand) {

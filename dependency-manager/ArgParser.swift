@@ -12,11 +12,13 @@ struct CommandOption {
     var shortOption: String?
     var longOption: String
     var argumentCount: Int
+    var hasFileArguments: Bool
     var help: String
 
     init() {
         longOption = ""
         argumentCount = 0
+        hasFileArguments = false
         help = ""
     }
 }
@@ -45,6 +47,7 @@ struct CommandDefinition {
     var options: [CommandOption]
     var requiredParameters: [ParameterInfo]
     var optionalParameters: [ParameterInfo]
+    var hasFileParameters: Bool
     var help: String
     var subcommands: [SubcommandDefinition]
 
@@ -52,6 +55,7 @@ struct CommandDefinition {
         options = []
         requiredParameters = []
         optionalParameters = []
+        hasFileParameters = false
         help = ""
         subcommands = []
     }
@@ -61,6 +65,7 @@ struct SubcommandDefinition {
     var options: [CommandOption]
     var requiredParameters: [ParameterInfo]
     var optionalParameters: [ParameterInfo]
+    var hasFileParameters: Bool
     var name: String
     var synopsis: String
     var help: String
@@ -72,6 +77,7 @@ struct SubcommandDefinition {
         options = []
         requiredParameters = []
         optionalParameters = []
+        hasFileParameters = false
         name = ""
         synopsis = ""
         help = ""

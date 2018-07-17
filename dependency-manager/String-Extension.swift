@@ -14,7 +14,13 @@ extension String {
             return NSString(string: self).expandingTildeInPath
         }
     }
-    
+
+    var deletingLastPathComponent: String {
+        get {
+            return NSString(string: self).deletingLastPathComponent
+        }
+    }
+
     var lastPathComponent: String {
         get {
             return NSString(string: self).lastPathComponent
@@ -36,7 +42,15 @@ extension String {
     func appendingPathComponent(_ str: String) -> String {
         return NSString(string: self).appendingPathComponent(str)
     }
+
+    subscript (i: Int) -> Character {
+        return self[index(startIndex, offsetBy: i)]
+    }
     
+    subscript (i: Int) -> String {
+        return String(self[i] as Character)
+    }
+
     subscript(r: Range<Int>) -> String {
         let lower = self.index(self.startIndex, offsetBy: r.lowerBound)
         let upper = self.index(self.startIndex, offsetBy: r.upperBound)
