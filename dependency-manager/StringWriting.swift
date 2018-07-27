@@ -23,8 +23,7 @@ extension Data {
             }
             fileHandle.seekToEndOfFile()
             fileHandle.write(self)
-        }
-        else {
+        } else {
             try write(to: fileURL, options: .atomic)
         }
     }

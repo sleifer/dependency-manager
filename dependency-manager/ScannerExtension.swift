@@ -9,7 +9,6 @@
 import Foundation
 
 extension Scanner {
-
     func scanCharacters(from set: CharacterSet) -> String? {
         var value: NSString?
         let scanned = self.scanCharacters(from: set, into: &value)
@@ -29,6 +28,4 @@ extension Scanner {
         }
         return nil
     }
-
 }
-

@@ -61,14 +61,13 @@ enum VersionSpecParseRegex: Int {
     }
 }
 
-extension Array where Element:StringProtocol {
+extension Array where Element: StringProtocol {
     func versionSpec(_ part: VersionSpecParseRegex) -> Element {
         return self[part.rawValue]
     }
 }
 
 class VersionSpecification {
-
     var specs: [String: VersionSpec] = [:]
     var missing: Bool = false
 

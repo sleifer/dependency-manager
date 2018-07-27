@@ -213,11 +213,9 @@ enum SemVerGroup {
             return buildGroupSeparators
         }
     }
-
 }
 
 class SemVerParser {
-
     var vers: MutableSemVer
     var scanner: Scanner
     var state: SemVerScannerState

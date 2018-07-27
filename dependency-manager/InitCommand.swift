@@ -32,6 +32,5 @@ class InitCommand: Command {
             versionSpecs.write(toFile: baseSubPath(versionSpecsFileName))
             print("Created/replaced .module-versions.")
         }
-        
     }
 }

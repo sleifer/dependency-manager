@@ -27,7 +27,7 @@ public enum SCMResult {
 
     func code() -> Int32 {
         switch self {
-        case .success(_):
+        case .success:
             return 0
         case .error(let code, _):
             return code
@@ -74,7 +74,7 @@ extension SCM {
     func runCommand(_ cmd: String, args: [String], completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
         let runner = ProcessRunner(cmd, args: args)
         var done: Bool = false
-        runner.start() { (runner) in
+        runner.start { (runner) in
             if let completion = completion {
                 completion(runner)
             }

@@ -40,10 +40,10 @@ class semverMatchingTests: XCTestCase {
             semverList.append(semver)
         }
     }
-    
+
     override func tearDown() {
         semverList.removeAll()
-        
+
         super.tearDown()
     }
 

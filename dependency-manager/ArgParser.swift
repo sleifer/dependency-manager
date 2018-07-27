@@ -140,7 +140,6 @@ enum ArgParserError: Error {
 }
 
 class ArgParser {
-
     let definition: CommandDefinition
 
     var args: [String] = []
@@ -197,7 +196,7 @@ class ArgParser {
                 }
 
                 let subOptions = optionMap(value.options)
-                availableOptions = availableOptions.merging(subOptions, uniquingKeysWith: { (first, second) -> CommandOption in
+                availableOptions = availableOptions.merging(subOptions, uniquingKeysWith: { (first, _) -> CommandOption in
                     return first
                 })
                 idx += 1

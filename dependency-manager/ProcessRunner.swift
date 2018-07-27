@@ -58,6 +58,5 @@ class ProcessRunner {
 
         startBackgroundTask()
         proc.launch()
-
     }
 }
