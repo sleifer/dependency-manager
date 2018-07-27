@@ -11,6 +11,7 @@
 		DB0A0DD620FE1EDD006345AD /* BashcompfileCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0A0DD520FE1EDD006345AD /* BashcompfileCommand.swift */; };
 		DB0A0DD820FE2F70006345AD /* StringWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0A0DD720FE2F70006345AD /* StringWriting.swift */; };
 		DB72736A210BC21400CCDA2C /* ReportCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB727369210BC21400CCDA2C /* ReportCommand.swift */; };
+		DB72736E210BC98200CCDA2C /* DebugLogFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB72736D210BC98200CCDA2C /* DebugLogFile.swift */; };
 		DB742702200EB54500B734E6 /* Array-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB742701200EB54500B734E6 /* Array-Extension.swift */; };
 		DB8E25021F8E5231002F59F2 /* SCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25011F8E5231002F59F2 /* SCM.swift */; };
 		DB8E25041F8E5238002F59F2 /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25031F8E5238002F59F2 /* Git.swift */; };
@@ -50,6 +51,7 @@
 		DB0A0DD520FE1EDD006345AD /* BashcompfileCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BashcompfileCommand.swift; sourceTree = "<group>"; };
 		DB0A0DD720FE2F70006345AD /* StringWriting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringWriting.swift; sourceTree = "<group>"; };
 		DB727369210BC21400CCDA2C /* ReportCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCommand.swift; sourceTree = "<group>"; };
+		DB72736D210BC98200CCDA2C /* DebugLogFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugLogFile.swift; sourceTree = "<group>"; };
 		DB742701200EB54500B734E6 /* Array-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array-Extension.swift"; sourceTree = "<group>"; };
 		DB8E25011F8E5231002F59F2 /* SCM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCM.swift; sourceTree = "<group>"; };
 		DB8E25031F8E5238002F59F2 /* Git.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Git.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				DB8E25051F8E6BD8002F59F2 /* Command.swift */,
 				DBD72AF11F8DBCBC007FDD8F /* CommandDefinition.swift */,
 				DB72736B210BC25B00CCDA2C /* CommandHandlers */,
+				DB72736D210BC98200CCDA2C /* DebugLogFile.swift */,
 				DB72736C210BC2A000CCDA2C /* Extensions */,
 				DB8E25031F8E5238002F59F2 /* Git.swift */,
 				DBD6E7A61F6B54D700C6C2FD /* main.swift */,
@@ -262,6 +265,7 @@
 				DB0A0DD620FE1EDD006345AD /* BashcompfileCommand.swift in Sources */,
 				DB8E25061F8E6BD8002F59F2 /* Command.swift in Sources */,
 				DB0A0DD820FE2F70006345AD /* StringWriting.swift in Sources */,
+				DB72736E210BC98200CCDA2C /* DebugLogFile.swift in Sources */,
 				DB0A0DD420FE1A02006345AD /* BashcompCommand.swift in Sources */,
 				DBD6E7A71F6B54D700C6C2FD /* main.swift in Sources */,
 				DB8E250A1F8E6C80002F59F2 /* SpecCommand.swift in Sources */,

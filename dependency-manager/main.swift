@@ -23,7 +23,7 @@ func main() {
 
         do {
             #if DEBUG
-                let args = ["dm", "--help"]
+                let args = ["dm", "bashcomp"]
                 commandName = args[0]
                 let parsed = try parser.parse(args)
             #else

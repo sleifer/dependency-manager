@@ -16,19 +16,9 @@ class BashcompCommand: Command {
         self.parser = parser
     }
 
-    fileprivate func logParameters(_ args: [String]) {
-        let args = args.map { (str) -> String in
-            return "[\(str)]"
-            }.joined(separator: " ")
-        let log = ">>> \(args)\n"
-        try! log.appendToURL(fileURL: URL(fileURLWithPath: "~/Desktop/dm_comp.txt".expandingTildeInPath))
-    }
-
     override func run(cmd: ParsedCommand) {
         let last = cmd.parameters.last ?? ""
         let args = Array(cmd.parameters.dropLast())
-
-//        logParameters(args)
 
         if let def = parser?.definition {
             let trailingSub = def.trailingSubcommand(for: args)
@@ -47,7 +37,7 @@ class BashcompCommand: Command {
                 if trailingOpt.hasFileArguments == true {
                     printFileCompletions()
                 }
-            } else if last[0] == "-" {
+            } else if last.count > 0 && last[0] == "-" {
                 var optNames = def.options.map { (opt) -> String in
                     return opt.longOption
                 }
