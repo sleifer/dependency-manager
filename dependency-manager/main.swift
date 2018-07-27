@@ -23,7 +23,7 @@ func main() {
 
         do {
             #if DEBUG
-                let args = ["dm", "init", "--help"]
+                let args = ["dm", "--help"]
                 commandName = args[0]
                 let parsed = try parser.parse(args)
             #else
@@ -81,6 +81,9 @@ func main() {
                     cmd = SpecCommand()
                 case "update":
                     cmd = UpdateCommand()
+                    break
+                case "report":
+                    cmd = ReportCommand()
                     break
                 case "init":
                     cmd = InitCommand()

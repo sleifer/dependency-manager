@@ -1,5 +1,5 @@
 //
-//  ScannerExtension.swift
+//  Scanner-Extension.swift
 //  dependency-manager
 //
 //  Created by Simeon Leifer on 9/16/17.

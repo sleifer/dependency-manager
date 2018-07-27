@@ -23,65 +23,90 @@ func makeCommandDefinition() -> CommandDefinition {
     help.help = "Show this help"
     definition.options.append(help)
 
-    // spec command
-    var specCommand = SubcommandDefinition()
-    specCommand.name = "spec"
-    specCommand.synopsis = "List or update version range for one or all submodules"
-    specCommand.help = ""
-
-    definition.subcommands.append(specCommand)
-
-    // update command
-    var updateCommand = SubcommandDefinition()
-    updateCommand.name = "update"
-    updateCommand.synopsis = "Update one or all submodules to latest valid version"
-    updateCommand.help = ""
-
-    var updateCommand_parameter = ParameterInfo()
-    updateCommand_parameter.hint = "module-name"
-    updateCommand_parameter.help = "Name of module to update"
-    updateCommand.optionalParameters.append(updateCommand_parameter)
-
-    definition.subcommands.append(updateCommand)
-
-    // outdated command
-    var outdatedCommand = SubcommandDefinition()
-    outdatedCommand.name = "outdated"
-    outdatedCommand.synopsis = "Check all submodules for newer valid version"
-    outdatedCommand.help = ""
-
-    definition.subcommands.append(outdatedCommand)
-
-    // init command
-    var initCommand = SubcommandDefinition()
-    initCommand.name = "init"
-    initCommand.synopsis = "Create .module-versions file"
-    initCommand.help = ""
-
-    var initCommand_force = CommandOption()
-    initCommand_force.shortOption = "-f"
-    initCommand_force.longOption = "--force"
-    initCommand_force.help = "Recreate existing .module-versions"
-    initCommand.options.append(initCommand_force)
-
-    definition.subcommands.append(initCommand)
-
-    // bashcomp
-    var bashcompCommand = SubcommandDefinition()
-    bashcompCommand.name = "bashcomp"
-    bashcompCommand.hidden = true
-    bashcompCommand.suppressesOptions = true
-    bashcompCommand.warnOnMissingSpec = false
-
-    definition.subcommands.append(bashcompCommand)
-
-    // bashcompfile
-    var bashcompfileCommand = SubcommandDefinition()
-    bashcompfileCommand.name = "bashcompfile"
-    bashcompfileCommand.hidden = true
-    bashcompfileCommand.warnOnMissingSpec = false
-
-    definition.subcommands.append(bashcompfileCommand)
+    definition.subcommands.append(initCommand())
+    definition.subcommands.append(specCommand())
+    definition.subcommands.append(outdatedCommand())
+    definition.subcommands.append(updateCommand())
+    definition.subcommands.append(reportCommand())
+    definition.subcommands.append(bashcompCommand())
+    definition.subcommands.append(bashcompfileCommand())
 
     return definition
 }
+
+fileprivate func specCommand() -> SubcommandDefinition {
+    var command = SubcommandDefinition()
+    command.name = "spec"
+    command.synopsis = "List or update version range for one or all submodules"
+
+    return command
+}
+
+fileprivate func updateCommand() -> SubcommandDefinition {
+    var command = SubcommandDefinition()
+    command.name = "update"
+    command.synopsis = "Update one or all submodules to latest valid version"
+
+    var parameter = ParameterInfo()
+    parameter.hint = "module-name"
+    parameter.help = "Name of module to update"
+    command.optionalParameters.append(parameter)
+
+    return command
+}
+
+fileprivate func outdatedCommand() -> SubcommandDefinition {
+    var command = SubcommandDefinition()
+    command.name = "outdated"
+    command.synopsis = "Check all submodules for newer valid version"
+
+    return command
+}
+
+fileprivate func initCommand() -> SubcommandDefinition {
+    var command = SubcommandDefinition()
+    command.name = "init"
+    command.synopsis = "Create .module-versions file"
+
+    var forceOption = CommandOption()
+    forceOption.shortOption = "-f"
+    forceOption.longOption = "--force"
+    forceOption.help = "Recreate existing .module-versions"
+    command.options.append(forceOption)
+
+    return command
+}
+
+fileprivate func reportCommand() -> SubcommandDefinition {
+    var command = SubcommandDefinition()
+    command.name = "report"
+    command.synopsis = "Report on modules used in one or more repositories"
+    command.hasFileParameters = true
+
+    var parameter = ParameterInfo()
+    parameter.hint = "path"
+    parameter.help = "Path to repository or directory or repositories"
+    command.optionalParameters.append(parameter)
+
+    return command
+}
+
+fileprivate func bashcompCommand() -> SubcommandDefinition {
+    var command = SubcommandDefinition()
+    command.name = "bashcomp"
+    command.hidden = true
+    command.suppressesOptions = true
+    command.warnOnMissingSpec = false
+
+    return command
+}
+
+fileprivate func bashcompfileCommand() -> SubcommandDefinition {
+    var command = SubcommandDefinition()
+    command.name = "bashcompfile"
+    command.hidden = true
+    command.warnOnMissingSpec = false
+
+    return command
+}
+
