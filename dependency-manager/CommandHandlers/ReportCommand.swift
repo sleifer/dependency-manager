@@ -10,7 +10,32 @@ import Foundation
 
 class ReportCommand: Command {
     override func run(cmd: ParsedCommand) {
-        // TODO: (SKL) ipmplement actual command
-        print("Hello from the Report Command")
+        let searchDirPath: String
+        if cmd.parameters.count > 0 {
+            searchDirPath = cmd.parameters[0]
+        } else {
+            searchDirPath = FileManager.default.currentDirectoryPath
+        }
+
+        print("Report in \(searchDirPath):")
+
+        let fm = FileManager.default
+        let enumerator = fm.enumerator(atPath: searchDirPath)
+        while let file = enumerator?.nextObject() as? String {
+            if file.lastPathComponent == ".git" {
+                let dirPath = searchDirPath.appendingPathComponent(file).deletingLastPathComponent
+                let specPath = dirPath.appendingPathComponent(versionSpecsFileName)
+                if fm.fileExists(atPath: specPath) == true {
+                    let name = file.deletingLastPathComponent.lastPathComponent
+                    let spec = VersionSpecification(fromFile: specPath)
+                    print("  Project: \(name)")
+                    for aSpec in spec.allSpecs() {
+                        print("    \(aSpec.name)")
+                    }
+                }
+            }
+        }
+
+        print("Done.")
     }
 }

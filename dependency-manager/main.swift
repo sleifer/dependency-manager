@@ -10,7 +10,6 @@ import Foundation
 
 let toolVersion = "0.9.7"
 let versionSpecsFileName = ".module-versions"
-let runLoop = RunLoop.current
 var backgroundCount: Int = 0
 let scm: SCM = Git()
 var baseDirectory: String = ""
@@ -23,7 +22,7 @@ func main() {
 
         do {
             #if DEBUG
-                let args = ["dm"]
+                let args = ["dm", "report", "~/Documents/Code".expandingTildeInPath]
                 commandName = args[0]
                 let parsed = try parser.parse(args)
             #else
@@ -135,7 +134,7 @@ func resetCurrentDir() {
 
 @discardableResult
 func spinRunLoop() -> Bool {
-    return runLoop.run(mode: .defaultRunLoopMode, before: Date(timeIntervalSinceNow: 2))
+    return RunLoop.current.run(mode: .defaultRunLoopMode, before: Date(timeIntervalSinceNow: 2))
 }
 
 func startBackgroundTask() {

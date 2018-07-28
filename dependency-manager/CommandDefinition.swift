@@ -82,6 +82,7 @@ fileprivate func reportCommand() -> SubcommandDefinition {
     command.name = "report"
     command.synopsis = "Report on modules used in one or more repositories"
     command.hasFileParameters = true
+    command.warnOnMissingSpec = false
 
     var parameter = ParameterInfo()
     parameter.hint = "path"
