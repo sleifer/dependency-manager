@@ -47,12 +47,12 @@ func main() {
                 warnOnMissingSpec = false
             }
 
-            if parsed.option("--version", type: .either) != nil {
+            if parsed.option("--version") != nil {
                 print("Version \(toolVersion)")
                 skipSubcommand = true
                 warnOnMissingSpec = false
             }
-            if parsed.option("--help", type: .either) != nil {
+            if parsed.option("--help") != nil {
                 parser.printHelp()
                 skipSubcommand = true
                 warnOnMissingSpec = false

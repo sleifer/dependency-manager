@@ -87,49 +87,27 @@ struct SubcommandDefinition {
     }
 }
 
-enum ParsedOptionScope {
-    case global
-    case subcommand
-    case either
-}
-
 struct ParsedCommand {
-    var globalOptions: [ParsedOption]
     var subcommand: String?
     var options: [ParsedOption]
     var parameters: [String]
     var warnOnMissingSpec: Bool
 
     init() {
-        globalOptions = []
         options = []
         parameters = []
         warnOnMissingSpec = true
     }
 
-    func option(_ name: String, type: ParsedOptionScope = .either) -> ParsedOption? {
+    func option(_ name: String) -> ParsedOption? {
         var option: ParsedOption?
 
-        if option == nil {
-            if type == .global || type == .either {
-                option = self.globalOptions.first(where: { (option: ParsedOption) -> Bool in
-                    if option.longOption == name {
-                        return true
-                    }
-                    return false
-                })
+        option = self.options.first(where: { (option: ParsedOption) -> Bool in
+            if option.longOption == name {
+                return true
             }
-        }
-        if option == nil {
-            if type == .subcommand || type == .either {
-                option = self.options.first(where: { (option: ParsedOption) -> Bool in
-                    if option.longOption == name {
-                        return true
-                    }
-                    return false
-                })
-            }
-        }
+            return false
+        })
 
         return option
     }
@@ -182,11 +160,7 @@ class ArgParser {
                         throw ArgParserError.invalidArguments
                     }
                 }
-                if subcommand == nil {
-                    parsed.globalOptions.append(option)
-                } else {
-                    parsed.options.append(option)
-                }
+                parsed.options.append(option)
             } else if let value = availableSubcommands[arg], subcommand == nil {
                 parsed.subcommand = value.name
                 subcommand = value
