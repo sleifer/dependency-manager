@@ -50,6 +50,7 @@ struct CommandDefinition {
     var hasFileParameters: Bool
     var help: String
     var subcommands: [SubcommandDefinition]
+    var defaultSubcommand: String?
 
     init() {
         options = []
@@ -141,6 +142,12 @@ class ArgParser {
         let availableSubcommands = subcommandMap(definition.subcommands)
         subcommand = nil
 
+        if let defaultSubcommandName = definition.defaultSubcommand, let defaultSubcommand = availableSubcommands[defaultSubcommandName] {
+            parsed.subcommand = defaultSubcommandName
+            subcommand = defaultSubcommand
+        }
+        var subcommandSet: Bool = false
+
         let sargs = Array(args.dropFirst())
         let cnt = sargs.count
         var idx = 0
@@ -161,9 +168,10 @@ class ArgParser {
                     }
                 }
                 parsed.options.append(option)
-            } else if let value = availableSubcommands[arg], subcommand == nil {
+            } else if let value = availableSubcommands[arg], subcommandSet == false {
                 parsed.subcommand = value.name
                 subcommand = value
+                subcommandSet = true
 
                 if value.warnOnMissingSpec == false {
                     parsed.warnOnMissingSpec = false
