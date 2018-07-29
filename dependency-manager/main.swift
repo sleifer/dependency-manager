@@ -8,7 +8,7 @@
 
 import Foundation
 
-let toolVersion = "0.9.7"
+let toolVersion = "0.9.8"
 let versionSpecsFileName = ".module-versions"
 var backgroundCount: Int = 0
 let scm: SCM = Git()
