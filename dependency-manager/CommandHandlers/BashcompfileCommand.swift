@@ -9,8 +9,8 @@
 import Foundation
 
 class BashcompfileCommand: Command {
-    let text = """
-_dm()
+    let format1 = """
+_%@()
 {
     local cur prev opts
     COMPREPLY=()
@@ -26,10 +26,17 @@ _dm()
 
     return 0
 }
-complete -o filenames -F _dm dm
+"""
+
+    let format2 = """
+complete -o filenames -F _%@ %@
 """
 
     override func run(cmd: ParsedCommand) {
-        print(text)
+        print(String(format: format1, cmd.toolName))
+        print(String(format: format2, cmd.toolName, cmd.toolName))
+        for param in cmd.parameters {
+            print(String(format: format2, cmd.toolName, param))
+        }
     }
 }

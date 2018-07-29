@@ -89,12 +89,14 @@ struct SubcommandDefinition {
 }
 
 struct ParsedCommand {
+    var toolName: String
     var subcommand: String?
     var options: [ParsedOption]
     var parameters: [String]
     var warnOnMissingSpec: Bool
 
     init() {
+        toolName = ""
         options = []
         parameters = []
         warnOnMissingSpec = true
@@ -147,6 +149,8 @@ class ArgParser {
             subcommand = defaultSubcommand
         }
         var subcommandSet: Bool = false
+
+        parsed.toolName = args[0]
 
         let sargs = Array(args.dropFirst())
         let cnt = sargs.count
