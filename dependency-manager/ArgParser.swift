@@ -131,7 +131,7 @@ class ArgParser {
     }
 
     func parse(_ inArgs: [String]) throws -> ParsedCommand {
-        args = inArgs
+        args = inArgs.splittingShortArgs()
 
         if args.count == 1 {
             printHelp()
