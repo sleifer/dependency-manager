@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CommandLineCore
 
 enum SubmoduleParseRegex: Int {
     case whole = 0

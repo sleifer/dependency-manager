@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CommandLineCore
 
 class ReportCommand: Command {
     override func run(cmd: ParsedCommand) {

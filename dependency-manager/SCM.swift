@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CommandLineCore
 
 enum SCMError: Error {
     case scmCommandMissing
@@ -82,7 +83,7 @@ extension SCM {
         }
         if completion == nil {
             while done == false {
-                spinRunLoop()
+                CommandLineRunLoop.shared.spinRunLoop()
             }
             return runner
         }

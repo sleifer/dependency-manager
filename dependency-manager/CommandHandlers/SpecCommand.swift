@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CommandLineCore
 
 class SpecCommand: Command {
     override func run(cmd: ParsedCommand) {

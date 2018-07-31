@@ -7,10 +7,10 @@
 //
 
 import Foundation
+import CommandLineCore
 
-let toolVersion = "0.9.8"
+let toolVersion = "0.10"
 let versionSpecsFileName = ".module-versions"
-var backgroundCount: Int = 0
 let scm: SCM = Git()
 var baseDirectory: String = ""
 var versionSpecs = VersionSpecification()
@@ -110,9 +110,7 @@ func main() {
             parser.printHelp()
         }
 
-        while (backgroundCount > 0 && (spinRunLoop())) {
-            // do nothing
-        }
+        CommandLineRunLoop.shared.waitForBackgroundTasks()
     }
 }
 
@@ -130,19 +128,6 @@ func setCurrentDir(_ subpath: String) {
 
 func resetCurrentDir() {
     setCurrentDir(baseDirectory)
-}
-
-@discardableResult
-func spinRunLoop() -> Bool {
-    return RunLoop.current.run(mode: .defaultRunLoopMode, before: Date(timeIntervalSinceNow: 2))
-}
-
-func startBackgroundTask() {
-    backgroundCount = backgroundCount + 1
-}
-
-func endBackgroundTask() {
-    backgroundCount = backgroundCount - 1
 }
 
 main()
