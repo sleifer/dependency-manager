@@ -29,8 +29,6 @@ func makeCommandDefinition() -> CommandDefinition {
     definition.subcommands.append(outdatedCommand())
     definition.subcommands.append(updateCommand())
     definition.subcommands.append(reportCommand())
-    definition.subcommands.append(bashcompCommand())
-    definition.subcommands.append(bashcompfileCommand())
 
     return definition
 }
@@ -92,23 +90,3 @@ fileprivate func reportCommand() -> SubcommandDefinition {
 
     return command
 }
-
-fileprivate func bashcompCommand() -> SubcommandDefinition {
-    var command = SubcommandDefinition()
-    command.name = "bashcomp"
-    command.hidden = true
-    command.suppressesOptions = true
-    command.warnOnMissingSpec = false
-
-    return command
-}
-
-fileprivate func bashcompfileCommand() -> SubcommandDefinition {
-    var command = SubcommandDefinition()
-    command.name = "bashcompfile"
-    command.hidden = true
-    command.warnOnMissingSpec = false
-
-    return command
-}
-
