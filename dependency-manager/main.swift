@@ -9,7 +9,7 @@
 import Foundation
 import CommandLineCore
 
-let toolVersion = "0.11"
+let toolVersion = "0.12"
 let versionSpecsFileName = ".module-versions"
 let scm: SCM = Git()
 var baseDirectory: String = ""
