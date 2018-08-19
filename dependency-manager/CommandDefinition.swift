@@ -83,6 +83,12 @@ fileprivate func reportCommand() -> SubcommandDefinition {
     command.hasFileParameters = true
     command.warnOnMissingSpec = false
 
+    var verboseOption = CommandOption()
+    verboseOption.shortOption = "-v"
+    verboseOption.longOption = "--verbose"
+    verboseOption.help = "Verbose output (module urls)"
+    command.options.append(verboseOption)
+
     var parameter = ParameterInfo()
     parameter.hint = "path"
     parameter.help = "Path to repository or directory or repositories"

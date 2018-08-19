@@ -36,7 +36,11 @@ public enum SCMResult {
     }
 }
 
-struct SubmoduleInfo {
+protocol NamedObject {
+    var name: String { get }
+}
+
+struct SubmoduleInfo: NamedObject {
     let sha: String
     let path: String
     let url: String
@@ -52,6 +56,14 @@ extension SubmoduleInfo: Comparable {
 
     static func == (lhs: SubmoduleInfo, rhs: SubmoduleInfo) -> Bool {
         return lhs.name == rhs.name
+    }
+}
+
+extension Array where Element: NamedObject {
+    func spec(named: String) -> Element? {
+        return self.filter { (item) -> Bool in
+            return item.name == named
+        }.first
     }
 }
 
