@@ -89,6 +89,12 @@ fileprivate func reportCommand() -> SubcommandDefinition {
     verboseOption.help = "Verbose output (module urls)"
     command.options.append(verboseOption)
 
+    var unmanagedOption = CommandOption()
+    unmanagedOption.shortOption = "-u"
+    unmanagedOption.longOption = "--unmanaged"
+    unmanagedOption.help = "Report on projects that do not use dependency manager but have submodules"
+    command.options.append(unmanagedOption)
+
     var parameter = ParameterInfo()
     parameter.hint = "path"
     parameter.help = "Path to repository or directory or repositories"

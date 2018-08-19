@@ -9,7 +9,7 @@
 import Foundation
 import CommandLineCore
 
-let toolVersion = "0.14"
+let toolVersion = "0.15"
 let versionSpecsFileName = ".module-versions"
 let scm: SCM = Git()
 var baseDirectory: String = ""
@@ -22,7 +22,7 @@ func main() {
 
         do {
             #if DEBUG
-                let args = ["dm", "report", "~/Documents/Code".expandingTildeInPath]
+                let args = ["dm", "report", "~/Documents/Code".expandingTildeInPath, "-u", "-v"]
                 commandName = args[0]
                 let parsed = try parser.parse(args)
             #else

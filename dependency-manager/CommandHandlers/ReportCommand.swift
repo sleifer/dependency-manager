@@ -15,6 +15,10 @@ class ReportCommand: Command {
         if cmd.option("--verbose") != nil {
             verbose = true
         }
+        var unmanaged = false
+        if cmd.option("--unmanaged") != nil {
+            unmanaged = true
+        }
 
         let baseDirectory = FileManager.default.currentDirectoryPath
 
@@ -47,6 +51,20 @@ class ReportCommand: Command {
                             if let submodule = modules?.spec(named: aSpec.name) {
                                 print("      path: \(submodule.path)")
                                 print("      url: \(submodule.url)")
+                            }
+                        }
+                    } else if unmanaged == true {
+                        FileManager.default.changeCurrentDirectoryPath(dirPath)
+                        let modules: [SubmoduleInfo] = scm.submodules()
+                        if modules.count > 0 {
+                            let name = dirPath.lastPathComponent
+                            print("  Project: \(name) (unmanaged)")
+                            for module in modules {
+                                print("    \(module.name)")
+                                if verbose == true {
+                                    print("      path: \(module.path)")
+                                    print("      url: \(module.url)")
+                                }
                             }
                         }
                     }
