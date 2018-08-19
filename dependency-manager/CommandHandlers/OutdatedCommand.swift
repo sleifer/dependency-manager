@@ -15,6 +15,7 @@ class OutdatedCommand: Command {
         for submodule in submodules {
             print("submodule: \(submodule.name)")
             print("  path: \(submodule.path)")
+            print("  url: \(submodule.url)")
             print("  current version: \(submodule.version)")
 
             var newver: SemVer? = nil

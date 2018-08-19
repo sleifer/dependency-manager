@@ -39,6 +39,7 @@ public enum SCMResult {
 struct SubmoduleInfo {
     let sha: String
     let path: String
+    let url: String
     let name: String
     let version: String
     let semver: SemVer?

@@ -76,7 +76,7 @@ class Git: SCM {
                         semver = try parser.parse()
                     } catch {
                     }
-                    newModule = SubmoduleInfo(sha: module.sha, path: module.path, name: module.name, version: newVersion, semver: semver)
+                    newModule = SubmoduleInfo(sha: module.sha, path: module.path, url: module.url, name: module.name, version: newVersion, semver: semver)
                 }
             } catch {
             }
@@ -162,13 +162,21 @@ class Git: SCM {
             if match.count == SubmoduleParseRegex.count.rawValue {
                 let sha = match[SubmoduleParseRegex.sha.rawValue]
                 let path = match[SubmoduleParseRegex.pathRoot.rawValue] + match[SubmoduleParseRegex.name.rawValue]
+                var url: String = ""
                 var semver: SemVer?
                 let parser = SemVerParser(match[SubmoduleParseRegex.version.rawValue])
                 do {
                     semver = try parser.parse()
                 } catch {
                 }
-                let oneModule = SubmoduleInfo(sha: sha, path: path, name: match[SubmoduleParseRegex.name.rawValue], version: match[SubmoduleParseRegex.version.rawValue], semver: semver)
+                do {
+                    let proc = try runGit(["config", "--file=.gitmodules", "submodule.\(path).url"])
+                    if proc.status == 0 {
+                        url = proc.stdOut.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                    }
+                } catch {
+                }
+                let oneModule = SubmoduleInfo(sha: sha, path: path, url: url, name: match[SubmoduleParseRegex.name.rawValue], version: match[SubmoduleParseRegex.version.rawValue], semver: semver)
                 modules.append(oneModule)
             }
         }
