@@ -103,8 +103,11 @@ class VersionSpecification {
         }
         var text = items.joined(separator: "\n").appending("\n")
         text.append("\n")
-        text.append("// Submodule name (comma) <test> (space) version\n")
-        text.append("// Tests: == >= ~>\n")
+        text.append("// Submodule name (comma) (space) <test> (space) version\n")
+        text.append("// Tests:\n")
+        text.append("//  == (equal),\n")
+        text.append("//  >= (greater than or equal),\n")
+        text.append("//  ~> (compatible, equal or sub-version)\n")
         do {
             try text.write(toFile: toFile, atomically: true, encoding: .utf8)
         } catch {
