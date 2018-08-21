@@ -46,6 +46,7 @@ class ReportCommand: Command {
                         let name = file.deletingLastPathComponent.lastPathComponent
                         let spec = VersionSpecification(fromFile: specPath)
                         print("  Project: \(name)")
+                        print("  \(dirPath)")
                         for aSpec in spec.allSpecs() {
                             print("    \(aSpec.name)")
                             if let submodule = modules?.spec(named: aSpec.name) {
@@ -59,6 +60,7 @@ class ReportCommand: Command {
                         if modules.count > 0 {
                             let name = dirPath.lastPathComponent
                             print("  Project: \(name) (unmanaged)")
+                            print("  \(dirPath)")
                             for module in modules {
                                 print("    \(module.name)")
                                 if verbose == true {
