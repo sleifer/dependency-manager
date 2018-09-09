@@ -82,24 +82,3 @@ protocol SCM {
 
     func tags(_ path: String) -> [SemVer]
 }
-
-extension SCM {
-    @discardableResult
-    func runCommand(_ cmd: String, args: [String], completion: ProcessRunnerHandler? = nil) -> ProcessRunner {
-        let runner = ProcessRunner(cmd, args: args)
-        var done: Bool = false
-        runner.start { (runner) in
-            if let completion = completion {
-                completion(runner)
-            }
-            done = true
-        }
-        if completion == nil {
-            while done == false {
-                CommandLineRunLoop.shared.spinRunLoop()
-            }
-            return runner
-        }
-        return runner
-    }
-}

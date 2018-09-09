@@ -16,6 +16,18 @@
 		DB8E250C1F8E6C86002F59F2 /* UpdateCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E250B1F8E6C86002F59F2 /* UpdateCommand.swift */; };
 		DB8E250E1F8E6C8C002F59F2 /* OutdatedCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */; };
 		DB8E251F1F92B65F002F59F2 /* VersionSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E251E1F92B65F002F59F2 /* VersionSpecification.swift */; };
+		DBD2AE3E2145603D00E83F4F /* Scanner-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F7082110ACF10048E1E9 /* Scanner-Extension.swift */; };
+		DBD2AE3F2145606100E83F4F /* CommandDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD72AF11F8DBCBC007FDD8F /* CommandDefinition.swift */; };
+		DBD2AE402145606500E83F4F /* InitCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFE75BF20090C800088BA1B /* InitCommand.swift */; };
+		DBD2AE412145606500E83F4F /* OutdatedCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */; };
+		DBD2AE422145606500E83F4F /* ReportCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB727369210BC21400CCDA2C /* ReportCommand.swift */; };
+		DBD2AE432145606500E83F4F /* SpecCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25091F8E6C80002F59F2 /* SpecCommand.swift */; };
+		DBD2AE442145606500E83F4F /* UpdateCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E250B1F8E6C86002F59F2 /* UpdateCommand.swift */; };
+		DBD2AE452145606A00E83F4F /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25031F8E5238002F59F2 /* Git.swift */; };
+		DBD2AE462145606A00E83F4F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6E7A61F6B54D700C6C2FD /* main.swift */; };
+		DBD2AE472145606A00E83F4F /* SCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25011F8E5231002F59F2 /* SCM.swift */; };
+		DBD2AE482145606A00E83F4F /* VersionSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E251E1F92B65F002F59F2 /* VersionSpecification.swift */; };
+		DBD2AE492145616D00E83F4F /* libCommandLineCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB23F7032110ABF40048E1E9 /* libCommandLineCore.a */; };
 		DBD359921F98E72D006F17C3 /* semverMatchingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD359911F98E72D006F17C3 /* semverMatchingTests.swift */; };
 		DBD6E7A71F6B54D700C6C2FD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6E7A61F6B54D700C6C2FD /* main.swift */; };
 		DBD72AF21F8DBCBC007FDD8F /* CommandDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD72AF11F8DBCBC007FDD8F /* CommandDefinition.swift */; };
@@ -72,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBD2AE492145616D00E83F4F /* libCommandLineCore.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,8 +274,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBD359921F98E72D006F17C3 /* semverMatchingTests.swift in Sources */,
+				DBD2AE422145606500E83F4F /* ReportCommand.swift in Sources */,
+				DBD2AE462145606A00E83F4F /* main.swift in Sources */,
+				DBD2AE402145606500E83F4F /* InitCommand.swift in Sources */,
+				DBD2AE482145606A00E83F4F /* VersionSpecification.swift in Sources */,
+				DBD2AE432145606500E83F4F /* SpecCommand.swift in Sources */,
 				DBDCDC1C1F6DC6910081D528 /* SemVerParser.swift in Sources */,
+				DBD2AE472145606A00E83F4F /* SCM.swift in Sources */,
+				DBD2AE412145606500E83F4F /* OutdatedCommand.swift in Sources */,
+				DBD2AE442145606500E83F4F /* UpdateCommand.swift in Sources */,
+				DBD2AE3E2145603D00E83F4F /* Scanner-Extension.swift in Sources */,
 				DBDCDC171F6DC4110081D528 /* semverParsingTests.swift in Sources */,
+				DBD2AE452145606A00E83F4F /* Git.swift in Sources */,
+				DBD2AE3F2145606100E83F4F /* CommandDefinition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

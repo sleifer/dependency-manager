@@ -33,18 +33,14 @@ extension ProcessRunner {
 }
 
 class Git: SCM {
-    var gitPath: String?
-
     var verbose: Bool = false
 
     var isInstalled: Bool {
         get {
-            let proc = runCommand("/usr/bin/which", args: ["git"])
+            let proc = ProcessRunner.runCommand("which", args: ["git"])
             if proc.status == 0 {
-                gitPath = proc.stdOut.trimmingCharacters(in: .whitespacesAndNewlines)
                 return true
             } else {
-                gitPath = nil
                 return false
             }
         }
@@ -149,8 +145,8 @@ class Git: SCM {
     }
 
     fileprivate func runGit(_ args: [String]) throws -> ProcessRunner {
-        if let path = gitPath {
-            return runCommand(path, args: args)
+        if isInstalled == true {
+            return ProcessRunner.runCommand("git", args: args)
         }
         throw SCMError.scmCommandMissing
     }
