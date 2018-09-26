@@ -10,7 +10,10 @@ import Foundation
 import CommandLineCore
 
 class UpdateCommand: Command {
-    override func run(cmd: ParsedCommand) {
+    required init() {
+    }
+
+    func run(cmd: ParsedCommand, core: CommandCore) {
         let submodules = scm.submodules()
         for submodule in submodules {
             var updateIt: Bool = true
@@ -58,5 +61,18 @@ class UpdateCommand: Command {
                 print()
             }
         }
+    }
+
+    static func commandDefinition() -> SubcommandDefinition {
+        var command = SubcommandDefinition()
+        command.name = "update"
+        command.synopsis = "Update one or all submodules to latest valid version"
+
+        var parameter = ParameterInfo()
+        parameter.hint = "module-name"
+        parameter.help = "Name of module to update"
+        command.optionalParameters.append(parameter)
+
+        return command
     }
 }

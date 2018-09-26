@@ -56,12 +56,12 @@ class Git: SCM {
 
     fileprivate func fixupSubmodules(_ submodules: [SubmoduleInfo]) -> [SubmoduleInfo] {
         defer {
-            resetCurrentDir()
+            core.resetCurrentDir()
         }
         var fixed: [SubmoduleInfo] = []
         for module in submodules {
             var newModule = module
-            setCurrentDir(module.path)
+            core.setCurrentDir(module.path)
             do {
                 let proc = try runGit(["describe", "--tag", module.sha, "--exact-match"])
                 if proc.status == 0 {
@@ -99,9 +99,9 @@ class Git: SCM {
 
     @discardableResult
     func fetch(_ path: String) -> SCMResult {
-        setCurrentDir(path)
+        core.setCurrentDir(path)
         defer {
-            resetCurrentDir()
+            core.resetCurrentDir()
         }
         do {
             let proc = try runGit(["fetch", "--all", "--prune", "--recurse-submodules"])
@@ -113,9 +113,9 @@ class Git: SCM {
 
     @discardableResult
     func checkout(_ path: String, object: String) -> SCMResult {
-        setCurrentDir(path)
+        core.setCurrentDir(path)
         defer {
-            resetCurrentDir()
+            core.resetCurrentDir()
         }
         do {
             let proc = try runGit(["checkout", object])
@@ -126,9 +126,9 @@ class Git: SCM {
     }
 
     func tags(_ path: String) -> [SemVer] {
-        setCurrentDir(path)
+        core.setCurrentDir(path)
         defer {
-            resetCurrentDir()
+            core.resetCurrentDir()
         }
         do {
             let proc = try runGit(["tag"])

@@ -10,7 +10,10 @@ import Foundation
 import CommandLineCore
 
 class OutdatedCommand: Command {
-    override func run(cmd: ParsedCommand) {
+    required init() {
+    }
+
+    func run(cmd: ParsedCommand, core: CommandCore) {
         let submodules = scm.submodules()
         for submodule in submodules {
             print("submodule: \(submodule.name)")
@@ -57,5 +60,13 @@ class OutdatedCommand: Command {
 
             print()
         }
+    }
+
+    static func commandDefinition() -> SubcommandDefinition {
+        var command = SubcommandDefinition()
+        command.name = "outdated"
+        command.synopsis = "Check all submodules for newer valid version"
+
+        return command
     }
 }

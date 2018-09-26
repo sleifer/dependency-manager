@@ -10,7 +10,10 @@ import Foundation
 import CommandLineCore
 
 class InitCommand: Command {
-    override func run(cmd: ParsedCommand) {
+    required init() {
+    }
+
+    func run(cmd: ParsedCommand, core: CommandCore) {
         var force = false
         if cmd.option("--force") != nil {
             force = true
@@ -30,8 +33,22 @@ class InitCommand: Command {
                 let spec = VersionSpec(name: submodule.name, comparison: .equal, version: submodule.version, semver: semver)
                 versionSpecs.setSpec(name: spec.name, spec: spec)
             }
-            versionSpecs.write(toFile: baseSubPath(versionSpecsFileName))
+            versionSpecs.write(toFile: core.baseSubPath(versionSpecsFileName))
             print("Created/replaced .module-versions.")
         }
+    }
+
+    static func commandDefinition() -> SubcommandDefinition {
+        var command = SubcommandDefinition()
+        command.name = "init"
+        command.synopsis = "Create .module-versions file"
+
+        var forceOption = CommandOption()
+        forceOption.shortOption = "-f"
+        forceOption.longOption = "--force"
+        forceOption.help = "Recreate existing .module-versions"
+        command.options.append(forceOption)
+
+        return command
     }
 }

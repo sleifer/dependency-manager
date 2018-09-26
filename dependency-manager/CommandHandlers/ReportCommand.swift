@@ -10,7 +10,10 @@ import Foundation
 import CommandLineCore
 
 class ReportCommand: Command {
-    override func run(cmd: ParsedCommand) {
+    required init() {
+    }
+
+    func run(cmd: ParsedCommand, core: CommandCore) {
         var verbose = false
         if cmd.option("--verbose") != nil {
             verbose = true
@@ -77,5 +80,32 @@ class ReportCommand: Command {
         }
 
         FileManager.default.changeCurrentDirectoryPath(baseDirectory)
+    }
+
+    static func commandDefinition() -> SubcommandDefinition {
+        var command = SubcommandDefinition()
+        command.name = "report"
+        command.synopsis = "Report on modules used in one or more repositories"
+        command.hasFileParameters = true
+        command.warnOnMissingSpec = false
+
+        var verboseOption = CommandOption()
+        verboseOption.shortOption = "-v"
+        verboseOption.longOption = "--verbose"
+        verboseOption.help = "Verbose output (module urls)"
+        command.options.append(verboseOption)
+
+        var unmanagedOption = CommandOption()
+        unmanagedOption.shortOption = "-u"
+        unmanagedOption.longOption = "--unmanaged"
+        unmanagedOption.help = "Report on projects that do not use dependency manager but have submodules"
+        command.options.append(unmanagedOption)
+
+        var parameter = ParameterInfo()
+        parameter.hint = "path"
+        parameter.help = "Path to repository or directory or repositories"
+        command.optionalParameters.append(parameter)
+
+        return command
     }
 }

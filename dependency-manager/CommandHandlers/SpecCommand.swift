@@ -10,7 +10,10 @@ import Foundation
 import CommandLineCore
 
 class SpecCommand: Command {
-    override func run(cmd: ParsedCommand) {
+    required init() {
+    }
+
+    func run(cmd: ParsedCommand, core: CommandCore) {
         if cmd.parameters.count == 0 {
             for spec in versionSpecs.allSpecs() {
                 print(spec.toStr())
@@ -18,7 +21,7 @@ class SpecCommand: Command {
         } else if cmd.parameters.count == 3 {
             if let spec = VersionSpec.parse(name: cmd.parameters[0], comparison: cmd.parameters[1], version: cmd.parameters[2]) {
                 versionSpecs.setSpec(name: spec.name, spec: spec)
-                versionSpecs.write(toFile: baseSubPath(versionSpecsFileName))
+                versionSpecs.write(toFile: core.baseSubPath(versionSpecsFileName))
                 print("Set: \(spec.toStr())")
             } else {
                 print("Invalid spec.")
@@ -28,5 +31,13 @@ class SpecCommand: Command {
             print("  Zero to list.")
             print("  Three (name, comparison, version spec) to set.")
         }
+    }
+
+    static func commandDefinition() -> SubcommandDefinition {
+        var command = SubcommandDefinition()
+        command.name = "spec"
+        command.synopsis = "List or update version range for one or all submodules"
+
+        return command
     }
 }
