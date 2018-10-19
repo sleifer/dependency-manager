@@ -8,6 +8,7 @@
 
 import Foundation
 import CommandLineCore
+import ObjectMapper
 
 class ReportCommand: Command {
     required init() {
@@ -31,6 +32,8 @@ class ReportCommand: Command {
             searchDirPaths.append(FileManager.default.currentDirectoryPath)
         }
 
+        let catalog = Catalog.load()
+
         for searchDirPath in searchDirPaths {
             print("\nReport in \(searchDirPath):")
 
@@ -41,20 +44,20 @@ class ReportCommand: Command {
                     let dirPath = searchDirPath.appendingPathComponent(file).deletingLastPathComponent
                     let specPath = dirPath.appendingPathComponent(versionSpecsFileName)
                     if fm.fileExists(atPath: specPath) == true {
-                        var modules: [SubmoduleInfo]?
-                        if verbose == true {
-                            FileManager.default.changeCurrentDirectoryPath(dirPath)
-                            modules = scm.submodules()
-                        }
+                        FileManager.default.changeCurrentDirectoryPath(dirPath)
+                        let modules = scm.submodules()
                         let name = file.deletingLastPathComponent.lastPathComponent
                         let spec = VersionSpecification(fromFile: specPath)
                         print("  Project: \(name)")
                         print("  \(dirPath)")
                         for aSpec in spec.allSpecs() {
                             print("    \(aSpec.name)")
-                            if let submodule = modules?.spec(named: aSpec.name) {
-                                print("      path: \(submodule.path)")
-                                print("      url: \(submodule.url)")
+                            if let submodule = modules.spec(named: aSpec.name) {
+                                catalog.add(name: aSpec.name, url: submodule.url)
+                                if verbose == true {
+                                    print("      path: \(submodule.path)")
+                                    print("      url: \(submodule.url)")
+                                }
                             }
                         }
                     } else if unmanaged == true {
@@ -66,6 +69,7 @@ class ReportCommand: Command {
                             print("  \(dirPath)")
                             for module in modules {
                                 print("    \(module.name)")
+                                catalog.add(name: module.name, url: module.url)
                                 if verbose == true {
                                     print("      path: \(module.path)")
                                     print("      url: \(module.url)")
@@ -79,6 +83,8 @@ class ReportCommand: Command {
             print("Done.")
         }
 
+        catalog.save()
+        
         FileManager.default.changeCurrentDirectoryPath(baseDirectory)
     }
 

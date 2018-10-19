@@ -33,7 +33,7 @@ func main() {
 
     #if DEBUG
     // for testing in Xcode
-    let args = ["dm", "bashcomp", "report", "-"]
+    let args = ["dm", "report", "~/Documents/Code".expandingTildeInPath]
     #else
     let args = CommandLine.arguments
     #endif
