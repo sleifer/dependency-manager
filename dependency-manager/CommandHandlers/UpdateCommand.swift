@@ -15,6 +15,9 @@ class UpdateCommand: Command {
 
     func run(cmd: ParsedCommand, core: CommandCore) {
         let submodules = scm.submodules()
+        if submodules.count == 0 {
+            print("Either there are no submodules or they have not been initialized.")
+        }
         for submodule in submodules {
             var updateIt: Bool = true
             if cmd.parameters.count != 0 {
