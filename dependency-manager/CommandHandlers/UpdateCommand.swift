@@ -54,7 +54,11 @@ class UpdateCommand: Command {
                             print("  Updating to version: \(newver.fullString)")
                             scm.checkout(submodule.path, object: newver.fullString)
                         } else {
-                            print("  Up to date.")
+                            if let cursemver = submodule.semver, last < cursemver {
+                                print("  Current version is beyond spec.")
+                            } else {
+                                print("  Up to date.")
+                            }
                         }
                     } else {
                         print("  No versions matching spec found.")

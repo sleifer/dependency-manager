@@ -9,7 +9,7 @@
 import Foundation
 import CommandLineCore
 
-let toolVersion = "0.20"
+let toolVersion = "0.21"
 let versionSpecsFileName = ".module-versions"
 let scm: SCM = Git()
 var versionSpecs = VersionSpecification()
@@ -33,7 +33,7 @@ func main() {
 
     #if DEBUG
     // for testing in Xcode
-    let args = ["dm", "update"]
+    let args = ["dm", "outdated"]
     #else
     let args = CommandLine.arguments
     #endif

@@ -44,7 +44,11 @@ class OutdatedCommand: Command {
                     if let newver = newver {
                         print("  New version available: \(newver.fullString)")
                     } else {
-                        print("  Up to date.")
+                        if let cursemver = submodule.semver, last < cursemver {
+                            print("  Current version is beyond spec.")
+                        } else {
+                            print("  Up to date.")
+                        }
                     }
                 } else {
                     print("  No versions matching spec found.")
