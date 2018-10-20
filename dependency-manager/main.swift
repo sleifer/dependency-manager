@@ -13,15 +13,15 @@ let toolVersion = "0.20"
 let versionSpecsFileName = ".module-versions"
 let scm: SCM = Git()
 var versionSpecs = VersionSpecification()
-let core = CommandCore()
 
 func main() {
     #if DEBUG
     // for testing in Xcode
-    let path = "~/Documents/Code/homoidentus".expandingTildeInPath
+    let path = "~/Desktop/test2".expandingTildeInPath
     FileManager.default.changeCurrentDirectoryPath(path)
     #endif
 
+    let core = CommandCore()
     core.set(version: toolVersion)
     core.set(help: "A tool to keep submodule dependencies up to date.")
 
@@ -33,7 +33,7 @@ func main() {
 
     #if DEBUG
     // for testing in Xcode
-    let args = ["dm", "bashcomp", "update", ""]
+    let args = ["dm", "update"]
     #else
     let args = CommandLine.arguments
     #endif
