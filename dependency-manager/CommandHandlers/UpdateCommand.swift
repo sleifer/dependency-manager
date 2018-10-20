@@ -71,6 +71,11 @@ class UpdateCommand: Command {
         var parameter = ParameterInfo()
         parameter.hint = "module-name"
         parameter.help = "Name of module to update"
+
+        let submodules = scm.submodules()
+        parameter.completions = submodules.map { (info) -> String in
+            return info.name
+        }
         command.optionalParameters.append(parameter)
 
         return command
