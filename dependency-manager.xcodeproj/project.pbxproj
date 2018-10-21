@@ -12,6 +12,7 @@
 		DB5F5601217A11190044D065 /* libObjectMapper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB5F5600217A11190044D065 /* libObjectMapper.a */; };
 		DB5F5603217A12A90044D065 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5F5602217A12A90044D065 /* Catalog.swift */; };
 		DB72736A210BC21400CCDA2C /* ReportCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB727369210BC21400CCDA2C /* ReportCommand.swift */; };
+		DB871FF4217CB0BE009FF758 /* CatalogCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB871FF3217CB0BE009FF758 /* CatalogCommand.swift */; };
 		DB8E25021F8E5231002F59F2 /* SCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25011F8E5231002F59F2 /* SCM.swift */; };
 		DB8E25041F8E5238002F59F2 /* Git.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25031F8E5238002F59F2 /* Git.swift */; };
 		DB8E250A1F8E6C80002F59F2 /* SpecCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E25091F8E6C80002F59F2 /* SpecCommand.swift */; };
@@ -56,6 +57,7 @@
 		DB5F5600217A11190044D065 /* libObjectMapper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libObjectMapper.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB5F5602217A12A90044D065 /* Catalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Catalog.swift; sourceTree = "<group>"; };
 		DB727369210BC21400CCDA2C /* ReportCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportCommand.swift; sourceTree = "<group>"; };
+		DB871FF3217CB0BE009FF758 /* CatalogCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogCommand.swift; sourceTree = "<group>"; };
 		DB8E25011F8E5231002F59F2 /* SCM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCM.swift; sourceTree = "<group>"; };
 		DB8E25031F8E5238002F59F2 /* Git.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Git.swift; sourceTree = "<group>"; };
 		DB8E25091F8E6C80002F59F2 /* SpecCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecCommand.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				DBFE75BF20090C800088BA1B /* InitCommand.swift */,
+				DB871FF3217CB0BE009FF758 /* CatalogCommand.swift */,
 				DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */,
 				DB727369210BC21400CCDA2C /* ReportCommand.swift */,
 				DB8E25091F8E6C80002F59F2 /* SpecCommand.swift */,
@@ -270,6 +273,7 @@
 				DB8E250A1F8E6C80002F59F2 /* SpecCommand.swift in Sources */,
 				DB8E250C1F8E6C86002F59F2 /* UpdateCommand.swift in Sources */,
 				DB8E25021F8E5231002F59F2 /* SCM.swift in Sources */,
+				DB871FF4217CB0BE009FF758 /* CatalogCommand.swift in Sources */,
 				DB8E25041F8E5238002F59F2 /* Git.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
