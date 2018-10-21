@@ -38,7 +38,9 @@ func main() {
     let args = CommandLine.arguments
     #endif
 
-    versionSpecs = VersionSpecification(fromFile: core.baseSubPath(versionSpecsFileName))
+    if scm.isInstalled == true && scm.isInitialized == true {
+        versionSpecs = VersionSpecification(fromFile: core.baseSubPath(versionSpecsFileName))
+    }
 
     core.process(args: args)
 }
