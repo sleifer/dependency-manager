@@ -82,7 +82,7 @@ class Catalog: Mappable {
     func save() {
         do {
             entries.sort { (left, right) -> Bool in
-                if left.name > right.name {
+                if left.name.lowercased() < right.name.lowercased() {
                     return true
                 }
                 return false
