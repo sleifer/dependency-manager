@@ -56,6 +56,19 @@ struct SemVer {
         return items
     }
 
+    func copyDroppingLastVersionElement() -> SemVer? {
+        var mutable = MutableSemVer(copying: self)
+        if mutable.patch != nil {
+            mutable.patch = nil
+        } else if mutable.minor != nil {
+            mutable.minor = nil
+        } else {
+            return nil
+        }
+        mutable.regenerateFullString()
+        let newSemVer = mutable.copy()
+        return newSemVer
+    }
 }
 
 extension SemVer {
@@ -167,6 +180,63 @@ struct MutableSemVer {
 
     init(full: String) {
         fullString = full
+    }
+
+    init(copying: SemVer) {
+        prefix = copying.prefix
+        major = copying.major
+        minor = copying.minor
+        patch = copying.patch
+        preReleaseMajor = copying.preReleaseMajor
+        preReleaseMajorInt = copying.preReleaseMajorInt
+        preReleaseMinor = copying.preReleaseMinor
+        preReleaseMinorInt = copying.preReleaseMinorInt
+        buildMajor = copying.buildMajor
+        buildMajorInt = copying.buildMajorInt
+        buildMinor = copying.buildMinor
+        buildMinorInt = copying.buildMinorInt
+        fullString = copying.fullString
+    }
+
+    func copy() -> SemVer {
+        let outVers = SemVer(prefix: self.prefix, major: self.major ?? 0, minor: self.minor, patch: self.patch, preReleaseMajor: self.preReleaseMajor, preReleaseMajorInt: self.preReleaseMajorInt, preReleaseMinor: self.preReleaseMinor, preReleaseMinorInt: self.preReleaseMinorInt, buildMajor: self.buildMajor, buildMajorInt: self.buildMajorInt, buildMinor: self.buildMinor, buildMinorInt: self.buildMinorInt, fullString: self.fullString)
+        return outVers
+    }
+
+    mutating func regenerateFullString() {
+        let prefix = self.prefix ?? ""
+
+        var versParts: [String] = []
+        if let value = self.major {
+            versParts.append(String(value))
+        }
+        if let value = self.minor {
+            versParts.append(String(value))
+        }
+        if let value = self.patch {
+            versParts.append(String(value))
+        }
+        let version = versParts.joined(separator: ".")
+
+        var prerelease: String = ""
+        if let major = self.preReleaseMajor, let minor = self.preReleaseMinor {
+            prerelease = "-\(major).\(minor)"
+        } else if let major = self.preReleaseMajor {
+            prerelease = "-\(major)"
+        } else if let minor = self.preReleaseMinor {
+            prerelease = "-\(minor)"
+        }
+
+        var build: String = ""
+        if let major = self.buildMajor, let minor = self.buildMinor {
+            build = "+\(major).\(minor)"
+        } else if let major = self.buildMajor {
+            build = "+\(major)"
+        } else if let minor = self.buildMinor {
+            build = "+\(minor)"
+        }
+
+        self.fullString = prefix + version + prerelease + build
     }
 }
 

@@ -9,7 +9,7 @@
 import Foundation
 import CommandLineCore
 
-let toolVersion = "0.22"
+let toolVersion = "0.23"
 let versionSpecsFileName = ".module-versions"
 let scm: SCM = Git()
 var versionSpecs = VersionSpecification()
@@ -17,7 +17,7 @@ var versionSpecs = VersionSpecification()
 func main() {
     #if DEBUG
     // for testing in Xcode
-    let path = "~/Desktop/test2".expandingTildeInPath
+    let path = "~/Documents/Code/TEST".expandingTildeInPath
     FileManager.default.changeCurrentDirectoryPath(path)
     #endif
 
@@ -31,10 +31,11 @@ func main() {
     core.add(command: UpdateCommand.self)
     core.add(command: ReportCommand.self)
     core.add(command: CatalogCommand.self)
+    core.add(command: AddCommand.self)
 
     #if DEBUG
     // for testing in Xcode
-    let args = ["dm", "catalog"]
+    let args = ["dm", "add", "-c", "realm-cocoa"]
     #else
     let args = CommandLine.arguments
     #endif
