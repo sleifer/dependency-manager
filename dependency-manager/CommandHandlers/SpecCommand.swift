@@ -38,6 +38,28 @@ class SpecCommand: Command {
         command.name = "spec"
         command.synopsis = "List or update version range for one or all submodules"
 
+        var moduleParameter = ParameterInfo()
+        moduleParameter.hint = "module-name"
+        moduleParameter.help = "Name of module set/update spec for"
+        if scm.isInstalled == true && scm.isInitialized == true {
+            let submodules = scm.submodules()
+            moduleParameter.completions = submodules.map { (info) -> String in
+                return info.name
+            }
+        }
+        command.optionalParameters.append(moduleParameter)
+
+        var testParameter = ParameterInfo()
+        testParameter.hint = "test"
+        testParameter.help = "Version comparison mode: ==/eq, >=/ge, or ~>/co"
+        testParameter.completions = ["eq", "ge", "co"]
+        command.optionalParameters.append(testParameter)
+
+        var versionParameter = ParameterInfo()
+        versionParameter.hint = "version"
+        versionParameter.help = "Version to compare against"
+        command.optionalParameters.append(versionParameter)
+
         return command
     }
 }
