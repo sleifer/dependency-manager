@@ -100,6 +100,19 @@ enum SemVerComparison: String {
     case equal = "=="
     case greaterThanOrEqual = ">="
     case compatible = "~>"
+
+    init?(test: String) {
+        switch test {
+        case "eq", "==":
+            self = .equal
+        case "ge", ">=":
+            self = .greaterThanOrEqual
+        case "co", "~>":
+            self = .compatible
+        default:
+            return nil
+        }
+    }
 }
 
 extension SemVer: Comparable {

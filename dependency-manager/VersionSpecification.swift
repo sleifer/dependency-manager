@@ -15,7 +15,7 @@ struct VersionSpec {
     var semver: SemVer?
 
     static func parse(name: String, comparison: String, version: String) -> VersionSpec? {
-        if let comp = SemVerComparison(rawValue: comparison) {
+        if let comp = SemVerComparison(test: comparison) {
             var semver: SemVer?
             let parser = SemVerParser(version)
             do {
@@ -79,7 +79,7 @@ class VersionSpecification {
             let text = try String(contentsOfFile: fromFile)
             let matches = text.regex(VersionSpecParseRegex.pattern())
             for match in matches {
-                if let comp = SemVerComparison(rawValue: match.versionSpec(.comparison)) {
+                if let comp = SemVerComparison(test: match.versionSpec(.comparison)) {
                     var semver: SemVer?
                     let parser = SemVerParser(match.versionSpec(.version))
                     do {
