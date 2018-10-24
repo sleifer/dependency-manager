@@ -18,6 +18,10 @@ class UpdateCommand: Command {
         if submodules.count == 0 {
             print("Either there are no submodules or they have not been initialized.")
         }
+
+        let catalog = Catalog.load()
+        var addedToCatalog: Bool = false
+
         for submodule in submodules {
             var updateIt: Bool = true
             if cmd.parameters.count != 0 {
@@ -32,6 +36,8 @@ class UpdateCommand: Command {
                 print("  path: \(submodule.path)")
                 print("  url: \(submodule.url)")
                 print("  current version: \(submodule.version)")
+
+                addedToCatalog = addedToCatalog || catalog.add(name: submodule.name, url: submodule.url)
 
                 var newver: SemVer? = nil
                 if let spec = versionSpecs.spec(forName: submodule.name), let semver = spec.semver {
@@ -67,6 +73,10 @@ class UpdateCommand: Command {
 
                 print()
             }
+        }
+
+        if addedToCatalog == true {
+            catalog.save()
         }
     }
 
