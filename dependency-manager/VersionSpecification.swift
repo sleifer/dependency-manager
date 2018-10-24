@@ -31,7 +31,7 @@ struct VersionSpec {
     }
 
     func toStr() -> String {
-        return "\(name), \(comparison.rawValue) \(version)"
+        return "\(name) \(comparison.rawValue) \(version)"
     }
 
     func versSpecStr() -> String {
@@ -57,7 +57,7 @@ enum VersionSpecParseRegex: Int {
     case count
 
     static func pattern() -> String {
-        return "([a-zA-Z0-9-_]+) *, *(==|>=|~>) *(.*)"
+        return "([a-zA-Z0-9-_]+) *,? *(==|>=|~>) *(.*)"
     }
 }
 
@@ -103,7 +103,7 @@ class VersionSpecification {
         }
         var text = items.joined(separator: "\n").appending("\n")
         text.append("\n")
-        text.append("// Submodule name (comma) (space) <test> (space) version\n")
+        text.append("// Submodule name (space) <test> (space) version\n")
         text.append("// Tests:\n")
         text.append("//  == (equal),\n")
         text.append("//  >= (greater than or equal),\n")
