@@ -59,6 +59,9 @@ class UpdateCommand: Command {
                         if let newver = newver {
                             print("  Updating to version: \(newver.fullString)")
                             scm.checkout(submodule.path, object: newver.fullString)
+                            core.setCurrentDir(submodule.path)
+                            ProcessRunner.runCommand(["git", "submodule", "update", "--init", "--recursive"], echo: true)
+                            core.resetCurrentDir()
                         } else {
                             if let cursemver = submodule.semver, last < cursemver {
                                 print("  Current version is beyond spec.")
