@@ -22,6 +22,8 @@ class UpdateCommand: Command {
         let catalog = Catalog.load()
         var addedToCatalog: Bool = false
 
+        var updatedText: String = ""
+
         for submodule in submodules {
             var updateIt: Bool = true
             if cmd.parameters.count != 0 {
@@ -62,6 +64,7 @@ class UpdateCommand: Command {
                             core.setCurrentDir(submodule.path)
                             ProcessRunner.runCommand(["git", "submodule", "update", "--init", "--recursive"], echo: true)
                             core.resetCurrentDir()
+                            updatedText.append("Updated \(submodule.name) to \(newver.fullString).\n")
                         } else {
                             if let cursemver = submodule.semver, last < cursemver {
                                 print("  Current version is beyond spec.")
@@ -76,6 +79,10 @@ class UpdateCommand: Command {
 
                 print()
             }
+        }
+
+        if updatedText.count > 0 {
+            print(updatedText)
         }
 
         if addedToCatalog == true {
