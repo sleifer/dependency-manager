@@ -19,6 +19,10 @@ class ReportCommand: Command {
         if cmd.option("--verbose") != nil {
             verbose = true
         }
+        var csv = false
+        if cmd.option("--csv") != nil {
+            csv = true
+        }
         var unmanaged = false
         if cmd.option("--unmanaged") != nil {
             unmanaged = true
@@ -35,7 +39,11 @@ class ReportCommand: Command {
         let catalog = Catalog.load()
 
         for searchDirPath in searchDirPaths {
-            print("\nReport in \(searchDirPath):")
+            if csv == true {
+                print("\"project name\",\"project path\",\"module name\",\"module path\",\"module url\",\"managed\"")
+            } else {
+                print("\nReport in \(searchDirPath):")
+            }
 
             let fm = FileManager.default
             let enumerator = fm.enumerator(atPath: searchDirPath)
@@ -48,15 +56,24 @@ class ReportCommand: Command {
                         let modules = scm.submodules()
                         let name = file.deletingLastPathComponent.lastPathComponent
                         let spec = VersionSpecification(fromFile: specPath)
-                        print("  Project: \(name)")
-                        print("  \(dirPath)")
+                        if csv == false {
+                            print("  Project: \(name)")
+                            print("  \(dirPath)")
+                        }
                         for aSpec in spec.allSpecs() {
-                            print("    \(aSpec.name)")
-                            if let submodule = modules.spec(named: aSpec.name) {
-                                catalog.add(name: aSpec.name, url: submodule.url)
-                                if verbose == true {
-                                    print("      path: \(submodule.path)")
-                                    print("      url: \(submodule.url)")
+                            if csv == true {
+                                if let submodule = modules.spec(named: aSpec.name) {
+                                    catalog.add(name: aSpec.name, url: submodule.url)
+                                    print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                }
+                            } else {
+                                print("    \(aSpec.name)")
+                                if let submodule = modules.spec(named: aSpec.name) {
+                                    catalog.add(name: aSpec.name, url: submodule.url)
+                                    if verbose == true {
+                                        print("      path: \(submodule.path)")
+                                        print("      url: \(submodule.url)")
+                                    }
                                 }
                             }
                         }
@@ -65,22 +82,30 @@ class ReportCommand: Command {
                         let modules: [SubmoduleInfo] = scm.submodules()
                         if modules.count > 0 {
                             let name = dirPath.lastPathComponent
-                            print("  Project: \(name) (unmanaged)")
-                            print("  \(dirPath)")
+                            if csv == false {
+                                print("  Project: \(name) (unmanaged)")
+                                print("  \(dirPath)")
+                            }
                             for module in modules {
-                                print("    \(module.name)")
-                                catalog.add(name: module.name, url: module.url)
-                                if verbose == true {
-                                    print("      path: \(module.path)")
-                                    print("      url: \(module.url)")
+                                if csv == true {
+                                    catalog.add(name: module.name, url: module.url)
+                                    print("\"\(name)\",\"\(dirPath)\",\"\(module.name)\",\"\(module.path)\",\"\(module.url)\",\"unmanaged\"")
+                                } else {
+                                    print("    \(module.name)")
+                                    catalog.add(name: module.name, url: module.url)
+                                    if verbose == true {
+                                        print("      path: \(module.path)")
+                                        print("      url: \(module.url)")
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-
-            print("Done.")
+            if csv == false {
+                print("Done.")
+            }
         }
 
         catalog.save()
@@ -106,6 +131,12 @@ class ReportCommand: Command {
         unmanagedOption.longOption = "--unmanaged"
         unmanagedOption.help = "Report on projects that do not use dependency manager but have submodules"
         command.options.append(unmanagedOption)
+
+        var csvOption = CommandOption()
+        csvOption.shortOption = "-c"
+        csvOption.longOption = "--csv"
+        csvOption.help = "Output report in CSV format"
+        command.options.append(csvOption)
 
         var parameter = ParameterInfo()
         parameter.hint = "path"

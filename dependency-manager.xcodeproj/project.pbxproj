@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DB00628421B4387300B09839 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5F5602217A12A90044D065 /* Catalog.swift */; };
 		DB23F7042110ABF40048E1E9 /* libCommandLineCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB23F7032110ABF40048E1E9 /* libCommandLineCore.a */; };
 		DB23F7092110ACF10048E1E9 /* Scanner-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F7082110ACF10048E1E9 /* Scanner-Extension.swift */; };
 		DB5F5601217A11190044D065 /* libObjectMapper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB5F5600217A11190044D065 /* libObjectMapper.a */; };
@@ -297,6 +298,7 @@
 				DBD2AE412145606500E83F4F /* OutdatedCommand.swift in Sources */,
 				DBD2AE442145606500E83F4F /* UpdateCommand.swift in Sources */,
 				DBD2AE3E2145603D00E83F4F /* Scanner-Extension.swift in Sources */,
+				DB00628421B4387300B09839 /* Catalog.swift in Sources */,
 				DBDCDC171F6DC4110081D528 /* semverParsingTests.swift in Sources */,
 				DBD2AE452145606A00E83F4F /* Git.swift in Sources */,
 			);
