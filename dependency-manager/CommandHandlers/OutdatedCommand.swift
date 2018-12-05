@@ -14,6 +14,11 @@ class OutdatedCommand: Command {
     }
 
     func run(cmd: ParsedCommand, core: CommandCore) {
+        var verbose = false
+        if cmd.option("--verbose") != nil {
+            verbose = true
+        }
+
         let submodules = scm.submodules()
         if submodules.count == 0 {
             print("Either there are no submodules or they have not been initialized.")
@@ -23,16 +28,22 @@ class OutdatedCommand: Command {
         var addedToCatalog: Bool = false
 
         for submodule in submodules {
-            print("submodule: \(submodule.name)")
-            print("  path: \(submodule.path)")
-            print("  url: \(submodule.url)")
-            print("  current version: \(submodule.version)")
+            if verbose == true {
+                print("submodule: \(submodule.name)")
+                print("  path: \(submodule.path)")
+                print("  url: \(submodule.url)")
+                print("  current version: \(submodule.version)")
+            }
 
             addedToCatalog = addedToCatalog || catalog.add(name: submodule.name, url: submodule.url)
 
             var newver: SemVer? = nil
             if let spec = versionSpecs.spec(forName: submodule.name), let semver = spec.semver, let moduleSemver = submodule.semver {
-                print("  spec: \(spec.versSpecStr())")
+                if verbose == true {
+                    print("  spec: \(spec.versSpecStr())")
+                } else {
+                    print("\(submodule.name) \(spec.versSpecStr()) @ \(submodule.version)")
+                }
 
                 let result = scm.fetch(submodule.path)
                 if case .error(_, let text) = result {
@@ -69,6 +80,10 @@ class OutdatedCommand: Command {
                         }
                     }
                 }
+            } else {
+                if verbose == false {
+                    print("\(submodule.name) @ \(submodule.version)")
+                }
             }
 
             print()
@@ -83,6 +98,12 @@ class OutdatedCommand: Command {
         var command = SubcommandDefinition()
         command.name = "outdated"
         command.synopsis = "Check all submodules for newer valid version"
+
+        var verboseOption = CommandOption()
+        verboseOption.shortOption = "-v"
+        verboseOption.longOption = "--verbose"
+        verboseOption.help = "Verbose output (module urls)"
+        command.options.append(verboseOption)
 
         return command
     }
