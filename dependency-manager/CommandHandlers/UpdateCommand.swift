@@ -62,7 +62,7 @@ class UpdateCommand: Command {
                             print("  Updating to version: \(newver.fullString)")
                             scm.checkout(submodule.path, object: newver.fullString)
                             core.setCurrentDir(submodule.path)
-                            ProcessRunner.runCommand(["git", "submodule", "update", "--init", "--recursive"], echo: true)
+                            ProcessRunner.runCommand(["git", "submodule", "update", "--init", "--recursive"], echoOutput: true)
                             core.resetCurrentDir()
                             updatedText.append("Updated \(submodule.name) to \(newver.fullString).\n")
                         } else {

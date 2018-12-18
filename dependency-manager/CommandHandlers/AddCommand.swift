@@ -43,10 +43,10 @@ class AddCommand: Command {
 
                     // add submodule
                     let submodulePath = "submodules/\(entry.name)"
-                    ProcessRunner.runCommand(["git", "submodule", "add", entry.url, submodulePath], echo: true)
+                    ProcessRunner.runCommand(["git", "submodule", "add", entry.url, submodulePath], echoOutput: true)
 
                     core.setCurrentDir(submodulePath)
-                    ProcessRunner.runCommand(["git", "submodule", "update", "--init", "--recursive"], echo: true)
+                    ProcessRunner.runCommand(["git", "submodule", "update", "--init", "--recursive"], echoOutput: true)
                     core.resetCurrentDir()
 
                     // set to newest version
