@@ -25,13 +25,13 @@ func main() {
     core.set(version: toolVersion)
     core.set(help: "A tool to keep submodule dependencies up to date.")
 
-    core.add(command: InitCommand.self)
-    core.add(command: SpecCommand.self)
-    core.add(command: OutdatedCommand.self)
-    core.add(command: UpdateCommand.self)
-    core.add(command: ReportCommand.self)
-    core.add(command: CatalogCommand.self)
     core.add(command: AddCommand.self)
+    core.add(command: CatalogCommand.self)
+    core.add(command: InitCommand.self)
+    core.add(command: OutdatedCommand.self)
+    core.add(command: ReportCommand.self)
+    core.add(command: SpecCommand.self)
+    core.add(command: UpdateCommand.self)
 
     #if DEBUG
     // for testing in Xcode
