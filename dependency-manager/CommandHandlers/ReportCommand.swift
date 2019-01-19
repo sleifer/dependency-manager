@@ -11,6 +11,8 @@ import CommandLineCore
 import ObjectMapper
 
 class ReportCommand: Command {
+    var ceilingDirectory: String = "/"
+
     required init() {
     }
 
@@ -29,6 +31,7 @@ class ReportCommand: Command {
         }
 
         let baseDirectory = FileManager.default.currentDirectoryPath
+        ceilingDirectory = baseDirectory.deletingLastPathComponent
 
         var searchDirPaths = cmd.parameters
 
@@ -52,7 +55,7 @@ class ReportCommand: Command {
                     let dirPath = searchDirPath.appendingPathComponent(file).deletingLastPathComponent
                     let specPath = dirPath.appendingPathComponent(versionSpecsFileName)
                     if fm.fileExists(atPath: specPath) == true {
-                        FileManager.default.changeCurrentDirectoryPath(dirPath)
+                        fm.changeCurrentDirectoryPath(dirPath)
                         let modules = scm.submodules()
                         let name = file.deletingLastPathComponent.lastPathComponent
                         let spec = VersionSpecification(fromFile: specPath)
@@ -77,8 +80,8 @@ class ReportCommand: Command {
                                 }
                             }
                         }
-                    } else if unmanaged == true {
-                        FileManager.default.changeCurrentDirectoryPath(dirPath)
+                    } else if unmanaged == true && isInManagedDir(path: dirPath) == false {
+                        fm.changeCurrentDirectoryPath(dirPath)
                         let modules: [SubmoduleInfo] = scm.submodules()
                         if modules.count > 0 {
                             let name = dirPath.lastPathComponent
@@ -144,5 +147,23 @@ class ReportCommand: Command {
         command.optionalParameters.append(parameter)
 
         return command
+    }
+
+    func isInManagedDir(path: String) -> Bool {
+        let fm = FileManager.default
+        var inManaged: Bool = false
+        var dirPath = path.deletingLastPathComponent
+        while true {
+            let specPath = dirPath.appendingPathComponent(versionSpecsFileName)
+            if fm.fileExists(atPath: specPath) == true {
+                inManaged = true
+                return inManaged
+            }
+            dirPath = dirPath.deletingLastPathComponent
+            if dirPath == ceilingDirectory {
+                return inManaged
+            }
+        }
+        return inManaged
     }
 }
