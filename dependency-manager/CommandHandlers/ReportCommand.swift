@@ -29,6 +29,14 @@ class ReportCommand: Command {
         if cmd.option("--unmanaged") != nil {
             unmanaged = true
         }
+        var info = false
+        if cmd.option("--info") != nil {
+            info = true
+        }
+        var check = false
+        if cmd.option("--check") != nil {
+            check = true
+        }
 
         let baseDirectory = FileManager.default.currentDirectoryPath
         ceilingDirectory = baseDirectory.deletingLastPathComponent
@@ -43,7 +51,11 @@ class ReportCommand: Command {
 
         for searchDirPath in searchDirPaths {
             if csv == true {
-                print("\"project name\",\"project path\",\"module name\",\"module path\",\"module url\",\"managed\"")
+                if info == true {
+                    print("\"project name\",\"project path\",\"module name\",\"module spec\",\"module version\",\"module path\",\"module url\",\"managed\"")
+                } else {
+                    print("\"project name\",\"project path\",\"module name\",\"module path\",\"module url\",\"managed\"")
+                }
             } else {
                 print("\nReport in \(searchDirPath):")
             }
@@ -56,6 +68,7 @@ class ReportCommand: Command {
                     let specPath = dirPath.appendingPathComponent(versionSpecsFileName)
                     if fm.fileExists(atPath: specPath) == true {
                         fm.changeCurrentDirectoryPath(dirPath)
+                        CommandCore.core!.set(baseDirectory: dirPath)
                         let modules = scm.submodules()
                         let name = file.deletingLastPathComponent.lastPathComponent
                         let spec = VersionSpecification(fromFile: specPath)
@@ -67,12 +80,51 @@ class ReportCommand: Command {
                             if csv == true {
                                 if let submodule = modules.spec(named: aSpec.name) {
                                     catalog.add(name: aSpec.name, url: submodule.url)
-                                    print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                    if info == true {
+                                        print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                    } else {
+                                        print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                    }
                                 }
                             } else {
-                                print("    \(aSpec.name)")
                                 if let submodule = modules.spec(named: aSpec.name) {
                                     catalog.add(name: aSpec.name, url: submodule.url)
+                                    if info == true || check == true {
+                                        print("    \(aSpec.name) \(aSpec.versSpecStr()) @ \(submodule.version)")
+
+                                        if check == true {
+                                            let result = scm.fetch(submodule.path)
+                                            if case .error(_, let text) = result {
+                                                print(text)
+                                            }
+
+                                            var newver: SemVer? = nil
+                                            let tags = scm.tags(submodule.path)
+                                            if let semver = aSpec.semver {
+                                                let matching = semver.matching(fromList: tags, withTest: aSpec.comparison)
+                                                if let last = matching.last {
+                                                    if submodule.semver == nil {
+                                                        newver = last
+                                                    } else if let cursemver = submodule.semver, last > cursemver {
+                                                        newver = last
+                                                    }
+                                                    if let newver = newver {
+                                                        print("      New version available: \(newver.fullString)")
+                                                    } else {
+                                                        if let cursemver = submodule.semver, last < cursemver {
+                                                            print("      Current version is beyond spec.")
+                                                        } else {
+                                                            print("      Up to date.")
+                                                        }
+                                                    }
+                                                } else {
+                                                    print("      No versions matching spec found.")
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        print("    \(aSpec.name)")
+                                    }
                                     if verbose == true {
                                         print("      path: \(submodule.path)")
                                         print("      url: \(submodule.url)")
@@ -122,6 +174,18 @@ class ReportCommand: Command {
         command.synopsis = "Report on modules used in one or more repositories"
         command.hasFileParameters = true
         command.warnOnMissingSpec = false
+
+        var infoOption = CommandOption()
+        infoOption.shortOption = "-i"
+        infoOption.longOption = "--info"
+        infoOption.help = "Show current versions of modules"
+        command.options.append(infoOption)
+
+        var checkOption = CommandOption()
+        checkOption.shortOption = "-k"
+        checkOption.longOption = "--check"
+        checkOption.help = "Check for updates to modules"
+        command.options.append(checkOption)
 
         var verboseOption = CommandOption()
         verboseOption.shortOption = "-v"

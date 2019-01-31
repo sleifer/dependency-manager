@@ -9,7 +9,7 @@
 import Foundation
 import CommandLineCore
 
-let toolVersion = "0.30"
+let toolVersion = "0.31"
 let versionSpecsFileName = ".module-versions"
 let scm: SCM = Git()
 var versionSpecs = VersionSpecification()
@@ -17,7 +17,7 @@ var versionSpecs = VersionSpecification()
 func main() {
     #if DEBUG
     // for testing in Xcode
-    let path = "~/Documents/Code/ElectionResultsViewer".expandingTildeInPath
+    let path = "~/Documents/Code/".expandingTildeInPath
     FileManager.default.changeCurrentDirectoryPath(path)
     #endif
 
@@ -35,7 +35,7 @@ func main() {
 
     #if DEBUG
     // for testing in Xcode
-    let args = ["dm", "report", "-u"]
+    let args = ["dm", "report", "-k"]
     #else
     let args = CommandLine.arguments
     #endif
