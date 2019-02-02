@@ -17,12 +17,13 @@ class ReportCommand: Command {
     }
 
     fileprivate func updateCheck(_ submodule: SubmoduleInfo, _ aSpec: VersionSpec, terse: Bool = false) -> String {
+        var msg: String = ""
         let result = scm.fetch(submodule.path)
         if case .error(_, let text) = result {
             if terse == true {
-                return "<error>"
+                msg = "<fetch error>"
             } else {
-                return text
+                msg = text
             }
         }
 
@@ -38,30 +39,30 @@ class ReportCommand: Command {
                 }
                 if let newver = newver {
                     if terse == true {
-                        return "update available: \(newver.fullString)"
+                        msg = "update available: \(newver.fullString)"
                     } else {
-                        return "      New version available: \(newver.fullString)"
+                        msg = "      New version available: \(newver.fullString)"
                     }
                 } else {
                     if let cursemver = submodule.semver, last < cursemver {
                         if terse == true {
-                            return "beyond spec"
+                            msg = "beyond spec"
                         } else {
-                            return "      Current version is beyond spec."
+                            msg = "      Current version is beyond spec."
                         }
                     } else {
                         if terse == true {
-                            return "up to date"
+                            msg = "up to date"
                         } else {
-                            return "      Up to date."
+                            msg = "      Up to date."
                         }
                     }
                 }
             } else {
                 if terse == true {
-                    return "no matching spec found"
+                    msg = "no matching spec found"
                 } else {
-                    return "      No versions matching spec found."
+                    msg = "      No versions matching spec found."
                 }
             }
         }
@@ -73,20 +74,30 @@ class ReportCommand: Command {
                 if let last = matching.last {
                     if last > moduleSemver && (newver == nil || last > newver!) {
                         if terse == true {
-                            return "upgrade available: \(last.fullString)"
+                            if msg.count > 0 {
+                                msg += ", "
+                            }
+                            msg += "upgrade available: \(last.fullString)"
                         } else {
-                            return "      Out of spec new version available: \(last.fullString)"
+                            if msg.count > 0 {
+                                msg += "\n"
+                            }
+                            msg += "      Out of spec new version available: \(last.fullString)"
                         }
                     }
                 }
             }
         }
 
-        if terse == true {
-            return "no version specifier"
-        } else {
-            return "      No version specifier."
+        if msg.count == 0 {
+            if terse == true {
+                msg = "no version specifier"
+            } else {
+                msg = "      No version specifier."
+            }
         }
+
+        return msg
     }
 
     func run(cmd: ParsedCommand, core: CommandCore) {
