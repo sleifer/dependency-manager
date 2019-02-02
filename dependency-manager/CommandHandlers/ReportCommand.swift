@@ -16,6 +16,79 @@ class ReportCommand: Command {
     required init() {
     }
 
+    fileprivate func updateCheck(_ submodule: SubmoduleInfo, _ aSpec: VersionSpec, terse: Bool = false) -> String {
+        let result = scm.fetch(submodule.path)
+        if case .error(_, let text) = result {
+            if terse == true {
+                return "<error>"
+            } else {
+                return text
+            }
+        }
+
+        var newver: SemVer? = nil
+        let tags = scm.tags(submodule.path)
+        if let semver = aSpec.semver {
+            let matching = semver.matching(fromList: tags, withTest: aSpec.comparison)
+            if let last = matching.last {
+                if submodule.semver == nil {
+                    newver = last
+                } else if let cursemver = submodule.semver, last > cursemver {
+                    newver = last
+                }
+                if let newver = newver {
+                    if terse == true {
+                        return "update available: \(newver.fullString)"
+                    } else {
+                        return "      New version available: \(newver.fullString)"
+                    }
+                } else {
+                    if let cursemver = submodule.semver, last < cursemver {
+                        if terse == true {
+                            return "beyond spec"
+                        } else {
+                            return "      Current version is beyond spec."
+                        }
+                    } else {
+                        if terse == true {
+                            return "up to date"
+                        } else {
+                            return "      Up to date."
+                        }
+                    }
+                }
+            } else {
+                if terse == true {
+                    return "no matching spec found"
+                } else {
+                    return "      No versions matching spec found."
+                }
+            }
+        }
+
+        if let moduleSemver = submodule.semver {
+            let outOfBandFull = "\(moduleSemver.prefix ?? "")\(moduleSemver.major).\(moduleSemver.minor ?? 0).\(moduleSemver.patch ?? 0)"
+            if let outOfBandBase = SemVer.init(outOfBandFull) {
+                let matching = outOfBandBase.matching(fromList: tags, withTest: .greaterThanOrEqual)
+                if let last = matching.last {
+                    if last > moduleSemver && (newver == nil || last > newver!) {
+                        if terse == true {
+                            return "upgrade available: \(last.fullString)"
+                        } else {
+                            return "      Out of spec new version available: \(last.fullString)"
+                        }
+                    }
+                }
+            }
+        }
+
+        if terse == true {
+            return "no version specifier"
+        } else {
+            return "      No version specifier."
+        }
+    }
+
     func run(cmd: ParsedCommand, core: CommandCore) {
         var verbose = false
         if cmd.option("--verbose") != nil {
@@ -51,7 +124,9 @@ class ReportCommand: Command {
 
         for searchDirPath in searchDirPaths {
             if csv == true {
-                if info == true {
+                if check == true {
+                    print("\"project name\",\"project path\",\"module name\",\"module spec\",\"module version\",\"updates\",\"module path\",\"module url\",\"managed\"")
+                } else if info == true {
                     print("\"project name\",\"project path\",\"module name\",\"module spec\",\"module version\",\"module path\",\"module url\",\"managed\"")
                 } else {
                     print("\"project name\",\"project path\",\"module name\",\"module path\",\"module url\",\"managed\"")
@@ -80,7 +155,10 @@ class ReportCommand: Command {
                             if csv == true {
                                 if let submodule = modules.spec(named: aSpec.name) {
                                     catalog.add(name: aSpec.name, url: submodule.url)
-                                    if info == true {
+                                    if check == true {
+                                        let updateText = updateCheck(submodule, aSpec, terse: true)
+                                        print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(updateText)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                    } else  if info == true {
                                         print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
                                     } else {
                                         print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
@@ -93,34 +171,8 @@ class ReportCommand: Command {
                                         print("    \(aSpec.name) \(aSpec.versSpecStr()) @ \(submodule.version)")
 
                                         if check == true {
-                                            let result = scm.fetch(submodule.path)
-                                            if case .error(_, let text) = result {
-                                                print(text)
-                                            }
-
-                                            var newver: SemVer? = nil
-                                            let tags = scm.tags(submodule.path)
-                                            if let semver = aSpec.semver {
-                                                let matching = semver.matching(fromList: tags, withTest: aSpec.comparison)
-                                                if let last = matching.last {
-                                                    if submodule.semver == nil {
-                                                        newver = last
-                                                    } else if let cursemver = submodule.semver, last > cursemver {
-                                                        newver = last
-                                                    }
-                                                    if let newver = newver {
-                                                        print("      New version available: \(newver.fullString)")
-                                                    } else {
-                                                        if let cursemver = submodule.semver, last < cursemver {
-                                                            print("      Current version is beyond spec.")
-                                                        } else {
-                                                            print("      Up to date.")
-                                                        }
-                                                    }
-                                                } else {
-                                                    print("      No versions matching spec found.")
-                                                }
-                                            }
+                                            let updateText = updateCheck(submodule, aSpec)
+                                            print(updateText)
                                         }
                                     } else {
                                         print("    \(aSpec.name)")
