@@ -12,7 +12,7 @@ import CommandLineCore
 class AddCommand: Command {
     required init() {
     }
-    
+
     func run(cmd: ParsedCommand, core: CommandCore) {
         var compatibleMode: Bool = false
         if cmd.option("--compatible") != nil {
@@ -86,7 +86,7 @@ class AddCommand: Command {
             }
         }
     }
-    
+
     static func commandDefinition() -> SubcommandDefinition {
         var command = SubcommandDefinition()
         command.name = "add"

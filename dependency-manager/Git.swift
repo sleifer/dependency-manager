@@ -36,22 +36,18 @@ class Git: SCM {
     var verbose: Bool = false
 
     var isInstalled: Bool {
-        get {
-            let proc = ProcessRunner.runCommand("which", args: ["git"])
-            if proc.status == 0 {
-                return true
-            } else {
-                return false
-            }
+        let proc = ProcessRunner.runCommand("which", args: ["git"])
+        if proc.status == 0 {
+            return true
+        } else {
+            return false
         }
     }
 
     var isInitialized: Bool {
-        get {
-            let fileManager = FileManager.default
-            let result = fileManager.fileExists(atPath: ".git")
-            return result
-        }
+        let fileManager = FileManager.default
+        let result = fileManager.fileExists(atPath: ".git")
+        return result
     }
 
     fileprivate func fixupSubmodules(_ submodules: [SubmoduleInfo]) -> [SubmoduleInfo] {
@@ -107,7 +103,7 @@ class Git: SCM {
             let proc = try runGit(["fetch", "--all", "--prune", "--recurse-submodules"])
             return proc.scmResult()
         } catch {
-            return SCMResult.error(code: -1, text: error as! String)
+            return SCMResult.error(code: -1, text: error.localizedDescription)
         }
     }
 
@@ -121,7 +117,7 @@ class Git: SCM {
             let proc = try runGit(["checkout", object])
             return proc.scmResult()
         } catch {
-            return SCMResult.error(code: -1, text: error as! String)
+            return SCMResult.error(code: -1, text: error.localizedDescription)
         }
     }
 

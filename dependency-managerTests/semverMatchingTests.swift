@@ -8,7 +8,7 @@
 
 import XCTest
 
-class semverMatchingTests: XCTestCase {
+class SemverMatchingTests: XCTestCase {
 
     var semverList: [SemVer] = []
 

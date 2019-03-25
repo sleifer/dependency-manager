@@ -8,7 +8,7 @@
 
 import XCTest
 
-class semverParsingTests: XCTestCase {
+class SemverParsingTests: XCTestCase {
 
     override func setUp() {
         super.setUp()

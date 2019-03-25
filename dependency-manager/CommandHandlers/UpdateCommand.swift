@@ -13,6 +13,8 @@ class UpdateCommand: Command {
     required init() {
     }
 
+    // swiftlint:disable cyclomatic_complexity
+
     func run(cmd: ParsedCommand, core: CommandCore) {
         let submodules = scm.submodules()
         if submodules.count == 0 {
@@ -41,7 +43,7 @@ class UpdateCommand: Command {
 
                 addedToCatalog = addedToCatalog || catalog.add(name: submodule.name, url: submodule.url)
 
-                var newver: SemVer? = nil
+                var newver: SemVer?
                 if let spec = versionSpecs.spec(forName: submodule.name), let semver = spec.semver {
                     print("  spec: \(spec.versSpecStr())")
 
@@ -89,6 +91,8 @@ class UpdateCommand: Command {
             catalog.save()
         }
     }
+
+    // swiftlint:enable cyclomatic_complexity
 
     static func commandDefinition() -> SubcommandDefinition {
         var command = SubcommandDefinition()

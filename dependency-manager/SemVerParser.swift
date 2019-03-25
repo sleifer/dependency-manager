@@ -333,6 +333,8 @@ class SemVerParser {
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
+
     private func parse(group: SemVerGroup) throws {
         var atEnd: Bool = false
         var separatorStr: String = ""
@@ -433,4 +435,6 @@ class SemVerParser {
         }
         throw SemVerParserError.noValidVersion
     }
+
+    // swiftlint:enable cyclomatic_complexity
 }

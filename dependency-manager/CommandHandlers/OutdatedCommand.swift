@@ -13,6 +13,8 @@ class OutdatedCommand: Command {
     required init() {
     }
 
+    // swiftlint:disable cyclomatic_complexity
+
     func run(cmd: ParsedCommand, core: CommandCore) {
         var verbose = false
         if cmd.option("--verbose") != nil {
@@ -37,7 +39,7 @@ class OutdatedCommand: Command {
 
             addedToCatalog = addedToCatalog || catalog.add(name: submodule.name, url: submodule.url)
 
-            var newver: SemVer? = nil
+            var newver: SemVer?
             if let spec = versionSpecs.spec(forName: submodule.name), let semver = spec.semver, let moduleSemver = submodule.semver {
                 if verbose == true {
                     print("  spec: \(spec.versSpecStr())")
@@ -93,6 +95,8 @@ class OutdatedCommand: Command {
             catalog.save()
         }
     }
+
+    // swiftlint:enable cyclomatic_complexity
 
     static func commandDefinition() -> SubcommandDefinition {
         var command = SubcommandDefinition()

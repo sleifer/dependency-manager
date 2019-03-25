@@ -16,6 +16,8 @@ class ReportCommand: Command {
     required init() {
     }
 
+    // swiftlint:disable cyclomatic_complexity
+
     fileprivate func updateCheck(_ submodule: SubmoduleInfo, _ aSpec: VersionSpec, terse: Bool = false) -> String {
         var msg: String = ""
         let result = scm.fetch(submodule.path)
@@ -27,7 +29,7 @@ class ReportCommand: Command {
             }
         }
 
-        var newver: SemVer? = nil
+        var newver: SemVer?
         let tags = scm.tags(submodule.path)
         if let semver = aSpec.semver {
             let matching = semver.matching(fromList: tags, withTest: aSpec.comparison)
@@ -99,6 +101,10 @@ class ReportCommand: Command {
 
         return msg
     }
+
+    // swiftlint:enable cyclomatic_complexity
+
+    // swiftlint:disable cyclomatic_complexity
 
     func run(cmd: ParsedCommand, core: CommandCore) {
         var verbose = false
@@ -227,9 +233,11 @@ class ReportCommand: Command {
         }
 
         catalog.save()
-        
+
         FileManager.default.changeCurrentDirectoryPath(baseDirectory)
     }
+
+    // swiftlint:enable cyclomatic_complexity
 
     static func commandDefinition() -> SubcommandDefinition {
         var command = SubcommandDefinition()
