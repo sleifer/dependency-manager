@@ -13,6 +13,61 @@ class AddCommand: Command {
     required init() {
     }
 
+    fileprivate func addSubmodule(core: CommandCore, entry: CatalogEntry, compatibleMode: Bool) {
+        do {
+            // make directory
+            var isDir: ObjCBool = ObjCBool.init(false)
+            let submodulesPath = core.baseSubPath("submodules")
+            let exists = FileManager.default.fileExists(atPath: submodulesPath, isDirectory: &isDir)
+            if exists == true && isDir.boolValue == false {
+                print("submodules already exists and is not a directory.")
+                return
+            } else if exists == false {
+                try FileManager.default.createDirectory(atPath: submodulesPath, withIntermediateDirectories: true, attributes: nil)
+            }
+
+            // add submodule
+            let submodulePath = "submodules/\(entry.name)"
+            ProcessRunner.runCommand(["git", "submodule", "add", entry.url, submodulePath], echoOutput: true)
+
+            core.setCurrentDir(submodulePath)
+            ProcessRunner.runCommand(["git", "submodule", "update", "--init", "--recursive"], echoOutput: true)
+            core.resetCurrentDir()
+
+            // set to newest version
+            let tags = scm.tags(submodulePath)
+            if let newest = tags.last {
+                scm.checkout(submodulePath, object: newest.fullString)
+
+                // add to spec
+                let comparison = compatibleMode == true ? "~>" : "=="
+                var version: String?
+                if compatibleMode == true {
+                    if let replacement = newest.copyDroppingLastVersionElement() {
+                        version = replacement.fullString
+                    } else {
+                        print("Can't calculate compatible mode version string.")
+                    }
+                } else {
+                    version = newest.fullString
+                }
+                if let version = version {
+                    if let spec = VersionSpec.parse(name: entry.name, comparison: comparison, version: version) {
+                        versionSpecs.setSpec(name: spec.name, spec: spec)
+                        versionSpecs.write(toFile: core.baseSubPath(versionSpecsFileName))
+                        print("Set spec: \(spec.toStr())")
+                    } else {
+                        print("Invalid spec.")
+                    }
+                }
+            } else {
+                print("Can't determine newest version to add to spec.")
+            }
+        } catch {
+            print("Error: \(error)")
+        }
+    }
+
     func run(cmd: ParsedCommand, core: CommandCore) {
         var compatibleMode: Bool = false
         if cmd.option("--compatible") != nil {
@@ -29,60 +84,19 @@ class AddCommand: Command {
                 return entry.name.lowercased() == param.lowercased()
             }.first
             if let entry = entry {
-                do {
-                    // make directory
-                    var isDir: ObjCBool = ObjCBool.init(false)
-                    let submodulesPath = core.baseSubPath("submodules")
-                    let exists = FileManager.default.fileExists(atPath: submodulesPath, isDirectory: &isDir)
-                    if exists == true && isDir.boolValue == false {
-                        print("submodules already exists and is not a directory.")
-                        return
-                    } else if exists == false {
-                        try FileManager.default.createDirectory(atPath: submodulesPath, withIntermediateDirectories: true, attributes: nil)
-                    }
-
-                    // add submodule
-                    let submodulePath = "submodules/\(entry.name)"
-                    ProcessRunner.runCommand(["git", "submodule", "add", entry.url, submodulePath], echoOutput: true)
-
-                    core.setCurrentDir(submodulePath)
-                    ProcessRunner.runCommand(["git", "submodule", "update", "--init", "--recursive"], echoOutput: true)
-                    core.resetCurrentDir()
-
-                    // set to newest version
-                    let tags = scm.tags(submodulePath)
-                    if let newest = tags.last {
-                        scm.checkout(submodulePath, object: newest.fullString)
-
-                        // add to spec
-                        let comparison = compatibleMode == true ? "~>" : "=="
-                        var version: String?
-                        if compatibleMode == true {
-                            if let replacement = newest.copyDroppingLastVersionElement() {
-                                version = replacement.fullString
-                            } else {
-                                print("Can't calculate compatible mode version string.")
-                            }
-                        } else {
-                            version = newest.fullString
-                        }
-                        if let version = version {
-                            if let spec = VersionSpec.parse(name: entry.name, comparison: comparison, version: version) {
-                                versionSpecs.setSpec(name: spec.name, spec: spec)
-                                versionSpecs.write(toFile: core.baseSubPath(versionSpecsFileName))
-                                print("Set spec: \(spec.toStr())")
-                            } else {
-                                print("Invalid spec.")
-                            }
-                        }
-                    } else {
-                        print("Can't determine newest version to add to spec.")
-                    }
-                } catch {
-                    print("Error: \(error)")
-                }
+                addSubmodule(core: core, entry: entry, compatibleMode: compatibleMode)
             } else {
-                print("Missing definition for \(param) in catalog.")
+                if let opt = cmd.option("--url"), opt.arguments.count == 1, cmd.parameters.count == 1 {
+                    let url = opt.arguments[0]
+                    if catalog.add(name: param, url: url) == true {
+                        let newEntry = CatalogEntry(name: param, url: url)
+                        addSubmodule(core: core, entry: newEntry, compatibleMode: compatibleMode)
+                    } else {
+                        print("Issue adding definition for \(param) to catalog.")
+                    }
+                } else {
+                    print("Missing definition for \(param) in catalog.")
+                }
             }
         }
     }
@@ -97,6 +111,13 @@ class AddCommand: Command {
         compatibleOption.longOption = "--compatible"
         compatibleOption.help = "Add module to spec in compatible mode (vs equal)"
         command.options.append(compatibleOption)
+
+        var urlOption = CommandOption()
+        urlOption.shortOption = "-u"
+        urlOption.longOption = "--url"
+        urlOption.help = "Url for module, for when it isn't in the catalog"
+        urlOption.argumentCount = 1
+        command.options.append(urlOption)
 
         var parameter = ParameterInfo()
         parameter.hint = "module-name"
