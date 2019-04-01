@@ -10,6 +10,7 @@
 		DB00628421B4387300B09839 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5F5602217A12A90044D065 /* Catalog.swift */; };
 		DB23F7042110ABF40048E1E9 /* libCommandLineCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB23F7032110ABF40048E1E9 /* libCommandLineCore.a */; };
 		DB23F7092110ACF10048E1E9 /* Scanner-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F7082110ACF10048E1E9 /* Scanner-Extension.swift */; };
+		DB463C6F2252AAAD00D8EFBC /* libObjectMapper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB5F5600217A11190044D065 /* libObjectMapper.a */; };
 		DB5F5601217A11190044D065 /* libObjectMapper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB5F5600217A11190044D065 /* libObjectMapper.a */; };
 		DB5F5603217A12A90044D065 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5F5602217A12A90044D065 /* Catalog.swift */; };
 		DB72736A210BC21400CCDA2C /* ReportCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB727369210BC21400CCDA2C /* ReportCommand.swift */; };
@@ -94,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB463C6F2252AAAD00D8EFBC /* libObjectMapper.a in Frameworks */,
 				DBD2AE492145616D00E83F4F /* libCommandLineCore.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -228,12 +230,12 @@
 				TargetAttributes = {
 					DBD6E7A21F6B54D600C6C2FD = {
 						CreatedOnToolsVersion = 9.0;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					DBDCDC131F6DC4110081D528 = {
 						CreatedOnToolsVersion = 9.0;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -244,6 +246,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = DBD6E79A1F6B54D600C6C2FD;
 			productRefGroup = DBD6E7A41F6B54D700C6C2FD /* Products */;
@@ -451,7 +454,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5886TSL9MF;
 				PRODUCT_NAME = dm;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -461,7 +464,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5886TSL9MF;
 				PRODUCT_NAME = dm;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -475,7 +478,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.droolingcat.dependency-managerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -489,7 +492,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.droolingcat.dependency-managerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
