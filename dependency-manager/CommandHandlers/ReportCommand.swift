@@ -72,19 +72,51 @@ class ReportCommand: Command {
         if let moduleSemver = submodule.semver {
             let outOfBandFull = "\(moduleSemver.prefix ?? "")\(moduleSemver.major).\(moduleSemver.minor ?? 0).\(moduleSemver.patch ?? 0)"
             if let outOfBandBase = SemVer.init(outOfBandFull) {
-                let matching = outOfBandBase.matching(fromList: tags, withTest: .greaterThanOrEqual)
-                if let last = matching.last {
-                    if last > moduleSemver && (newver == nil || last > newver!) {
-                        if terse == true {
-                            if msg.count > 0 {
-                                msg += ", "
+                let release = tags.filter { (ver) -> Bool in
+                    if ver.preReleaseMajor == nil {
+                        return true
+                    }
+                    return false
+                }
+                if release.count > 0 {
+                    let matching = outOfBandBase.matching(fromList: release, withTest: .greaterThanOrEqual)
+                    if let last = matching.last {
+                        if last > moduleSemver && (newver == nil || last > newver!) {
+                            if terse == true {
+                                if msg.count > 0 {
+                                    msg += ", "
+                                }
+                                msg += "upgrade available: \(last.fullString)"
+                            } else {
+                                if msg.count > 0 {
+                                    msg += "\n"
+                                }
+                                msg += "      Out of spec new version available: \(last.fullString)"
                             }
-                            msg += "upgrade available: \(last.fullString)"
-                        } else {
-                            if msg.count > 0 {
-                                msg += "\n"
+                        }
+                    }
+                }
+                let prerelease = tags.filter { (ver) -> Bool in
+                    if ver.preReleaseMajor == nil {
+                        return false
+                    }
+                    return true
+                }
+                if prerelease.count > 0 {
+                    let matching = outOfBandBase.matching(fromList: prerelease, withTest: .greaterThanOrEqual)
+                    if let last = matching.last {
+                        if last > moduleSemver && (newver == nil || last > newver!) {
+                            if terse == true {
+                                if msg.count > 0 {
+                                    msg += ", "
+                                }
+                                msg += "prerelease upgrade available: \(last.fullString)"
+                            } else {
+                                if msg.count > 0 {
+                                    msg += "\n"
+                                }
+                                msg += "      Out of spec new prerelease version available: \(last.fullString)"
                             }
-                            msg += "      Out of spec new version available: \(last.fullString)"
                         }
                     }
                 }
