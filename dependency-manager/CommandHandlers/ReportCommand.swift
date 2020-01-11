@@ -8,7 +8,6 @@
 
 import Foundation
 import CommandLineCore
-import ObjectMapper
 
 class ReportCommand: Command {
     var ceilingDirectory: String = "/"

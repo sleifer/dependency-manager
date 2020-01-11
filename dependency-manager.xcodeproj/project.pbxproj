@@ -24,6 +24,7 @@
 		DB8E251F1F92B65F002F59F2 /* VersionSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E251E1F92B65F002F59F2 /* VersionSpecification.swift */; };
 		DBAF0D3B21F3962800D31C7D /* CatalogCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB871FF3217CB0BE009FF758 /* CatalogCommand.swift */; };
 		DBAF0D3C21F3962A00D31C7D /* AddCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB871FF7217D0249009FF758 /* AddCommand.swift */; };
+		DBD22EA723CA05200099E05D /* RemoveCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD22EA623CA05200099E05D /* RemoveCommand.swift */; };
 		DBD2AE3E2145603D00E83F4F /* Scanner-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F7082110ACF10048E1E9 /* Scanner-Extension.swift */; };
 		DBD2AE402145606500E83F4F /* InitCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFE75BF20090C800088BA1B /* InitCommand.swift */; };
 		DBD2AE412145606500E83F4F /* OutdatedCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */; };
@@ -71,6 +72,7 @@
 		DB8E250B1F8E6C86002F59F2 /* UpdateCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCommand.swift; sourceTree = "<group>"; };
 		DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutdatedCommand.swift; sourceTree = "<group>"; };
 		DB8E251E1F92B65F002F59F2 /* VersionSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionSpecification.swift; sourceTree = "<group>"; };
+		DBD22EA623CA05200099E05D /* RemoveCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveCommand.swift; sourceTree = "<group>"; };
 		DBD359911F98E72D006F17C3 /* semverMatchingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = semverMatchingTests.swift; sourceTree = "<group>"; };
 		DBD6E7A31F6B54D700C6C2FD /* dm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dm; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBD6E7A61F6B54D700C6C2FD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				DB871FF7217D0249009FF758 /* AddCommand.swift */,
+				DBD22EA623CA05200099E05D /* RemoveCommand.swift */,
 				DB871FF3217CB0BE009FF758 /* CatalogCommand.swift */,
 				DBFE75BF20090C800088BA1B /* InitCommand.swift */,
 				DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */,
@@ -225,7 +228,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = droolingcat.com;
 				TargetAttributes = {
 					DBD6E7A21F6B54D600C6C2FD = {
@@ -307,6 +310,7 @@
 				DB8E250A1F8E6C80002F59F2 /* SpecCommand.swift in Sources */,
 				DB8E250C1F8E6C86002F59F2 /* UpdateCommand.swift in Sources */,
 				DB8E25021F8E5231002F59F2 /* SCM.swift in Sources */,
+				DBD22EA723CA05200099E05D /* RemoveCommand.swift in Sources */,
 				DB871FF4217CB0BE009FF758 /* CatalogCommand.swift in Sources */,
 				DB8E25041F8E5238002F59F2 /* Git.swift in Sources */,
 			);
@@ -451,6 +455,7 @@
 		DBD6E7AB1F6B54D700C6C2FD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5886TSL9MF;
 				PRODUCT_NAME = dm;
@@ -461,6 +466,7 @@
 		DBD6E7AC1F6B54D700C6C2FD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5886TSL9MF;
 				PRODUCT_NAME = dm;
