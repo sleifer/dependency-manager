@@ -100,7 +100,7 @@ class VersionSpecification {
     func write(toFile: String) {
         let items = specs.values.map { (spec) -> String in
             return spec.toStr()
-        }
+        }.sorted()
         var text = items.joined(separator: "\n").appending("\n")
         text.append("\n")
         text.append("// Submodule name (space) <test> (space) version\n")
