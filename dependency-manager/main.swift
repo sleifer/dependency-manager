@@ -9,7 +9,6 @@
 import Foundation
 import CommandLineCore
 
-let toolVersion = "0.40"
 let versionSpecsFileName = ".module-versions"
 let scm: SCM = Git()
 var versionSpecs = VersionSpecification()
@@ -22,7 +21,7 @@ func main() {
     #endif
 
     let core = CommandCore()
-    core.set(version: toolVersion)
+    core.set(version: fullVersion)
     core.set(help: "A tool to keep submodule dependencies up to date.")
 
     if scm.isInstalled == true && scm.isInitialized == true {

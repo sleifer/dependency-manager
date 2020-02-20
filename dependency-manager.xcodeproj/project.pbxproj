@@ -3,15 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2608C0F4D2DD4C7A96A3CDE5402980FD /* versions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31958CB0E17D4FA3A1773A7B963C1175 /* versions.swift */; };
 		DB00628421B4387300B09839 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5F5602217A12A90044D065 /* Catalog.swift */; };
-		DB23F7042110ABF40048E1E9 /* libCommandLineCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB23F7032110ABF40048E1E9 /* libCommandLineCore.a */; };
 		DB23F7092110ACF10048E1E9 /* Scanner-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F7082110ACF10048E1E9 /* Scanner-Extension.swift */; };
 		DB463C6F2252AAAD00D8EFBC /* libObjectMapper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB5F5600217A11190044D065 /* libObjectMapper.a */; };
-		DB5F5601217A11190044D065 /* libObjectMapper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB5F5600217A11190044D065 /* libObjectMapper.a */; };
 		DB5F5603217A12A90044D065 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5F5602217A12A90044D065 /* Catalog.swift */; };
 		DB72736A210BC21400CCDA2C /* ReportCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB727369210BC21400CCDA2C /* ReportCommand.swift */; };
 		DB871FF4217CB0BE009FF758 /* CatalogCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB871FF3217CB0BE009FF758 /* CatalogCommand.swift */; };
@@ -41,6 +40,8 @@
 		DBDCDC0F1F6DC2DA0081D528 /* SemVerParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */; };
 		DBDCDC171F6DC4110081D528 /* semverParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC161F6DC4110081D528 /* semverParsingTests.swift */; };
 		DBDCDC1C1F6DC6910081D528 /* SemVerParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */; };
+		DBF7720723FEF4BE000B4A22 /* CommandLineCore in Frameworks */ = {isa = PBXBuildFile; productRef = DBF7720623FEF4BE000B4A22 /* CommandLineCore */; };
+		DBF7720923FEF4BE000B4A22 /* ObjectMapper in Frameworks */ = {isa = PBXBuildFile; productRef = DBF7720823FEF4BE000B4A22 /* ObjectMapper */; };
 		DBFE75C020090C800088BA1B /* InitCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFE75BF20090C800088BA1B /* InitCommand.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		31958CB0E17D4FA3A1773A7B963C1175 /* versions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = versions.swift; sourceTree = "<group>"; };
 		DB212B56224989080039CED1 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		DB23F7012110ABE50048E1E9 /* .module-versions */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".module-versions"; sourceTree = "<group>"; };
 		DB23F7032110ABF40048E1E9 /* libCommandLineCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCommandLineCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +82,8 @@
 		DBDCDC141F6DC4110081D528 /* dependency-managerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dependency-managerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDCDC161F6DC4110081D528 /* semverParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = semverParsingTests.swift; sourceTree = "<group>"; };
 		DBDCDC181F6DC4110081D528 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DBF7720423FEF4B8000B4A22 /* ObjectMapper */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ObjectMapper; path = submodules/ObjectMapper; sourceTree = "<group>"; };
+		DBF7720523FEF4B9000B4A22 /* CommandLineCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CommandLineCore; path = submodules/CommandLineCore; sourceTree = "<group>"; };
 		DBFE75BF20090C800088BA1B /* InitCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitCommand.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,8 +92,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB5F5601217A11190044D065 /* libObjectMapper.a in Frameworks */,
-				DB23F7042110ABF40048E1E9 /* libCommandLineCore.a in Frameworks */,
+				DBF7720923FEF4BE000B4A22 /* ObjectMapper in Frameworks */,
+				DBF7720723FEF4BE000B4A22 /* CommandLineCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,8 +144,11 @@
 		DBD6E79A1F6B54D600C6C2FD = {
 			isa = PBXGroup;
 			children = (
+				FBBE8FA9C55240B88E5CEE6565A45303 /* Derived */,
 				DB212B56224989080039CED1 /* .swiftlint.yml */,
 				DB23F7012110ABE50048E1E9 /* .module-versions */,
+				DBF7720523FEF4B9000B4A22 /* CommandLineCore */,
+				DBF7720423FEF4B8000B4A22 /* ObjectMapper */,
 				DBD6E7A51F6B54D700C6C2FD /* dependency-manager */,
 				DBDCDC151F6DC4110081D528 /* dependency-managerTests */,
 				DBD6E7A41F6B54D700C6C2FD /* Products */,
@@ -183,6 +190,14 @@
 			path = "dependency-managerTests";
 			sourceTree = "<group>";
 		};
+		FBBE8FA9C55240B88E5CEE6565A45303 /* Derived */ = {
+			isa = PBXGroup;
+			children = (
+				31958CB0E17D4FA3A1773A7B963C1175 /* versions.swift */,
+			);
+			name = Derived;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -190,6 +205,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DBD6E7AA1F6B54D700C6C2FD /* Build configuration list for PBXNativeTarget "dependency-manager" */;
 			buildPhases = (
+				895F73680D614DF095E6C408743CD128 /* Stamp Version */,
 				DBD6E79F1F6B54D600C6C2FD /* Sources */,
 				DBD6E7A01F6B54D600C6C2FD /* Frameworks */,
 				DBD6E7A11F6B54D600C6C2FD /* CopyFiles */,
@@ -200,6 +216,10 @@
 			dependencies = (
 			);
 			name = "dependency-manager";
+			packageProductDependencies = (
+				DBF7720623FEF4BE000B4A22 /* CommandLineCore */,
+				DBF7720823FEF4BE000B4A22 /* ObjectMapper */,
+			);
 			productName = "dependency-manager";
 			productReference = DBD6E7A31F6B54D700C6C2FD /* dm */;
 			productType = "com.apple.product-type.tool";
@@ -273,6 +293,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		895F73680D614DF095E6C408743CD128 /* Stamp Version */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			name = "Stamp Version";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/versions.swift",
+			);
+			shellPath = /bin/sh;
+			shellScript = "PATH=${PATH}:${HOME}/bin\nif which pt > /dev/null; then\n  pt stamp ${BUILT_PRODUCTS_DIR}/versions.swift\nelse\n  echo \"warning: pt not installed\"\nfi";
+			showEnvVarsInLog = 0;
+		};
 		DB212B55224988DE0039CED1 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -313,6 +344,7 @@
 				DBD22EA723CA05200099E05D /* RemoveCommand.swift in Sources */,
 				DB871FF4217CB0BE009FF758 /* CatalogCommand.swift in Sources */,
 				DB8E25041F8E5238002F59F2 /* Git.swift in Sources */,
+				2608C0F4D2DD4C7A96A3CDE5402980FD /* versions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,7 +480,8 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;
 		};
@@ -481,7 +514,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 5886TSL9MF;
 				INFOPLIST_FILE = "dependency-managerTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.droolingcat.dependency-managerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -495,7 +532,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 5886TSL9MF;
 				INFOPLIST_FILE = "dependency-managerTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.droolingcat.dependency-managerTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -533,6 +574,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DBF7720623FEF4BE000B4A22 /* CommandLineCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CommandLineCore;
+		};
+		DBF7720823FEF4BE000B4A22 /* ObjectMapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ObjectMapper;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DBD6E79B1F6B54D600C6C2FD /* Project object */;
 }

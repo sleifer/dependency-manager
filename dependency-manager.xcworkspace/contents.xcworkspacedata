@@ -4,10 +4,4 @@
    <FileRef
       location = "container:dependency-manager.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:submodules/CommandLineCore/CommandLineCore.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:submodules/ObjectMapper/ObjectMapper.xcodeproj">
-   </FileRef>
 </Workspace>
