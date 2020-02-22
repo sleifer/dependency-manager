@@ -200,7 +200,7 @@ class ReportCommand: Command {
                                     catalog.add(name: aSpec.name, url: submodule.url)
                                     if check == true {
                                         let (updateText, current) = updateCheck(submodule, aSpec, terse: true)
-                                        if nocurrent == false || current == true {
+                                        if !(nocurrent == true && current == true) {
                                             print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(updateText)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
                                         }
                                     } else  if info == true {
@@ -217,7 +217,7 @@ class ReportCommand: Command {
 
                                         if check == true {
                                             let (updateText, current) = updateCheck(submodule, aSpec)
-                                            if nocurrent == false || current == true {
+                                            if !(nocurrent == true && current == true) {
                                                 print(updateText)
                                             }
                                         }
