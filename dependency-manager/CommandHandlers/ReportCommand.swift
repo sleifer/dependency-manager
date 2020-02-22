@@ -17,8 +17,9 @@ class ReportCommand: Command {
 
     // swiftlint:disable cyclomatic_complexity
 
-    fileprivate func updateCheck(_ submodule: SubmoduleInfo, _ aSpec: VersionSpec, terse: Bool = false) -> String {
+    fileprivate func updateCheck(_ submodule: SubmoduleInfo, _ aSpec: VersionSpec, terse: Bool = false) -> (String, Bool) {
         var msg: String = ""
+        var current: Bool = true
         let result = scm.fetch(submodule.path)
         if case .error(_, let text) = result {
             if terse == true {
@@ -39,6 +40,7 @@ class ReportCommand: Command {
                     newver = last
                 }
                 if let newver = newver {
+                    current = false
                     if terse == true {
                         msg = "update available: \(newver.fullString)"
                     } else {
@@ -46,6 +48,7 @@ class ReportCommand: Command {
                     }
                 } else {
                     if let cursemver = submodule.semver, last < cursemver {
+                        current = false
                         if terse == true {
                             msg = "beyond spec"
                         } else {
@@ -60,6 +63,7 @@ class ReportCommand: Command {
                     }
                 }
             } else {
+                current = false
                 if terse == true {
                     msg = "no matching spec found"
                 } else {
@@ -82,11 +86,13 @@ class ReportCommand: Command {
                     if let last = matching.last {
                         if last > moduleSemver && (newver == nil || last > newver!) {
                             if terse == true {
+                                current = false
                                 if msg.count > 0 {
                                     msg += ", "
                                 }
                                 msg += "upgrade available: \(last.fullString)"
                             } else {
+                                current = false
                                 if msg.count > 0 {
                                     msg += "\n"
                                 }
@@ -106,11 +112,13 @@ class ReportCommand: Command {
                     if let last = matching.last {
                         if last > moduleSemver && (newver == nil || last > newver!) {
                             if terse == true {
+                                current = false
                                 if msg.count > 0 {
                                     msg += ", "
                                 }
                                 msg += "prerelease upgrade available: \(last.fullString)"
                             } else {
+                                current = false
                                 if msg.count > 0 {
                                     msg += "\n"
                                 }
@@ -123,6 +131,7 @@ class ReportCommand: Command {
         }
 
         if msg.count == 0 {
+            current = false
             if terse == true {
                 msg = "no version specifier"
             } else {
@@ -130,7 +139,7 @@ class ReportCommand: Command {
             }
         }
 
-        return msg
+        return (msg, current)
     }
 
     // swiftlint:enable cyclomatic_complexity
@@ -138,26 +147,12 @@ class ReportCommand: Command {
     // swiftlint:disable cyclomatic_complexity
 
     func run(cmd: ParsedCommand, core: CommandCore) {
-        var verbose = false
-        if cmd.option("--verbose") != nil {
-            verbose = true
-        }
-        var csv = false
-        if cmd.option("--csv") != nil {
-            csv = true
-        }
-        var unmanaged = false
-        if cmd.option("--unmanaged") != nil {
-            unmanaged = true
-        }
-        var info = false
-        if cmd.option("--info") != nil {
-            info = true
-        }
-        var check = false
-        if cmd.option("--check") != nil {
-            check = true
-        }
+        let verbose = cmd.boolOption("--verbose")
+        let csv = cmd.boolOption("--csv")
+        let unmanaged = cmd.boolOption("--unmanaged")
+        let info = cmd.boolOption("--info")
+        let check = cmd.boolOption("--check")
+        let nocurrent = cmd.boolOption("--nocurrent")
 
         let baseDirectory = FileManager.default.currentDirectoryPath
         ceilingDirectory = baseDirectory.deletingLastPathComponent
@@ -204,8 +199,10 @@ class ReportCommand: Command {
                                 if let submodule = modules.spec(named: aSpec.name) {
                                     catalog.add(name: aSpec.name, url: submodule.url)
                                     if check == true {
-                                        let updateText = updateCheck(submodule, aSpec, terse: true)
-                                        print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(updateText)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                        let (updateText, current) = updateCheck(submodule, aSpec, terse: true)
+                                        if nocurrent == false || current == true {
+                                            print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(updateText)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                        }
                                     } else  if info == true {
                                         print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
                                     } else {
@@ -219,8 +216,10 @@ class ReportCommand: Command {
                                         print("    \(aSpec.name) \(aSpec.versSpecStr()) @ \(submodule.version)")
 
                                         if check == true {
-                                            let updateText = updateCheck(submodule, aSpec)
-                                            print(updateText)
+                                            let (updateText, current) = updateCheck(submodule, aSpec)
+                                            if nocurrent == false || current == true {
+                                                print(updateText)
+                                            }
                                         }
                                     } else {
                                         print("    \(aSpec.name)")
@@ -282,6 +281,11 @@ class ReportCommand: Command {
         infoOption.longOption = "--info"
         infoOption.help = "Show current versions of modules"
         command.options.append(infoOption)
+
+        var noUpToDateOption = CommandOption()
+        noUpToDateOption.longOption = "--nocurrent"
+        noUpToDateOption.help = "Do not show items that are up to date with no available updates"
+        command.options.append(noUpToDateOption)
 
         var checkOption = CommandOption()
         checkOption.shortOption = "-k"
