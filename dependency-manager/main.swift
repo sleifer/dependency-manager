@@ -16,12 +16,12 @@ var versionSpecs = VersionSpecification()
 func main() {
     #if DEBUG
     // for testing in Xcode
-    let path = "~/Documents/Code/PoolCareLog".expandingTildeInPath
+    let path = "~/Documents/Clients/zenspirations/care-moji-app".expandingTildeInPath
     FileManager.default.changeCurrentDirectoryPath(path)
     #endif
 
     let core = CommandCore()
-    core.set(version: fullVersion)
+    core.set(version: VersionStrings.fullVersion)
     core.set(help: "A tool to keep submodule dependencies up to date.")
 
     if scm.isInstalled == true && scm.isInitialized == true {
@@ -39,7 +39,7 @@ func main() {
 
     #if DEBUG
     // for testing in Xcode
-    let args = ["dm", "remove", "ObjectMapper"]
+    let args = ["dm", "add", "-c", "-u", "~/Documents/Code/MessageQueue.git".expandingTildeInPath, "MessageQueue"]
     #else
     let args = CommandLine.arguments
     #endif

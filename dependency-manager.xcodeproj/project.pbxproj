@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2608C0F4D2DD4C7A96A3CDE5402980FD /* versions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31958CB0E17D4FA3A1773A7B963C1175 /* versions.swift */; };
+		AD5152982A4C4B029D422E1A8A5E4033 /* versions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD5B0DA695043E293B9438F377F333B /* versions.swift */; };
 		DB00628421B4387300B09839 /* Catalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5F5602217A12A90044D065 /* Catalog.swift */; };
 		DB23F7092110ACF10048E1E9 /* Scanner-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB23F7082110ACF10048E1E9 /* Scanner-Extension.swift */; };
 		DB463C6F2252AAAD00D8EFBC /* libObjectMapper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB5F5600217A11190044D065 /* libObjectMapper.a */; };
@@ -58,7 +58,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		31958CB0E17D4FA3A1773A7B963C1175 /* versions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = versions.swift; sourceTree = "<group>"; };
+		7FD5B0DA695043E293B9438F377F333B /* versions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = versions.swift; sourceTree = DERIVED_FILE_DIR; };
 		DB212B56224989080039CED1 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		DB23F7012110ABE50048E1E9 /* .module-versions */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".module-versions"; sourceTree = "<group>"; };
 		DB23F7032110ABF40048E1E9 /* libCommandLineCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libCommandLineCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,7 +144,7 @@
 		DBD6E79A1F6B54D600C6C2FD = {
 			isa = PBXGroup;
 			children = (
-				FBBE8FA9C55240B88E5CEE6565A45303 /* Derived */,
+				7FD5B0DA695043E293B9438F377F333B /* versions.swift */,
 				DB212B56224989080039CED1 /* .swiftlint.yml */,
 				DB23F7012110ABE50048E1E9 /* .module-versions */,
 				DBF7720523FEF4B9000B4A22 /* CommandLineCore */,
@@ -190,14 +190,6 @@
 			path = "dependency-managerTests";
 			sourceTree = "<group>";
 		};
-		FBBE8FA9C55240B88E5CEE6565A45303 /* Derived */ = {
-			isa = PBXGroup;
-			children = (
-				31958CB0E17D4FA3A1773A7B963C1175 /* versions.swift */,
-			);
-			name = Derived;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -205,7 +197,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DBD6E7AA1F6B54D700C6C2FD /* Build configuration list for PBXNativeTarget "dependency-manager" */;
 			buildPhases = (
-				895F73680D614DF095E6C408743CD128 /* Stamp Version */,
+				C2CED5F315B34CC5AD3FA506BCD146E1 /* Stamp Version */,
 				DBD6E79F1F6B54D600C6C2FD /* Sources */,
 				DBD6E7A01F6B54D600C6C2FD /* Frameworks */,
 				DBD6E7A11F6B54D600C6C2FD /* CopyFiles */,
@@ -293,15 +285,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		895F73680D614DF095E6C408743CD128 /* Stamp Version */ = {
+		C2CED5F315B34CC5AD3FA506BCD146E1 /* Stamp Version */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			name = "Stamp Version";
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/versions.swift",
+				"$(DERIVED_FILE_DIR)/versions.swift",
 			);
 			shellPath = /bin/sh;
-			shellScript = "PATH=${PATH}:${HOME}/bin\nif which pt > /dev/null; then\n  pt stamp ${BUILT_PRODUCTS_DIR}/versions.swift\nelse\n  echo \"warning: pt not installed\"\nfi";
+			shellScript = "PATH=${PATH}:${HOME}/bin\nif which pt > /dev/null; then\n  pt stamp ${DERIVED_FILE_DIR}/versions.swift\nelse\n  echo \"warning: pt not installed\"\nfi";
 			showEnvVarsInLog = 0;
 		};
 		DB212B55224988DE0039CED1 /* SwiftLint */ = {
@@ -344,7 +336,7 @@
 				DBD22EA723CA05200099E05D /* RemoveCommand.swift in Sources */,
 				DB871FF4217CB0BE009FF758 /* CatalogCommand.swift in Sources */,
 				DB8E25041F8E5238002F59F2 /* Git.swift in Sources */,
-				2608C0F4D2DD4C7A96A3CDE5402980FD /* versions.swift in Sources */,
+				AD5152982A4C4B029D422E1A8A5E4033 /* versions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
