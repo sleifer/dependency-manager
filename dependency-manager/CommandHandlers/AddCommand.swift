@@ -6,20 +6,19 @@
 //  Copyright © 2018 droolingcat.com. All rights reserved.
 //
 
-import Foundation
 import CommandLineCore
+import Foundation
 
 class AddCommand: Command {
-    required init() {
-    }
+    required init() {}
 
     fileprivate func addSubmodule(core: CommandCore, entry: CatalogEntry, compatibleMode: Bool) {
         do {
             // make directory
-            var isDir: ObjCBool = ObjCBool.init(false)
+            var isDir: ObjCBool = ObjCBool(false)
             let submodulesPath = core.baseSubPath("submodules")
             let exists = FileManager.default.fileExists(atPath: submodulesPath, isDirectory: &isDir)
-            if exists == true && isDir.boolValue == false {
+            if exists == true, isDir.boolValue == false {
                 print("submodules already exists and is not a directory.")
                 return
             } else if exists == false {
@@ -81,22 +80,20 @@ class AddCommand: Command {
         }
         for param in cmd.parameters {
             let entry = catalog.entries.filter { (entry) -> Bool in
-                return entry.name.lowercased() == param.lowercased()
+                entry.name.lowercased() == param.lowercased()
             }.first
-            if let entry = entry {
+            if let opt = cmd.option("--url"), opt.arguments.count == 1, cmd.parameters.count == 1 {
+                let url = opt.arguments[0]
+                if catalog.add(name: param, url: url) == true {
+                    let newEntry = CatalogEntry(name: param, url: url)
+                    addSubmodule(core: core, entry: newEntry, compatibleMode: compatibleMode)
+                } else {
+                    print("Issue adding definition for \(param) to catalog.")
+                }
+            } else if let entry = entry {
                 addSubmodule(core: core, entry: entry, compatibleMode: compatibleMode)
             } else {
-                if let opt = cmd.option("--url"), opt.arguments.count == 1, cmd.parameters.count == 1 {
-                    let url = opt.arguments[0]
-                    if catalog.add(name: param, url: url) == true {
-                        let newEntry = CatalogEntry(name: param, url: url)
-                        addSubmodule(core: core, entry: newEntry, compatibleMode: compatibleMode)
-                    } else {
-                        print("Issue adding definition for \(param) to catalog.")
-                    }
-                } else {
-                    print("Missing definition for \(param) in catalog.")
-                }
+                print("Missing definition for \(param) in catalog.")
             }
         }
     }
@@ -125,12 +122,12 @@ class AddCommand: Command {
 
         let catalog = Catalog.load()
         parameter.completions = catalog.entries.map { (entry) -> String in
-            return entry.name
-            }.sorted { (left, right) -> Bool in
-                if left.lowercased() < right.lowercased() {
-                    return true
-                }
-                return false
+            entry.name
+        }.sorted { (left, right) -> Bool in
+            if left.lowercased() < right.lowercased() {
+                return true
+            }
+            return false
         }
 
         command.requiredParameters.append(parameter)
