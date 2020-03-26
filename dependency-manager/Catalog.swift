@@ -7,48 +7,24 @@
 //
 
 import Foundation
-import ObjectMapper
 
 let catalogPath = "~/.dm-catalog.json".expandingTildeInPath
 
-struct CatalogEntry {
+struct CatalogEntry: Codable, Equatable {
     var name: String
     var url: String
-}
 
-extension CatalogEntry: Equatable {
     public static func == (lhs: CatalogEntry, rhs: CatalogEntry) -> Bool {
-        if lhs.name == rhs.name && lhs.url == rhs.url {
+        if lhs.name == rhs.name, lhs.url == rhs.url {
             return true
         }
         return false
     }
 }
 
-extension CatalogEntry: Mappable {
-    init?(map: Map) {
-        name = ""
-        url = ""
-    }
-
-    mutating func mapping(map: Map) {
-        name <- map["name"]
-        url <- map["url"]
-    }
-}
-
-class Catalog: Mappable {
+class Catalog: Codable, JSONReadWrite {
+    typealias HostClass = Catalog
     var entries: [CatalogEntry] = []
-
-    init() {
-    }
-
-    required init?(map: Map) {
-    }
-
-    func mapping(map: Map) {
-        entries <- map["entries"]
-    }
 
     @discardableResult
     func add(name: String, url: String) -> Bool {
@@ -61,37 +37,19 @@ class Catalog: Mappable {
     }
 
     static func load() -> Catalog {
-        var newCatalog: Catalog?
-
-        do {
-            if FileManager.default.fileExists(atPath: catalogPath) == true {
-                let catalogUrl = URL(fileURLWithPath: catalogPath)
-                let json = try String(contentsOf: catalogUrl, encoding: .utf8)
-                newCatalog = Catalog(JSONString: json)
-            }
-        } catch {
-            print("Error loading catalog: \(error)")
-        }
-
-        if let newCatalog = newCatalog {
-            return newCatalog
+        if let catalog = read(contentsOf: URL(fileURLWithPath: catalogPath)) {
+            return catalog
         }
         return Catalog()
     }
 
     func save() {
-        do {
-            entries.sort { (left, right) -> Bool in
-                if left.name.lowercased() < right.name.lowercased() {
-                    return true
-                }
-                return false
+        entries.sort { (left, right) -> Bool in
+            if left.name.lowercased() < right.name.lowercased() {
+                return true
             }
-            let json = self.toJSONString(prettyPrint: true)
-            let catalogUrl = URL(fileURLWithPath: catalogPath)
-            try json?.write(to: catalogUrl, atomically: true, encoding: .utf8)
-        } catch {
-            print("Error saving catalog: \(error)")
+            return false
         }
+        write(to: URL(fileURLWithPath: catalogPath))
     }
 }

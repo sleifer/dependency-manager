@@ -21,6 +21,7 @@
 		DB8E250C1F8E6C86002F59F2 /* UpdateCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E250B1F8E6C86002F59F2 /* UpdateCommand.swift */; };
 		DB8E250E1F8E6C8C002F59F2 /* OutdatedCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */; };
 		DB8E251F1F92B65F002F59F2 /* VersionSpecification.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8E251E1F92B65F002F59F2 /* VersionSpecification.swift */; };
+		DBAD34B7242D1F9100067728 /* JSONReadWrite.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBAD34B6242D1F9100067728 /* JSONReadWrite.swift */; };
 		DBAF0D3B21F3962800D31C7D /* CatalogCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB871FF3217CB0BE009FF758 /* CatalogCommand.swift */; };
 		DBAF0D3C21F3962A00D31C7D /* AddCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB871FF7217D0249009FF758 /* AddCommand.swift */; };
 		DBD22EA723CA05200099E05D /* RemoveCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD22EA623CA05200099E05D /* RemoveCommand.swift */; };
@@ -41,7 +42,6 @@
 		DBDCDC171F6DC4110081D528 /* semverParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC161F6DC4110081D528 /* semverParsingTests.swift */; };
 		DBDCDC1C1F6DC6910081D528 /* SemVerParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */; };
 		DBF7720723FEF4BE000B4A22 /* CommandLineCore in Frameworks */ = {isa = PBXBuildFile; productRef = DBF7720623FEF4BE000B4A22 /* CommandLineCore */; };
-		DBF7720923FEF4BE000B4A22 /* ObjectMapper in Frameworks */ = {isa = PBXBuildFile; productRef = DBF7720823FEF4BE000B4A22 /* ObjectMapper */; };
 		DBFE75C020090C800088BA1B /* InitCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFE75BF20090C800088BA1B /* InitCommand.swift */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +74,7 @@
 		DB8E250B1F8E6C86002F59F2 /* UpdateCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateCommand.swift; sourceTree = "<group>"; };
 		DB8E250D1F8E6C8C002F59F2 /* OutdatedCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutdatedCommand.swift; sourceTree = "<group>"; };
 		DB8E251E1F92B65F002F59F2 /* VersionSpecification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionSpecification.swift; sourceTree = "<group>"; };
+		DBAD34B6242D1F9100067728 /* JSONReadWrite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONReadWrite.swift; sourceTree = "<group>"; };
 		DBD22EA623CA05200099E05D /* RemoveCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveCommand.swift; sourceTree = "<group>"; };
 		DBD359911F98E72D006F17C3 /* semverMatchingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = semverMatchingTests.swift; sourceTree = "<group>"; };
 		DBD6E7A31F6B54D700C6C2FD /* dm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dm; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,7 +83,6 @@
 		DBDCDC141F6DC4110081D528 /* dependency-managerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dependency-managerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDCDC161F6DC4110081D528 /* semverParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = semverParsingTests.swift; sourceTree = "<group>"; };
 		DBDCDC181F6DC4110081D528 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DBF7720423FEF4B8000B4A22 /* ObjectMapper */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ObjectMapper; path = submodules/ObjectMapper; sourceTree = "<group>"; };
 		DBF7720523FEF4B9000B4A22 /* CommandLineCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CommandLineCore; path = submodules/CommandLineCore; sourceTree = "<group>"; };
 		DBFE75BF20090C800088BA1B /* InitCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitCommand.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -92,7 +92,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBF7720923FEF4BE000B4A22 /* ObjectMapper in Frameworks */,
 				DBF7720723FEF4BE000B4A22 /* CommandLineCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,7 +147,6 @@
 				DB212B56224989080039CED1 /* .swiftlint.yml */,
 				DB23F7012110ABE50048E1E9 /* .module-versions */,
 				DBF7720523FEF4B9000B4A22 /* CommandLineCore */,
-				DBF7720423FEF4B8000B4A22 /* ObjectMapper */,
 				DBD6E7A51F6B54D700C6C2FD /* dependency-manager */,
 				DBDCDC151F6DC4110081D528 /* dependency-managerTests */,
 				DBD6E7A41F6B54D700C6C2FD /* Products */,
@@ -172,6 +170,7 @@
 				DB72736B210BC25B00CCDA2C /* CommandHandlers */,
 				DB23F7072110ACF10048E1E9 /* Extensions */,
 				DB8E25031F8E5238002F59F2 /* Git.swift */,
+				DBAD34B6242D1F9100067728 /* JSONReadWrite.swift */,
 				DBD6E7A61F6B54D700C6C2FD /* main.swift */,
 				DB8E25011F8E5231002F59F2 /* SCM.swift */,
 				DBDCDC0E1F6DC2DA0081D528 /* SemVerParser.swift */,
@@ -210,7 +209,6 @@
 			name = "dependency-manager";
 			packageProductDependencies = (
 				DBF7720623FEF4BE000B4A22 /* CommandLineCore */,
-				DBF7720823FEF4BE000B4A22 /* ObjectMapper */,
 			);
 			productName = "dependency-manager";
 			productReference = DBD6E7A31F6B54D700C6C2FD /* dm */;
@@ -292,6 +290,7 @@
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/versions.swift",
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "PATH=${PATH}:${HOME}/bin\nif which pt > /dev/null; then\n  pt stamp ${DERIVED_FILE_DIR}/versions.swift\nelse\n  echo \"warning: pt not installed\"\nfi";
 			showEnvVarsInLog = 0;
@@ -325,6 +324,7 @@
 				DB23F7092110ACF10048E1E9 /* Scanner-Extension.swift in Sources */,
 				DBDCDC0F1F6DC2DA0081D528 /* SemVerParser.swift in Sources */,
 				DB5F5603217A12A90044D065 /* Catalog.swift in Sources */,
+				DBAD34B7242D1F9100067728 /* JSONReadWrite.swift in Sources */,
 				DB8E250E1F8E6C8C002F59F2 /* OutdatedCommand.swift in Sources */,
 				DB8E251F1F92B65F002F59F2 /* VersionSpecification.swift in Sources */,
 				DB72736A210BC21400CCDA2C /* ReportCommand.swift in Sources */,
@@ -571,10 +571,6 @@
 		DBF7720623FEF4BE000B4A22 /* CommandLineCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CommandLineCore;
-		};
-		DBF7720823FEF4BE000B4A22 /* ObjectMapper */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ObjectMapper;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
