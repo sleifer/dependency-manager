@@ -87,6 +87,7 @@ class AddCommand: Command {
                 if catalog.add(name: param, url: url) == true {
                     let newEntry = CatalogEntry(name: param, url: url)
                     addSubmodule(core: core, entry: newEntry, compatibleMode: compatibleMode)
+                    catalog.save()
                 } else {
                     print("Issue adding definition for \(param) to catalog.")
                 }
