@@ -6,12 +6,11 @@
 //  Copyright © 2017 droolingcat.com. All rights reserved.
 //
 
-import Foundation
 import CommandLineCore
+import Foundation
 
 class UpdateCommand: Command {
-    required init() {
-    }
+    required init() {}
 
     // swiftlint:disable cyclomatic_complexity
 
@@ -39,6 +38,10 @@ class UpdateCommand: Command {
                 print("submodule: \(submodule.name)")
                 print("  path: \(submodule.path)")
                 print("  url: \(submodule.url)")
+                if submodule.url.hasPrefix("git@github.com:") {
+                    let printable = "(url): https://github.com/\(submodule.url.suffix(from: 15))"
+                    print(printable)
+                }
                 print("  current version: \(submodule.version)")
 
                 addedToCatalog = addedToCatalog || catalog.add(name: submodule.name, url: submodule.url)
@@ -103,10 +106,10 @@ class UpdateCommand: Command {
         parameter.hint = "module-name"
         parameter.help = "Name of module to update"
 
-        if scm.isInstalled == true && scm.isInitialized == true {
+        if scm.isInstalled == true, scm.isInitialized == true {
             let submodules = scm.submodules()
             parameter.completions = submodules.map { (info) -> String in
-                return info.name
+                info.name
             }
         }
         command.optionalParameters.append(parameter)

@@ -6,12 +6,13 @@
 //  Copyright © 2017 droolingcat.com. All rights reserved.
 //
 
-import Foundation
 import CommandLineCore
+import Foundation
 
 class OutdatedCommand: Command {
-    required init() {
-    }
+    var urlPrinted: String = ""
+
+    required init() {}
 
     // swiftlint:disable cyclomatic_complexity
 
@@ -34,6 +35,10 @@ class OutdatedCommand: Command {
                 print("submodule: \(submodule.name)")
                 print("  path: \(submodule.path)")
                 print("  url: \(submodule.url)")
+                if submodule.url.hasPrefix("git@github.com:") {
+                    let printable = "(url): https://github.com/\(submodule.url.suffix(from: 15))"
+                    print(printable)
+                }
                 print("  current version: \(submodule.version)")
             }
 
@@ -61,9 +66,11 @@ class OutdatedCommand: Command {
                         newver = last
                     }
                     if let newver = newver {
+                        printUrl(submodule.url)
                         print("  New version available: \(newver.fullString)")
                     } else {
                         if let cursemver = submodule.semver, last < cursemver {
+                            printUrl(submodule.url)
                             print("  Current version is beyond spec.")
                         } else {
                             print("  Up to date.")
@@ -74,7 +81,7 @@ class OutdatedCommand: Command {
                 }
 
                 let outOfBandFull = "\(moduleSemver.prefix ?? "")\(moduleSemver.major).\(moduleSemver.minor ?? 0).\(moduleSemver.patch ?? 0)"
-                if let outOfBandBase = SemVer.init(outOfBandFull) {
+                if let outOfBandBase = SemVer(outOfBandFull) {
                     let release = tags.filter { (ver) -> Bool in
                         if ver.preReleaseMajor == nil {
                             return true
@@ -84,7 +91,8 @@ class OutdatedCommand: Command {
                     if release.count > 0 {
                         let matching = outOfBandBase.matching(fromList: release, withTest: .greaterThanOrEqual)
                         if let last = matching.last {
-                            if last > moduleSemver && (newver == nil || last > newver!) {
+                            if last > moduleSemver, newver == nil || last > newver! {
+                                printUrl(submodule.url)
                                 print("  Out of spec new version available: \(last.fullString)")
                             }
                         }
@@ -98,7 +106,8 @@ class OutdatedCommand: Command {
                     if prerelease.count > 0 {
                         let matching = outOfBandBase.matching(fromList: prerelease, withTest: .greaterThanOrEqual)
                         if let last = matching.last {
-                            if last > moduleSemver && (newver == nil || last > newver!) {
+                            if last > moduleSemver, newver == nil || last > newver! {
+                                printUrl(submodule.url)
                                 print("  Out of spec new prerelease version available: \(last.fullString)")
                             }
                         }
@@ -132,5 +141,15 @@ class OutdatedCommand: Command {
         command.options.append(verboseOption)
 
         return command
+    }
+
+    func printUrl(_ moduleUrl: String) {
+        if moduleUrl.hasPrefix("git@github.com:") {
+            let printable = "  https://github.com/\(moduleUrl.suffix(from: 15))"
+            if printable != urlPrinted {
+                urlPrinted = printable
+                print(printable)
+            }
+        }
     }
 }

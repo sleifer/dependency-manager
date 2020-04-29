@@ -39,7 +39,7 @@ func main() {
 
     #if DEBUG
     // for testing in Xcode
-    let args = ["dm", "add", "-c", "-u", "~/Documents/Code/MessageQueue.git".expandingTildeInPath, "MessageQueue"]
+    let args = ["dm", "outdated"]
     #else
     let args = CommandLine.arguments
     #endif

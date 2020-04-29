@@ -290,8 +290,9 @@
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/versions.swift",
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PATH=${PATH}:${HOME}/bin\nif which pt > /dev/null; then\npt stamp 'dependency-manager' ${DERIVED_FILE_DIR}/versions.swift\nelse\n  echo \"warning: pt not installed\"\nfi";
+			shellScript = "PATH=${PATH}:${HOME}/bin\nif which pt > /dev/null; then\npt stamp 'dependency-manager' ${DERIVED_FILE_DIR}/versions.swift\nelse\n  echo \"warning: pt not installed\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		DB212B55224988DE0039CED1 /* SwiftLint */ = {
