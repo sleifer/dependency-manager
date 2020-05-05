@@ -14,6 +14,10 @@ class SpecCommand: Command {
     }
 
     func run(cmd: ParsedCommand, core: CommandCore) {
+        if cmd.boolOption("--edit") == true {
+            ProcessRunner.runCommand("open .module-versions")
+            return
+        }
         if cmd.parameters.count == 0 {
             for spec in versionSpecs.allSpecs() {
                 print(spec.toStr())
@@ -37,6 +41,12 @@ class SpecCommand: Command {
         var command = SubcommandDefinition()
         command.name = "spec"
         command.synopsis = "List or update version range for one or all submodules"
+
+        var editOption = CommandOption()
+        editOption.shortOption = "-e"
+        editOption.longOption = "--edit"
+        editOption.help = "Edit spec definition in text editor"
+        command.options.append(editOption)
 
         var moduleParameter = ParameterInfo()
         moduleParameter.hint = "module-name"
