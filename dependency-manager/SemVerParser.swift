@@ -33,6 +33,9 @@ struct SemVer {
 
     func matching(fromList: [SemVer], withTest: SemVerComparison) -> [SemVer] {
         let items = fromList.filter { (item: SemVer) -> Bool in
+            if item.prefix != self.prefix {
+                return false
+            }
             switch withTest {
             case .equal:
                 if item == self {
