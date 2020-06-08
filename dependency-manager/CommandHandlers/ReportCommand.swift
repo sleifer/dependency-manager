@@ -17,7 +17,15 @@ class ReportCommand: Command {
 
     // swiftlint:disable cyclomatic_complexity
 
-    fileprivate func updateCheck(_ submodule: SubmoduleInfo, _ aSpec: VersionSpec, terse: Bool = false) -> (String, Bool) {
+    /// Check a submodule for updates relative to a spec
+    /// - Parameters:
+    ///   - submodule: submodule to check for updates
+    ///   - aSpec: spec to test against
+    ///   - terse: Bool for whether result message should be terse or not (suitable for CSV); false by default
+    ///   - noAlpha: Bool for whether to ignore alpha prerelease or not; false by default
+    ///   - noBeta: Bool for whether to ignore beta prerelease or not; false by default
+    /// - Returns: a tuple with update info message, bool for whether submodule is up to date
+    fileprivate func updateCheck(_ submodule: SubmoduleInfo, _ aSpec: VersionSpec, terse: Bool = false, noAlpha: Bool = false, noBeta: Bool = false) -> (String, Bool) {
         var msg: String = ""
         var current: Bool = true
         let result = scm.fetch(submodule.path)
@@ -110,7 +118,7 @@ class ReportCommand: Command {
                 if prerelease.count > 0 {
                     let matching = outOfBandBase.matching(fromList: prerelease, withTest: .greaterThanOrEqual)
                     if let last = matching.last {
-                        if last > moduleSemver && (newver == nil || last > newver!) {
+                        if last > moduleSemver && (newver == nil || last > newver!) && (noAlpha == false || last.preReleaseMajor != "alpha") && (noBeta == false || last.preReleaseMajor != "beta") {
                             if terse == true {
                                 current = false
                                 if msg.count > 0 {
@@ -153,6 +161,8 @@ class ReportCommand: Command {
         let info = cmd.boolOption("--info")
         let check = cmd.boolOption("--check")
         let nocurrent = cmd.boolOption("--nocurrent")
+        let noalpha = cmd.boolOption("--noalpha")
+        let nobeta = cmd.boolOption("--nobeta")
 
         let baseDirectory = FileManager.default.currentDirectoryPath
         ceilingDirectory = baseDirectory.deletingLastPathComponent
@@ -199,11 +209,11 @@ class ReportCommand: Command {
                                 if let submodule = modules.spec(named: aSpec.name) {
                                     catalog.add(name: aSpec.name, url: submodule.url)
                                     if check == true {
-                                        let (updateText, current) = updateCheck(submodule, aSpec, terse: true)
+                                        let (updateText, current) = updateCheck(submodule, aSpec, terse: true, noAlpha: noalpha, noBeta: nobeta)
                                         if !(nocurrent == true && current == true) {
                                             print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(updateText)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
                                         }
-                                    } else  if info == true {
+                                    } else if info == true {
                                         print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
                                     } else {
                                         print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
@@ -286,6 +296,16 @@ class ReportCommand: Command {
         noUpToDateOption.longOption = "--nocurrent"
         noUpToDateOption.help = "Do not show items that are up to date with no available updates"
         command.options.append(noUpToDateOption)
+
+        var noAlphaOption = CommandOption()
+        noAlphaOption.longOption = "--noalpha"
+        noAlphaOption.help = "Do not show items that are labeled alpha"
+        command.options.append(noAlphaOption)
+
+        var noBetaOption = CommandOption()
+        noBetaOption.longOption = "--nobeta"
+        noBetaOption.help = "Do not show items that are labeled beta"
+        command.options.append(noBetaOption)
 
         var checkOption = CommandOption()
         checkOption.shortOption = "-k"
