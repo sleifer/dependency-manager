@@ -39,7 +39,7 @@ func main() {
 
     #if DEBUG
     // for testing in Xcode
-    let args = ["dm", "outdated"]
+    let args = ["dm", "report", "-f", "CommandLineCore", "~/Documents/Code".expandingTildeInPath]
     #else
     let args = CommandLine.arguments
     #endif

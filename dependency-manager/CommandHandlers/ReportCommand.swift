@@ -6,14 +6,13 @@
 //  Copyright © 2018 droolingcat.com. All rights reserved.
 //
 
-import Foundation
 import CommandLineCore
+import Foundation
 
 class ReportCommand: Command {
     var ceilingDirectory: String = "/"
 
-    required init() {
-    }
+    required init() {}
 
     // swiftlint:disable cyclomatic_complexity
 
@@ -82,7 +81,7 @@ class ReportCommand: Command {
 
         if let moduleSemver = submodule.semver {
             let outOfBandFull = "\(moduleSemver.prefix ?? "")\(moduleSemver.major).\(moduleSemver.minor ?? 0).\(moduleSemver.patch ?? 0)"
-            if let outOfBandBase = SemVer.init(outOfBandFull) {
+            if let outOfBandBase = SemVer(outOfBandFull) {
                 let release = tags.filter { (ver) -> Bool in
                     if ver.preReleaseMajor == nil {
                         return true
@@ -92,7 +91,7 @@ class ReportCommand: Command {
                 if release.count > 0 {
                     let matching = outOfBandBase.matching(fromList: release, withTest: .greaterThanOrEqual)
                     if let last = matching.last {
-                        if last > moduleSemver && (newver == nil || last > newver!) {
+                        if last > moduleSemver, newver == nil || last > newver! {
                             if terse == true {
                                 current = false
                                 if msg.count > 0 {
@@ -118,7 +117,7 @@ class ReportCommand: Command {
                 if prerelease.count > 0 {
                     let matching = outOfBandBase.matching(fromList: prerelease, withTest: .greaterThanOrEqual)
                     if let last = matching.last {
-                        if last > moduleSemver && (newver == nil || last > newver!) && (noAlpha == false || last.preReleaseMajor != "alpha") && (noBeta == false || last.preReleaseMajor != "beta") {
+                        if last > moduleSemver, newver == nil || last > newver!, noAlpha == false || last.preReleaseMajor != "alpha", noBeta == false || last.preReleaseMajor != "beta" {
                             if terse == true {
                                 current = false
                                 if msg.count > 0 {
@@ -173,6 +172,10 @@ class ReportCommand: Command {
             searchDirPaths.append(FileManager.default.currentDirectoryPath)
         }
 
+        let filters = cmd.options(named: "--filter").compactMap { (option) -> String? in
+            option.arguments.first
+        }
+
         let catalog = Catalog.load()
 
         for searchDirPath in searchDirPaths {
@@ -200,10 +203,7 @@ class ReportCommand: Command {
                         let modules = scm.submodules()
                         let name = file.deletingLastPathComponent.lastPathComponent
                         let spec = VersionSpecification(fromFile: specPath)
-                        if csv == false {
-                            print("  Project: \(name)")
-                            print("  \(dirPath)")
-                        }
+                        var header: String? = "  Project: \(name)\n  \(dirPath)"
                         for aSpec in spec.allSpecs() {
                             if csv == true {
                                 if let submodule = modules.spec(named: aSpec.name) {
@@ -214,34 +214,45 @@ class ReportCommand: Command {
                                             print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(updateText)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
                                         }
                                     } else if info == true {
-                                        print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                        if filters.count == 0 || filters.contains(aSpec.name) {
+                                            print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(aSpec.versSpecStr()) \",\"\(submodule.version)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                        }
                                     } else {
-                                        print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                        if filters.count == 0 || filters.contains(aSpec.name) {
+                                            print("\"\(name)\",\"\(dirPath)\",\"\(aSpec.name)\",\"\(submodule.path)\",\"\(submodule.url)\",\"managed\"")
+                                        }
                                     }
                                 }
                             } else {
                                 if let submodule = modules.spec(named: aSpec.name) {
                                     catalog.add(name: aSpec.name, url: submodule.url)
-                                    if info == true || check == true {
-                                        print("    \(aSpec.name) \(aSpec.versSpecStr()) @ \(submodule.version)")
 
-                                        if check == true {
-                                            let (updateText, current) = updateCheck(submodule, aSpec)
-                                            if !(nocurrent == true && current == true) {
-                                                print(updateText)
-                                            }
+                                    if filters.count == 0 || filters.contains(aSpec.name) {
+                                        if let text = header {
+                                            print(text)
+                                            header = nil
                                         }
-                                    } else {
-                                        print("    \(aSpec.name)")
-                                    }
-                                    if verbose == true {
-                                        print("      path: \(submodule.path)")
-                                        print("      url: \(submodule.url)")
+                                        if info == true || check == true {
+                                            print("    \(aSpec.name) \(aSpec.versSpecStr()) @ \(submodule.version)")
+
+                                            if check == true {
+                                                let (updateText, current) = updateCheck(submodule, aSpec)
+                                                if !(nocurrent == true && current == true) {
+                                                    print(updateText)
+                                                }
+                                            }
+                                        } else {
+                                            print("    \(aSpec.name)")
+                                        }
+                                        if verbose == true {
+                                            print("      path: \(submodule.path)")
+                                            print("      url: \(submodule.url)")
+                                        }
                                     }
                                 }
                             }
                         }
-                    } else if unmanaged == true && isInManagedDir(path: dirPath) == false {
+                    } else if unmanaged == true, isInManagedDir(path: dirPath) == false {
                         fm.changeCurrentDirectoryPath(dirPath)
                         let modules: [SubmoduleInfo] = scm.submodules()
                         if modules.count > 0 {
@@ -331,6 +342,24 @@ class ReportCommand: Command {
         csvOption.help = "Output report in CSV format"
         command.options.append(csvOption)
 
+        var filterOption = CommandOption()
+        filterOption.shortOption = "-f"
+        filterOption.longOption = "--filter"
+        filterOption.help = "Only show projects using specific module"
+        filterOption.argumentCount = 1
+
+        let catalog = Catalog.load()
+        filterOption.completions = catalog.entries.map { (entry) -> String in
+            entry.name
+        }.sorted { (left, right) -> Bool in
+            if left.lowercased() < right.lowercased() {
+                return true
+            }
+            return false
+        }
+
+        command.options.append(filterOption)
+
         var parameter = ParameterInfo()
         parameter.hint = "path"
         parameter.help = "Path to repository or directory or repositories"
@@ -354,6 +383,5 @@ class ReportCommand: Command {
                 return inManaged
             }
         }
-        return inManaged
     }
 }
