@@ -8,6 +8,7 @@
 
 import CommandLineCore
 import Foundation
+import AppKit
 
 class UpdateCommand: Command {
     required init() {}
@@ -21,12 +22,12 @@ class UpdateCommand: Command {
         }
 
         let catalog = Catalog.load()
-        var addedToCatalog: Bool = false
+        var addedToCatalog = false
 
-        var updatedText: String = ""
+        var updatedText = ""
 
         for submodule in submodules {
-            var updateIt: Bool = true
+            var updateIt = true
             if cmd.parameters.count != 0 {
                 if cmd.parameters.contains(submodule.name) == true {
                     updateIt = true
@@ -88,6 +89,10 @@ class UpdateCommand: Command {
 
         if updatedText.count > 0 {
             print(updatedText)
+            print("(Copied to clipboard)")
+            let pasteboard = NSPasteboard.general
+            pasteboard.clearContents()
+            pasteboard.setString(updatedText, forType: .string)
         }
 
         if addedToCatalog == true {
@@ -108,7 +113,7 @@ class UpdateCommand: Command {
 
         if scm.isInstalled == true, scm.isInitialized == true {
             let submodules = scm.submodules()
-            parameter.completions = submodules.map { (info) -> String in
+            parameter.completions = submodules.map { info -> String in
                 info.name
             }
         }
