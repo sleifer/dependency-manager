@@ -92,7 +92,7 @@ class UpdateCommand: Command {
             print("(Copied to clipboard)")
             let pasteboard = NSPasteboard.general
             pasteboard.clearContents()
-            pasteboard.setString(updatedText, forType: .string)
+            pasteboard.setString(updatedText.trimmed(), forType: .string)
         }
 
         if addedToCatalog == true {
